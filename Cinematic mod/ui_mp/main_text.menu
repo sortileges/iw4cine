@@ -1,0 +1,674 @@
+#include "ui/menudef.h"
+
+#define NO_PROFILES
+
+{
+	menuDef
+	{
+		name main_text
+		fullscreen 1
+		rect 0 0 640 480
+		style 0
+		border 0
+		ownerdraw 0
+		ownerdrawFlag 0
+		borderSize 0
+		foreColor 1 1 1 1
+		backColor 0 0 0 0
+		borderColor 0 0 0 0
+		outlineColor 0 0 0 0
+		soundLoop music_mainmenu_mp
+		fadeCycle 1
+		fadeClamp 1
+		fadeAmount 0.1
+		fadeInAmount 0
+		blurWorld 0
+		onOpen
+		{
+			exec "selectStringTableEntryInDvar mp/didyouknow.csv 0 didyouknow";
+		}
+		onESC
+		{
+			open quit_popmenu;
+		}
+		focusColor 1 1 1 1
+		#define WHAT_THE_HELL_KIND_OF_NAME_IS_SOAP
+		#include "ui_mp/bg.inc"
+		/*itemDef
+		{
+			//rect 304 290 288 72
+			rect 294 200 288 72 2 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background logo_cod2
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp rect x ( 0 + 5 )
+		}*/
+
+#define CHOICE_Y(i) ( 28 + ( i * 20 ) )
+//half pixels are GREAT - well, they seem to work here
+#define HR_ORIGIN(i) 0 ( CHOICE_Y(i) - 0.5 )
+#define CHOICE_ORIGIN(i) -64 CHOICE_Y(i)
+#define CHOICE_RECT(i) CHOICE_ORIGIN(i) 336 20 1 1
+#define HR_RECT(i) HR_ORIGIN(i) 216 1 1 1
+
+#define MENU_CHOICE_NEWICON_VIS(itemIndex, imageArg, visArg) \
+		itemDef \
+		{ \
+			style		WINDOW_STYLE_SHADER \
+			rect		236 CHOICE_Y(itemIndex) 40 20 1 1 \
+			exp			material(imageArg) \
+			visible		visArg \
+			align 2 \
+			decoration \
+		}
+#define MENU_CHOICE_BUTTON_VIS( itemIndex, buttonName, forecolorArg, textArg, actionArg, visArg, descArg) \
+		itemDef \
+		{ \
+			name buttonName \
+			rect CHOICE_RECT(itemIndex) \
+			forecolor forecolorArg \
+			backColor 0 0 0 0 \
+			style 1 \
+			origin 0 0 \
+			background menu_button_selection_bar \
+			group mw2_button \
+			type 1 \
+			textAlign 6 \
+			textAlignX -60 \
+			textScale 0.375 \
+			textFont 3 \
+			text textArg \
+			onFocus \
+			{ \
+				play mouse_over; \
+				setItemColor self backcolor 0 0 0 1; \
+				setLocalVarBool ui_menuAButton 1; \
+				setLocalVarFloat ui_popupYPos 0.000000; \
+				setLocalVarString ui_hint_text descArg; \
+			} \
+			leaveFocus \
+			{ \
+				setItemColor self backcolor 0 0 0 0.0; \
+				setLocalVarBool ui_menuAButton 1; \
+				setLocalVarString ui_hint_text "@NULL_EMPTY"; \
+			} \
+			action \
+			{ \
+				play mouse_click; \
+				actionArg \
+			} \
+			visible visArg \
+		}
+#define MENU_CHOICE_DBUTTON_VIS( itemIndex, buttonName, textArg, visArg, descArg) \
+		itemDef \
+		{ \
+			name buttonName \
+			rect CHOICE_RECT(itemIndex) \
+			forecolor 1 1 1 0.5 \
+			backColor 0 0 0 0 \
+			style 1 \
+			origin 0 0 \
+			background menu_button_selection_bar \
+			group mw2_button \
+			type 1 \
+			textAlign 6 \
+			textAlignX -60 \
+			textScale 0.375 \
+			textFont 3 \
+			text textArg \
+			onFocus \
+			{ \
+				play mouse_over; \
+				setItemColor self backcolor 0 0 0 1; \
+				setLocalVarBool ui_menuAButton 1; \
+				setLocalVarFloat ui_popupYPos 0.000000; \
+				setLocalVarString ui_hint_text descArg; \
+			} \
+			leaveFocus \
+			{ \
+				setItemColor self backcolor 0 0 0 0.0; \
+				setLocalVarBool ui_menuAButton 1; \
+				setLocalVarString ui_hint_text "@NULL_EMPTY"; \
+			} \
+			visible visArg \
+		}
+#define HORIZONTAL_LINE(itemIndex, visArg) \
+	itemDef \
+		{ \
+			rect HR_RECT(itemIndex) \
+			style 3 \
+			border 0 \
+			ownerdraw 0 \
+			ownerdrawFlag 0 \
+			borderSize 0 \
+			foreColor 1 1 1 0.65 \
+			backColor 0 0 0 0 \
+			borderColor 0 0 0 0 \
+			outlineColor 0 0 0 0 \
+			background gradient_fadein \
+			decoration \
+			type 0 \
+			align 0 \
+			textAlign 0 \
+			textAlignX 0 \
+			textAlignY 0 \
+			textScale 0.55 \
+			textStyle 0 \
+			textFont 0 \
+			feeder 0 \
+			visible visArg \
+		}
+
+#define CHECK_FOR_UPDATE_ACTION \
+	exec checkforupdate \
+	open auconfirm
+		
+		// default title
+		itemDef
+		{
+			rect 0 20 272 28 1 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 6
+			textAlignX -59
+			textAlignY 0
+			textScale 0.5
+			textStyle 0
+			textFont 9
+			feeder 0
+			text "^7CINEMATIC ^3MOD"
+			visible 1
+			visible when(!dvarbool(cl_updateavailable))
+		}
+		
+		// show only when update is available
+		itemDef
+		{
+			rect 0 -1 272 28 1 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 6
+			textAlignX -59
+			textAlignY 0
+			textScale 0.5
+			textStyle 0
+			textFont 9
+			feeder 0
+			text "^7CINEMATIC ^3MOD"
+			visible 1
+			visible when(dvarbool(cl_updateavailable))
+		}
+		
+		// update button
+		MENU_CHOICE_BUTTON_VIS(0, button_0, 1 1 1 1, "^3NEW CLIENT UPDATE", CHECK_FOR_UPDATE_ACTION, when(dvarbool(cl_updateavailable)), "Update your client (V2/React/IW4x) ?")
+		HORIZONTAL_LINE(1, when(dvarbool(cl_updateavailable)))
+		
+		// general menu buttons
+		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "CHOOSE MAP", open settings_map;, 1, "Create a devmap of your choice")
+		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "GREENSCREEN MAP", exec "devmap iw4_credits;", 1, "Launch the greenscreen map")
+		MENU_CHOICE_BUTTON_VIS(3, button_3, 1 1 1 1, "LOCAL CONNECT", exec "connect 127.0.0.1";, 1, "Connects to 127.0.0.1")
+		HORIZONTAL_LINE(4, 1)
+		
+		MENU_CHOICE_BUTTON_VIS(4, button_4, 1 1 1 1, "CUSTOM CLASSES", open cac_popup;, 1, "Create your own custom classes")
+		MENU_CHOICE_BUTTON_VIS(5, button_5, 1 1 1 1, "PLAYERCARD", open popup_callsign;, 1, "Set your title, emblem, and killstreak")
+		MENU_CHOICE_BUTTON_VIS(6, button_6, 1 1 1 1, "DEMOS LIST", open pc_theater_menu;, 1, "Watch your played matches")
+		
+		HORIZONTAL_LINE(7, 1)
+		MENU_CHOICE_BUTTON_VIS(7, button_7, 1 1 1 1, "@MENU_OPTIONS_CAPS", open pc_options_video;, 1, "Change game options")
+		MENU_CHOICE_BUTTON_VIS(8, button_8, 1 1 1 1, "@MENU_QUIT_CAPS", exec "quit;", 1, "Are you sure ? :(")
+
+
+		itemDef
+		{
+			rect 313 -100 250 100 3 3
+			style 1
+			border 1
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0.5
+			foreColor 1 1 1 0.8
+			backColor 1 1 1 0.1
+			borderColor 1 1 1 0.2
+			outlineColor 0 0 0 0.5
+			decoration 
+			autoWrapped 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.5
+			textStyle 3
+			textFont 9
+			feeder 0
+			visible 1
+			text " "
+			exp rect x ( 0 - 250 )
+		}
+		itemDef
+		{
+			rect 313 -100 250 100 3 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 0.8
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			autoWrapped 
+			type 21
+			align 0
+			textAlign 0
+			textAlignX 5
+			textAlignY 20
+			textScale 0.375
+			textStyle 3
+			textFont 3
+			feeder 1
+			visible 1
+			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#222 ^3 \n \n ^1Check readme for more informations and ^1help about the mod !!"
+			exp rect x ( 0 - 250 )
+		}
+		itemDef
+		{
+			name changelog
+			rect -250 2 250 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.1
+			style 1
+			type 1
+			align 0
+			textAlign 1
+			textAlignX 0
+			textAlignY 16
+			textScale 0.3
+			textFont 3
+			visible 1
+			//visible when(dvarbool(ui_showChangelog))
+			text "CHANGELOG"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0;
+				setLocalVarString ui_hint_text "See cinematic mod changelog";
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 0.1;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open popup_playername;
+			}
+		}
+		//bg
+		itemDef
+		{
+			rect 0 0 208 70 3 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 0.25
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			background white
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( ( -208 )  )
+			exp rect y ( ( 18 )  )
+		}
+		itemDef
+		{
+			rect 0 0 208 70 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			background cardtitle_248x48
+			decoration 
+			type 0
+			align 0
+			textAlign 4
+			textAlignX 0
+			textAlignY -20
+			textScale 0.375
+			textStyle 7
+			textFont 6
+			feeder 0
+			visible 1
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( ( - 208 )  )
+			exp rect y ( ( 18 )  )
+		}
+		
+		
+		
+		//name+title
+		itemDef
+		{
+			rect 0 0 160 32 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			//decoration
+			type 1
+			align 0
+			textAlign 9
+			textAlignX 0
+			textAlignY 0
+			textScale 0.375
+			textStyle 8
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( "@" + tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 1 )  )
+			exp material ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 2 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( - 208  )
+			exp rect y ( 18 - 2  )
+			exp forecolor r ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 3 )  )
+			exp forecolor g ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 4 )  )
+			exp forecolor b ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 5 )  )
+		}
+		itemDef
+		{
+			rect 0 0 160 18 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			//decoration
+			type 1
+			align 0
+			textAlign 4
+			textAlignX 8
+			textAlignY 0
+			textScale 0.3333
+			textStyle 8
+			textFont 10
+			feeder 0
+			visible 1
+			exp text ( getplayercardinfo( 8 , 1 , 0 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( - 208  )
+			exp rect y ( ( 16 ) + 30  )
+		}
+		//icon
+		itemDef
+		{
+			rect 0 0 48 48 3 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			//decoration 
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( tablelookupbyrow( "mp/cardIconTable.csv" , getplayercardinfo( 2 , 1 , 0 ) , 1 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( ( - 208 ) + 160  )
+			exp rect y ( ( 18 ) )
+		}
+		itemDef
+		{
+			rect 0 0 208 20 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 8
+			textAlignX 8
+			textAlignY 0
+			textScale 0.375
+			textStyle 7
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( "[" + getplayercardinfo( 9 , 1 , 0 ) + "]"  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && getplayercardinfo( 9 , 1 , 0 ) != ""  )
+			exp rect x ( ( - 208 )  )
+			exp rect y ( ( 18 ) + 48  )
+		}
+		
+		//rank
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( tablelookup( "mp/rankIconTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , ( getplayercardinfo( 5 , 1 , 0 ) + 1 ) )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 208 ) + 164  )
+			exp rect y ( ( 18 ) + 48  )
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 9
+			textAlignX 20
+			textAlignY 0
+			textScale 0.375
+			textStyle 7
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( tablelookup( "mp/rankTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , 14 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 208 ) + 164  )
+			exp rect y ( ( 18 ) + 48  )
+		}
+		
+		// hint text
+		itemDef
+		{
+			name hint_area
+			rect 0 270 215 18 1 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 0.65
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			autoWrapped 
+			type 0
+			align 0
+			textAlign 6
+			textAlignX 0
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( localvarstring( "ui_hint_text" )  )
+		}
+
+		itemDef
+		{
+			rect 0 0 300 20 1 1
+			decoration
+			foreColor 1 1 1 0.5
+			type 1
+			textAlign 0
+			textAlignY -21
+			textScale 0.2
+			text "Mod:"
+			visible when (dvarString("fs_game") != "")
+		}
+
+		itemDef
+		{
+			name mod
+			rect 0 0 300 20 1 1
+			decoration
+			foreColor 1 1 1 0.5
+			type 1
+			textAlign 0
+			textAlignX 16
+			textAlignY -21
+			textScale 0.2
+			exp text dvarString("fs_game")
+			visible when (dvarString("fs_game") != "")
+		}
+		itemDef
+		{
+			rect 0 -11 300 20 1 1
+			decoration
+			foreColor 1 1 1 0.5
+			type 1
+			textAlign 0
+			textAlignY 0
+			textScale 0.2
+			text "Player: "
+			visible 1
+		}
+		itemDef
+		{
+			name getname
+			rect 22 -11 300 20 1 1
+			decoration
+			foreColor 1 1 1 0.5
+			type 1
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.2
+			exp text dvarString("name")
+			visible 1
+		}
+		
+		
+	}
+}

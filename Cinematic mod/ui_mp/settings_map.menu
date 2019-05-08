@@ -1,0 +1,1174 @@
+{
+	menuDef
+	{
+		name "settings_map"
+		rect 0 0 640 480 0 0
+		style 1
+		forecolor 1 1 1 1
+		focuscolor 1 1 1 1
+		fullscreen 1
+		soundLoop "music_mainmenu_mp"
+		onOpen
+		{
+			focusfirst;
+			setfocusbydvar "ui_mapname";
+		}
+		onClose
+		{
+			execnow "xupdatepartystate";
+		}
+		onEsc
+		{
+			close self;
+		}
+		itemDef
+		{
+			rect 0 0 640 480 4 4
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			background "mw2_main_background"
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect 0 0 1708 480 0 0
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 0.5
+			background "mw2_main_cloud_overlay"
+			textscale 0.55
+			exp rect x ( ( 0 - 107 ) - ( ( float( milliseconds( ) % 60000 ) / 60000 ) * ( 854 ) ) )
+		}
+		itemDef
+		{
+			rect 0 0 -1708 -480 0 0
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 0.5
+			background "mw2_main_cloud_overlay"
+			textscale 0.55
+			exp rect x ( ( - 107 + 854 ) + ( ( float( milliseconds( ) % 50000 ) / 50000 ) * ( 854 ) ) )
+		}
+		itemDef
+		{
+			rect 0 0 640 480 4 4
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 0
+			background "mockup_bg_glow"
+			textscale 0.55
+			exp forecolor a ( ( ( sin( milliseconds( ) / 1500 ) + 1 ) * 0.25 ) + 0.25 )
+		}
+		itemDef
+		{
+			rect 0 0 640 480 4 4
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 0
+			background "mockup_bg_glow"
+			textscale 0.55
+			exp forecolor a ( ( ( sin( milliseconds( ) / 480 ) + 1 ) * 0.25 ) + 0.25 )
+		}
+		itemDef
+		{
+			rect 0 28 640 356 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 0.15
+			background "white"
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -32 -4 32 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_tl"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 0 -4 640 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_t"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 640 -4 32 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_tr"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 640 28 32 356 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_r"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 640 384 32 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_br"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 0 384 640 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_b"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect -32 384 32 32 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_bl"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect -32 28 32 356 4 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 1
+			background "drop_shadow_l"
+			textscale 0.55
+			visible when ( 1 )
+		}
+		itemDef
+		{
+			rect 0 0 272 28 1 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textfont 9
+			textalign 6
+			textalignx -60
+			textscale 0.5
+			text "CREATE DEVMAP"
+		}
+		itemDef
+		{
+			rect -64 28 336 20 1 1
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "Bonus Maps"
+			visible when ( 1 )
+			disabled when ( 0 )
+			action
+			{
+				play "mouse_click";
+				open "settings_bonus_map";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarString "ui_info_name" ( "BONUS MAPS" );
+				setLocalVarString "ui_info_icon" ( "loadscreen_mp_bonusmaps" );
+				setLocalVarString "ui_info_desc" ( "Officials and customs DLC packages" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 0;
+			}
+		}
+		itemDef
+		{
+			rect 0 48 216 1 1 1
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			background "gradient_fadein"
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -64 48 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			backcolor 0 0 0 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_afghan" }
+			exp text ( "@" + "MPUI_AFGHAN" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_afghan;
+				if (dvarstring(ui_mapname) == "mp_afghan")
+				{ 
+				exec "devmap mp_afghan";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7AFGHAN" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_AFGHAN" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_afghan" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 68 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_derail" }
+			exp text ( "@" + "MPUI_DERAIL" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_derail;
+				if (dvarstring(ui_mapname) == "mp_derail")
+				{ 
+				exec "devmap mp_derail";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7DERAIL" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_DERAIL" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_derail" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 88 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_estate" }
+			exp text ( "@" + "MPUI_ESTATE" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_estate;
+				if (dvarstring(ui_mapname) == "mp_estate")
+				{ 
+				exec "devmap mp_estate";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7ESTATE" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_ESTATE" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_estate" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 108 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_favela" }
+			exp text ( "@" + "MPUI_FAVELA" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_favela;
+				if (dvarstring(ui_mapname) == "mp_favela")
+				{ 
+				exec "devmap mp_favela";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7FAVELA" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_FAVELA" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_favela" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 128 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_highrise" }
+			exp text ( "@" + "MPUI_HIGHRISE" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_highrise;
+				if (dvarstring(ui_mapname) == "mp_highrise")
+				{ 
+				exec "devmap mp_highrise";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7HIGHRISE" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_HIGHRISE" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_highrise" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 148 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_invasion" }
+			exp text ( "@" + "MPUI_INVASION" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_invasion;
+				if (dvarstring(ui_mapname) == "mp_invasion")
+				{ 
+				exec "devmap mp_invasion";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7INVASION" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_INVASION" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_invasion" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 168 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_checkpoint" }
+			exp text ( "@" + "MPUI_CHECKPOINT" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_checkpoint;
+				if (dvarstring(ui_mapname) == "mp_checkpoint")
+				{ 
+				exec "devmap mp_checkpoint";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7KARACHI" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_CHECKPOINT" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_checkpoint" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 188 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_quarry" }
+			exp text ( "@" + "MPUI_QUARRY" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_quarry;
+				if (dvarstring(ui_mapname) == "mp_quarry")
+				{ 
+				exec "devmap mp_quarry";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7QUARRY" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_QUARRY" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_quarry" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 208 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_rundown" }
+			exp text ( "@" + "MPUI_RUNDOWN" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_rundown;
+				if (dvarstring(ui_mapname) == "mp_rundown")
+				{ 
+				exec "devmap mp_rundown";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7RUNDOWN" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_RUNDOWN" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_rundown" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 228 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_rust" }
+			exp text ( "@" + "MPUI_RUST" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_rust;
+				if (dvarstring(ui_mapname) == "mp_rust")
+				{ 
+				exec "devmap mp_rust";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7RUST" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_RUST" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_rust" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 248 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_boneyard" }
+			exp text ( "@" + "MPUI_BONEYARD" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_boneyard;
+				if (dvarstring(ui_mapname) == "mp_boneyard")
+				{ 
+				exec "devmap mp_boneyard";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7SCRAPYARD" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_BONEYARD" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_boneyard" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 268 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_nightshift" }
+			exp text ( "@" + "MPUI_RAID" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_nightshift;
+				if (dvarstring(ui_mapname) == "mp_nightshift")
+				{ 
+				exec "devmap mp_nightshift";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7SKIDROW" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_NIGHTSHIFT" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_nightshift" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 288 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_subbase" }
+			exp text ( "@" + "MPUI_SUBBASE" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_subbase;
+				if (dvarstring(ui_mapname) == "mp_subbase")
+				{ 
+				exec "devmap mp_subbase";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7SUBBASE" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_SUBBASE" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_subbase" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 308 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_terminal" }
+			exp text ( "@" + "MPUI_TERMINAL" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_terminal;
+				if (dvarstring(ui_mapname) == "mp_terminal")
+				{ 
+				exec "devmap mp_terminal";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7TERMINAL" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_TERMINAL" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_terminal" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 328 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_underpass" }
+			exp text ( "@" + "MPUI_UNDERPASS" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_underpass;
+				if (dvarstring(ui_mapname) == "mp_underpass")
+				{ 
+				exec "devmap mp_underpass";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7UNDERPASS" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_UNDERPASS" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_underpass" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 348 336 20 1 1
+			group "mw2_button"
+			style 1
+			visible 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			dvarTest "ui_mapname"
+			focusDvar { "mp_brecourt" }
+			exp text ( "@" + "MPUI_WASTELAND" )
+			action
+			{
+				play "mouse_click";
+				setdvar ui_mapname mp_brecourt;
+				if (dvarstring(ui_mapname) == "mp_brecourt")
+				{ 
+				exec "devmap mp_brecourt";
+				} 
+				close self;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_info_name" ( "^7WASTELAND" );
+				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_BRECOURT" );
+				setLocalVarString "ui_info_icon" ( "preview_mp_brecourt" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 -20 336 24 1 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background menu_button_selection_bar
+			group mw2_button
+			type 1
+			align 0
+			textAlign 6
+			textAlignX -60
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			text "@PLATFORM_BACK_CAPS"
+			visible 1
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 0.0;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			action
+			{
+				play mouse_click;
+				escape self;
+			}
+		}
+		itemDef
+		{
+			rect -292 28 292 356 3 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 0.7
+			background "black"
+			textscale 0.55
+		}
+		itemDef
+		{
+			name "mapimage"
+			rect -282 50 272 153 3 1
+			style 3
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			background "preview_mp_afghan"
+			textscale 0.55
+			exp material ( localvarstring( "ui_info_icon" ) )
+		}
+		itemDef
+		{
+			name "longname"
+			rect -282 28 272 22 3 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textfont 9
+			textalign 4
+			textscale 0.375
+			exp text ( "@" + localvarstring( "ui_info_name" ) )
+		}
+		itemDef
+		{
+			name "description"
+			rect -282 203 272 20 3 1
+			decoration
+			autowrapped
+			visible 1
+			forecolor 1 1 1 0.65
+			textfont 3
+			textalign 4
+			textscale 0.375
+			exp text ( "@" + localvarstring( "ui_info_desc" ) )
+		}
+		itemDef
+		{
+			rect -100 0 100 600 1 1
+			style 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			backcolor 0.5 0.6 0.8 0.5
+			textscale 0.55
+			dvarTest "ui_safearea"
+			showDvar { 1 }
+		}
+		itemDef
+		{
+			rect 0 -600 100 600 3 3
+			style 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			backcolor 0.5 0.6 0.8 0.5
+			textscale 0.55
+			dvarTest "ui_safearea"
+			showDvar { 1 }
+		}
+		itemDef
+		{
+			rect -900 -100 900 100 3 1
+			style 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			backcolor 0.5 0.6 0.8 0.5
+			textscale 0.55
+			dvarTest "ui_safearea"
+			showDvar { 1 }
+		}
+		itemDef
+		{
+			rect 0 0 900 100 1 3
+			style 1
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			backcolor 0.5 0.6 0.8 0.5
+			textscale 0.55
+			dvarTest "ui_safearea"
+			showDvar { 1 }
+		}
+		itemDef
+		{
+			rect 390 56 0 0 0 0
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textfont 1
+			textscale 0.375
+			visible when ( dvarstring( "ui_debug_localVarString" ) != "" )
+			exp text ( dvarstring( "ui_debug_localVarString" ) + ": " + localvarstring( dvarstring( "ui_debug_localVarString" ) ) )
+		}
+		itemDef
+		{
+			rect 390 72 0 0 0 0
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textfont 1
+			textscale 0.375
+			visible when ( dvarstring( "ui_debug_localVarInt" ) != "" )
+			exp text ( dvarstring( "ui_debug_localVarInt" ) + ": " + localvarint( dvarstring( "ui_debug_localVarInt" ) ) )
+		}
+		itemDef
+		{
+			rect 390 72 0 0 0 0
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textfont 1
+			textscale 0.375
+			visible when ( dvarstring( "ui_debug_localVarBool" ) != "" )
+			exp text ( dvarstring( "ui_debug_localVarBool" ) + ": " + localvarbool( dvarstring( "ui_debug_localVarBool" ) ) )
+		}
+		
+	}
+	
+}

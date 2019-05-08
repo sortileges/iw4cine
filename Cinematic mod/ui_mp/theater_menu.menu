@@ -1,0 +1,836 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+#define CHOICE_X_START			0
+#define CHOICE_Y_START			34
+
+#define CHOICE_SEP_1			1
+#define CHOICE_SEP_2			5
+#define CHOICE_SEP_3			8
+
+#define CHOICE_Y_COUNT			3
+#define CHOICE_GROUP			"joinserver"
+
+#define STYLE_PC	1
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+
+{
+	menuDef
+	{
+		name pc_theater_menu
+		fullscreen 1
+		rect 0 0 640 480
+		style 0
+		border 0
+		ownerdraw 0
+		ownerdrawFlag 0
+		borderSize 0
+		foreColor 1 1 1 1
+		backColor 0 0 0 0
+		borderColor 0 0 0 0
+		outlineColor 0 0 0 0
+		soundLoop music_mainmenu_mp
+		fadeCycle 1
+		fadeClamp 1
+		fadeAmount 0.1
+		fadeInAmount 0
+		blurWorld 0
+		focusColor 1 1 1 1
+		onOpen	{
+			uiScript LoadArenas;
+			uiScript loadDemos ;
+		}
+		onEsc	{
+			close self;
+			open main_text;
+		}
+		
+		#define DONT_DO_THE_SIDEBAR_THINGY
+		#include "ui_mp/bg.inc"
+
+		itemDef
+		{
+			rect 0 42 640 318 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 0.15
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background white
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+		}
+		itemDef
+		{
+			rect -32 10 32 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_tl
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect 0 10 640 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_t
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect 640 10 32 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_tr
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect 640 42 32 318 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_r
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect 640 360 32 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_br
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect 0 360 640 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_b
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect -32 360 32 32 4 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 0 0 0 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background drop_shadow_bl
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			visible when ( 1  )
+		}
+		itemDef
+		{
+			rect -32 42 32 318 4 1
+			style 3
+			foreColor 0 0 0 1
+			background drop_shadow_l
+			decoration 
+			type 0
+			visible 1
+		}
+
+		itemDef
+		{
+			rect 0 0 272 28 1 1
+			borderSize 0
+			foreColor 1 1 1 1
+			origin 0 0
+			decoration 
+			type 0
+			textAlign 6
+			textAlignX -60
+			textAlignY 0
+			textScale 0.5
+			textStyle 0
+			textFont 9
+			feeder 0
+			text "@MENU_THEATER"
+			visible 1
+		}
+		itemDef
+		{
+			name demolist
+			rect 30 78 310 318
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.5
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 1
+			origin 0 0
+			type 6
+			align 0
+			textAlign 0
+			textAlignX 1
+			textAlignY 0
+			//textScale 0.375
+			textScale 0.3
+			textStyle 0
+			textFont 1
+			feeder 10
+			visible 1
+			elementWidth 120
+			//elementHeight 18
+			elementHeight 16
+			elementType 0
+	//		numcols	xpos	xwidth	textlen
+			columns 1
+				26	203	40
+
+			doubleClick 	{ uiScript LaunchDemo }
+			execkeyint 		13	{ uiScript LaunchDemo }
+		}
+
+		itemDef
+		{
+			rect -64 -20 336 20 1 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background menu_button_selection_bar
+			group mw2_button
+			type 1
+			align 0
+			textAlign 6
+			textAlignX -60
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			text "@PLATFORM_BACK_CAPS"
+			visible 1
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 0.0;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			action
+			{
+				play mouse_click;
+				play mouse_click;
+				escape self;
+			}
+		}
+		
+		itemDef
+		{
+			rect -225 42 186 318 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			style 1
+			border 1
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0.5
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.1
+			borderColor 0 0 0 0.1
+			outlineColor 0 0 0 0.1
+			decoration
+			type 0
+			align 0
+			textAlign 4
+			textAlignX 2
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+		}
+
+		// map preview....
+		// must follow the format "preview_MAPNAME"
+		itemDef 
+		{
+			name 			custommappreview 
+			style 			WINDOW_STYLE_SHADER 
+			exp				material( "preview_" + dvarString( "ui_demo_mapname" ) ); 
+			rect			-220 56 176 100 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP 
+			origin 			0 0
+			visible 		1 
+		}
+
+		// black bars on top and bottom
+		itemDef 
+		{
+			name bar1
+			style			WINDOW_STYLE_FILLED
+			rect -220 56 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0
+			backcolor		0 0 0 0.4
+			visible			1
+			decoration
+		}
+		itemDef 
+		{
+			name bar2
+			style			WINDOW_STYLE_FILLED
+			rect -220 142 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0
+			backcolor		0 0 0 0.4
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{ 
+			rect -220 45 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0 
+			exp			text( dvarString("ui_demo_mapname_localized") ) 
+			textfont		1
+			textscale		0.3
+			textalign		ITEM_ALIGN_RIGHT
+			textalignx		-4
+			textaligny		25
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{ 
+			rect -220 130 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0 
+			exp			text( dvarString("ui_demo_gametype") ) 
+			textfont		1
+			textscale		0.3
+			textalign		ITEM_ALIGN_RIGHT
+			textalignx		-4
+			textaligny		25
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{ 
+			rect -215 145 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0 
+			exp			text( "Author: " + dvarString("ui_demo_author") ) 
+			textfont		UI_FONT_NORMAL
+			textscale		0.3
+			textalign		ITEM_ALIGN_LEFT
+			textalignx		-4
+			textaligny		25
+			visible			1
+			decoration
+		}
+		
+		itemDef 
+		{ 
+			rect -215 160 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0 
+			exp			text( "Length: " + dvarString("ui_demo_length") ) 
+			textfont		UI_FONT_NORMAL
+			textscale		0.3
+			textalign		ITEM_ALIGN_LEFT
+			textalignx		-4
+			textaligny		25
+			visible			1
+			decoration
+		}
+		
+		itemDef 
+		{ 
+			rect -215 175 176 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			origin			0 0 
+			exp			text( "Date: " + dvarString("ui_demo_date") ) 
+			textfont		UI_FONT_NORMAL
+			textscale		0.3
+			textalign		ITEM_ALIGN_LEFT
+			textalignx		-4
+			textaligny		25
+			visible			1
+			decoration
+		}
+
+#define MENU_BUTTON_VIS(x, y, w, h, nameArg, textArg, actionArg, visArg) \
+	itemDef \
+	{ \
+		name		nameArg \
+		type		1 \
+		rect		x y w h HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP \
+		forecolor	1 1 1 1 \
+		backcolor	0 0 0 0 \
+		style		1 \
+		textAlign	ITEM_ALIGN_LEFT \
+		textAlignX	6 \
+		textAlignY	14 \
+		textScale	0.3 \
+		textStyle	0 \
+		textFont	3 \
+		text		textArg \
+		onFocus \
+		{ \
+			play mouse_over; \
+			setItemColor self backcolor 0 0 0 0.5; \
+		} \
+		leaveFocus \
+		{ \
+			setItemColor self backcolor 0 0 0 0; \
+		} \
+		action \
+		{ \
+			play mouse_click; \
+			actionArg \
+		} \
+		visible		visArg \
+	}
+
+#define MENU_BUTTON_DVAR_YESNO_VIS(x, y, w, h, nameArg, dvarArg, visArg) \
+	itemDef \
+	{ \
+		name		nameArg \
+		type		ITEM_TYPE_YESNO \
+		dvar		dvarArg \
+		rect		x y w h HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP \
+		forecolor	1 1 1 1 \
+		backcolor	0 0 0 0 \
+		style		1 \
+		textAlign	ITEM_ALIGN_MIDDLE_LEFT \
+		textAlignX	0 \
+		textAlignY	0 \
+		textScale	0.3 \
+		textStyle	0 \
+		textFont	3 \
+		onFocus \
+		{ \
+			play mouse_over; \
+		} \
+		action \
+		{ \
+			play mouse_click; \
+		} \
+		visible		visArg \
+
+//Buttons
+#define OPTIONS_HEADING_JOIN_COLOR	0.9 0.9 0.95 0.175
+
+#define		FILTER_Y_SPACING	20
+#define		FILTER_WIDTH		254
+#define		X_FILTER			-58 //300
+#define		X_FILTERB			(X_FILTER+FILTER_WIDTH)
+#define		Y_FILTER			-28
+#define 	ORIGIN_FILTER1		X_FILTER Y_FILTER
+#define 	ORIGIN_FILTER2		X_FILTER (Y_FILTER+FILTER_Y_SPACING)
+#define 	ORIGIN_FILTER3		X_FILTER (Y_FILTER+(FILTER_Y_SPACING*2))
+#define 	ORIGIN_FILTER4		8 (Y_FILTER+(FILTER_Y_SPACING*2))
+
+#define 	ORIGIN_FILTER1B		X_FILTERB Y_FILTER
+#define 	ORIGIN_FILTER2B		X_FILTERB (Y_FILTER+FILTER_Y_SPACING)
+#define 	ORIGIN_FILTER3B		X_FILTERB (Y_FILTER+(FILTER_Y_SPACING*2))
+#define 	ORIGIN_FILTER4B		X_FILTERB (Y_FILTER+(FILTER_Y_SPACING*3))
+
+#define 	TAB_NAME_Y			68
+
+#define		TAB_BG_COLOR		OPTIONS_HEADING_JOIN_COLOR
+#define		TAB_BORDER_COLOR	0.1 0.1 0.12 0.5
+
+#define		CUSTOM_BUTTON_TEXT_SIZE	0.33
+
+#undef CHOICE_HORIZONTAL_ALIGN 
+#define CHOICE_HORIZONTAL_ALIGN HORIZONTAL_ALIGN_RIGHT
+
+#undef CHOICE_VERTICAL_ALIGN
+#define CHOICE_VERTICAL_ALIGN VERTICAL_ALIGN_TOP
+
+// custom button highlights
+//CHOICE_HIGHLIGHT_CUSTOM_2( -210, 330, 200, 25, when( localVarString( ui_choicegroup ) == CHOICE_GROUP && localVarInt( ui_highlight ) == 1 ); )
+//CHOICE_HIGHLIGHT_CUSTOM_2( -210, 260, 200, 25, when( localVarString( ui_choicegroup ) == CHOICE_GROUP && localVarInt( ui_highlight ) == 2 ); )
+//CHOICE_HIGHLIGHT_CUSTOM_2( -210, 290, 200, 25, when( localVarString( ui_choicegroup ) == CHOICE_GROUP && localVarInt( ui_highlight ) == 3 ); )
+//CHOICE_HIGHLIGHT_CUSTOM_2( -210, 320, 200, 25, when( localVarString( ui_choicegroup ) == CHOICE_GROUP && localVarInt( ui_highlight ) == 4 ); )
+
+MENU_BUTTON_VIS(-225, 205, 186, 14, playDemo, "@MENU_PLAY", uiScript launchDemo;, 1)
+MENU_BUTTON_VIS(-225, 222, 186, 14, deleteDemo, "@MENU_DELETE", uiScript deleteDemo;, 1)
+
+	itemDef
+	{
+		rect			-215 345 44 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+		origin			0 0
+		text			"@MPUI_DEMOS_KEEP"
+		textfont		UI_FONT_NORMAL
+		textscale		0.3
+		textalign		ITEM_ALIGN_LEFT
+		textalignx		-4
+		textaligny		14
+		visible			1
+		decoration
+	}
+	
+	itemDef
+	{
+		rect			-150 345 44 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+		origin			0 0
+		type 			4
+		forecolor		1 1 1 1
+		backcolor		0 0 0 0
+		dvar			cl_demosKeep
+		text			" "
+		textfont		UI_FONT_NORMAL
+		textscale		0.3
+		textalign		ITEM_ALIGN_LEFT
+		textalignx		-4
+		textaligny		14
+		visible			1
+		onFocus
+		{
+			play mouse_over;
+		}
+	}
+
+	itemDef
+	{
+		rect 			-215 330 44 14 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+		origin			0 0 
+		text			"@MPUI_AUTORECORD"
+		textfont		UI_FONT_NORMAL
+		textscale		0.3
+		textalign		ITEM_ALIGN_LEFT
+		textalignx		-4
+		textaligny		14
+		visible			1
+		decoration
+	}
+
+	MENU_BUTTON_DVAR_YESNO_VIS(-120, 330, 22, 14, toggleAutoRecord, cl_autoRecord, 1)
+
+
+		/*itemDef
+		{
+			name Btn1
+			type ITEM_TYPE_BUTTON
+			style WINDOW_STYLE_FILLED
+			text "Play Demo"
+			textfont	UI_FONT_NORMAL
+			textstyle	ITEM_TEXTSTYLE_SHADOWED
+			rect -200 335 170 15 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			textalign ITEM_ALIGN_LEFT
+			textalignx 0
+			textaligny 16
+			textscale CUSTOM_BUTTON_TEXT_SIZE
+			forecolor	.9 .9 .95 1
+			visible		1
+			onfocus{ setLocalVarInt ui_highlight 1; setLocalVarString ui_choicegroup CHOICE_GROUP; }
+			leavefocus{ setLocalVarInt ui_highlight 0; setLocalVarString ui_choicegroup ""; }
+			mouseEnter { 
+				play "mouse_over";
+			}
+			mouseExit { }
+			action {
+				play "mouse_click" ;
+				uiScript launchDemo;
+			}
+		}*/
+		
+		/*itemDef
+		{
+			rect -180 335 100 20 2 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration
+			type 1
+			align 0
+			textAlign 4
+			textAlignX 2
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			text "AutoRecording"
+			visible 1
+		}
+		
+		itemDef
+		{
+			rect -200 335 120 20 2 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			group mw2_button
+			type 1
+			align 0
+			textAlign 4
+			textAlignX 2
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			text " "
+			visible 1
+			dvar cl_autoRecord
+		}*/
+		
+		/*itemDef
+		{
+			rect -64 -40 336 20 1 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			background menu_button_selection_bar
+			group mw2_button
+			type 1
+			align 0
+			textAlign 6
+			textAlignX -60
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			text "PLAY DEMO"
+			visible 1
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 0.0;
+				setLocalVarBool ui_menuAButton 1;
+			}
+			action
+			{
+				play "mouse_click";
+				uiScript launchDemo;
+			}
+		}*/
+/*
+		itemDef
+		{
+			name		Btn3
+			text		"Button 3"
+			type		ITEM_TYPE_BUTTON
+			textscale	CUSTOM_BUTTON_TEXT_SIZE
+			textstyle	ITEM_TEXTSTYLE_SHADOWED
+			style		WINDOW_STYLE_FILLED
+			rect -200 295 170 15 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			textalign	ITEM_ALIGN_LEFT
+			textalignx	0
+			textaligny	16
+			textfont	UI_FONT_NORMAL
+			forecolor	.9 .9 .95 1
+			visible		1
+			onfocus{ setLocalVarInt ui_highlight 3; setLocalVarString ui_choicegroup CHOICE_GROUP; }
+			leavefocus{ setLocalVarInt ui_highlight 0; setLocalVarString ui_choicegroup ""; }
+			mouseEnter { 
+				play "mouse_over";
+			}
+			mouseExit { }
+			action {
+				play "mouse_click" ;
+			}
+		}
+
+		itemDef
+		{
+			name		Btn4
+			text		"Button 4"
+			type		ITEM_TYPE_BUTTON
+			textfont	UI_FONT_NORMAL
+			textscale	CUSTOM_BUTTON_TEXT_SIZE
+			textstyle	ITEM_TEXTSTYLE_SHADOWED
+			style		WINDOW_STYLE_FILLED
+			rect -200 325 170 15 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			textalign	ITEM_ALIGN_LEFT
+			textalignx	0
+			textaligny	16
+			forecolor	.9 .9 .95 1
+			visible		1
+			onfocus{ setLocalVarInt ui_highlight 4; setLocalVarString ui_choicegroup CHOICE_GROUP; }
+			leavefocus{ setLocalVarInt ui_highlight 0; setLocalVarString ui_choicegroup ""; }
+			action {
+				play "mouse_click" ;
+			}
+			mouseEnter {
+				play "mouse_over";
+			}
+			mouseExit { }
+		}
+*/
+	}
+}
