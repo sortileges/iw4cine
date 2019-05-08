@@ -3,7 +3,7 @@ An in-game modification for IW4M to create cinematics!
 
 ## How does this works
 
-This mod creates new variables (dvars) that executes a script. This is not an engine modification. This is all done through scripting using GSC.
+This mod creates new variables (dvars) that executes a script when modified. This is not an game engine modification. This is all done through scripting using GSC.
 
 
 ## Installation
@@ -23,4 +23,4 @@ You would need a client such as [IW4x](https://iw4x.tumblr.com) in order to get 
 
 ## Usage
 
-Will update later with commands list + link
+See wiki
