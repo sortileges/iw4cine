@@ -308,7 +308,7 @@
 			textFont 3
 			feeder 1
 			visible 1
-			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#222 ^3 \n \n ^1Check readme for more informations and ^1help about the mod !!"
+			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#223 ^3 \n \n ^1Check readme for more informations and ^1help about the mod !!"
 			exp rect x ( 0 - 250 )
 		}
 		itemDef

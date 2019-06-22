@@ -65,8 +65,8 @@ PrimaryDvars()
 		SetDvar( "g_TeamName_Axis", "axis" );
 		SetDvar( "jump_slowdownEnable", "0" ); // This is so annoying so I disabled it
 		
-		setObjectiveText( game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#222 \n ^7Patch :" + level.patch );
-		setObjectiveText( game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#222 \n ^7Patch :" + level.patch );
+		setObjectiveText( game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#223 \n ^7Patch :" + level.patch );
+		setObjectiveText( game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#223 \n ^7Patch :" + level.patch );
 		setObjectiveHintText( "allies", "Welcome to ^3Sass' Cinematic Mod" );
 		setObjectiveHintText( "axis", "Welcome to ^3Sass' Cinematic Mod" );
 
@@ -1032,7 +1032,7 @@ About()
 		if ( self isSu() ){
 		self IPrintLnBold("Hey, you're a ^2superuser ^7!!");
 		wait 1.5;	}
-		self IPrintLnBold("Version : #222 - ^3FINAL");
+		self IPrintLnBold("Version : #223 - ^3FINAL");
 		wait 1.5;
 		self IPrintLnBold("Current ^3Addon ^7: " + level.patch);
 		wait 1.5;

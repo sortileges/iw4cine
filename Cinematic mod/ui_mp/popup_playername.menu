@@ -120,7 +120,7 @@
 			feeder 0
 			visible 1
 			exp rect x ( 0 - 250 )
-			text "Sass' MW2 Cinematic mod - Version : ^3#222 (FINAL)^7 \n\n # DISCLAIMER \n This will most likely be the final version of this mod. ^1There will not be any update ^7to this except for major bug fixes if there are any. \n \n Thank you if you are still using this mod though. Without it I wouldn't be where I am today, and even if I don't use that mod anymore, I'm really thankful for what it has given me, and it's only thanks to you. So, thank you for cluelessly changing my life lmao ^6<3 \n \n \n #ACTUAL CHANGELOG \n - Updated and reorganized the main menu \n - Small bugs fixes due to leftover code \n - Removed WIP commands (e.g actor_clamp, actor_gopro) \n - The 'CHOOSE MAP' menu now works properly \n - Fixed actors not responding after dying on certain conditions \n - Changed bots names (^2IW4x ^7only)"
+			text "Sass' MW2 Cinematic mod - Version : ^3#223 (FINAL)^7 \n\n # DISCLAIMER \n This will most likely be the final version of this mod. ^1There will not be any update ^7to this except for major bug fixes if there are any. \n \n Thank you if you are still using this mod though. Without it I wouldn't be where I am today, and even if I don't use that mod anymore, I'm really thankful for what it has given me, and it's only thanks to you. So, thank you for cluelessly changing my life lmao ^6<3 \n \n \n #ACTUAL CHANGELOG \n - Updated and reorganized the main menu \n - Small bugs fixes due to leftover code \n - Removed WIP commands (e.g actor_clamp, actor_gopro) \n - The 'CHOOSE MAP' menu now works properly \n - Fixed actors not responding after dying on certain conditions \n - Changed bots names (^2IW4x ^7only)"
 		}
 	}
 }
