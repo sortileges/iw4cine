@@ -387,14 +387,14 @@ PathActor()
     self endon( "disconnect" );
 	self endon ("done");
 	
-    self notifyOnPlayerCommand( "actor_walk", "actor_walk" );
+    self notifyOnPlayerCommand( "mvm_actor_walk", "mvm_actor_walk" );
     
 	for (;;)
     {
-        self waittill("actor_walk");
+        self waittill("mvm_actor_walk");
 	
 		
-		argumentstring = getDvar( "actor_walk", "Starts actor's path" );
+		argumentstring = getDvar( "mvm_actor_walk", "Starts actor's path" );
         arguments = StrTok(argumentstring, " ,");
         setDvar("arg_actorname", arguments[0]);
         setDvar("arg_pathtime", arguments[1]);
