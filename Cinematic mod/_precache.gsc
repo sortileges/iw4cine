@@ -4,14 +4,15 @@
 precache()
 {
 	
-	PrecacheMPAnim("pb_hold_idle");                         // Default  actor stand anim
+	PrecacheMPAnim("pb_stand_alert_mg");                    // Default  actor stand anim
 	PrecacheMPAnim("pb_stand_death_chest_blowback");        // Default actor death anim
+	PrecacheMPAnim("pb_sprint");							// Default sprint anim
 	
     // You need to put your own precache in here from the list below. Do not remove what's above.
     // YOU CANT JUST PUT EVERYTHING!! Pick 20 anims maximum
     // Just copy/paste what you need under this line. It has to be between the { }
 
-
+	
 
 }
 
@@ -20,17 +21,15 @@ precache()
     # LIST OF ALL MULTIPLAYER ANIMS YOU NEED
 
     #-------------------------
-	# MOVEMENT ANIMS
-    PrecacheMPAnim("pb_pistol_run_fast");
+	# SPRINT ANIMS
+   	PrecacheMPAnim("pb_pistol_run_fast");
 	PrecacheMPAnim("pb_run_fast");
 	PrecacheMPAnim("pb_sprint");
 	PrecacheMPAnim("pb_sprint_gundown");
-	PrecacheMPAnim("pb_sprint_stickgrenade");
-	PrecacheMPAnim("pb_sprint_grenade");
 	PrecacheMPAnim("pb_sprint_RPG");
 	PrecacheMPAnim("pb_sprint_pistol");
 	PrecacheMPAnim("pb_sprint_hold");
-	PrecacheMPAnim("pb_sprint_akimbo");
+	PrecacheMPAnim("pb_sprint_akimbo");;
 	
 
 	#-------------------------
@@ -47,10 +46,8 @@ precache()
 	precacheMPAnim("pb_crouch_death_falltohands");
 	precacheMPAnim("pb_crouchrun_death_drop");
 	precacheMPAnim("pb_crouchrun_death_crumple");
-	precacheMPAnim("pb_stand_death_spin");
 	precacheMPAnim("pb_stand_death_legs");
 	precacheMPAnim("pb_stand_death_lowerback");
-	precacheMPAnim("pb_stand_death_lowertorso");
 	precacheMPAnim("pb_stand_death_head_collapse");
 	precacheMPAnim("pb_stand_death_neckdeath_thrash");
 	precacheMPAnim("pb_stand_death_neckdeath");

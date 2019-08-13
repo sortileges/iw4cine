@@ -1,17 +1,10 @@
-/*-----------------------------------------------------------------------------
- * IW4MVM : Cinematic mod --- Camera scripts file
- * Mod current version : 207
- *-----------------------------------------------------------------------------
- * File Version   : 2.07d
- * Updated on     : 17-01-2017
- * Authors        : Civil
- *-----------------------------------------------------------------------------
- * This file is   :
- * using code     :     3xp' Virus and 3xp' Freegit & CoDTVMM Team
- * first made by  : 
- *----------------------------------------------------------------------------*/
-
-
+/**
+ *	SASS' CINEMATIC MOD --- "Camera" file
+ *	Version : #280
+ *	
+ *	GitHub  : https://github.com/sasseries/iw4-cine-mod
+ *	Discord : sass#1997
+ */
 
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
@@ -32,7 +25,7 @@ CStart()
 
     for(;;)
     {
-        level waittill( "connected", player );
+		level waittill( "connected", player );
 		level.cam["poscount"] = 0;
 		level.cam["type"] = "bezier";
         player thread CSpawn();
@@ -66,7 +59,6 @@ CSpawn()
 		
     }
 }
-
 
 
 UpdatePath() 
@@ -129,33 +121,7 @@ UpdatePath()
 		}
 
 	}
-	/*else if(level.cam["type"] == "cubic")
-	{
-		
-		pos_cubic = calcCubicSpline( level.cam["poscount"] -1, level.cam["origin"] );
-		look_cubic = calcCubicSpline( level.cam["poscount"] -1, level.cam["angles"] );
-		up_cubic = calcCubicSpline( level.cam["poscount"] - 1, level.cam["ups"] );
-		
-		for(i = 0; i < level.cam["poscount"] -1; i++)
-		{
-			for(j = 0; j < 10; j++)
-			{
-				k = j/(10 - 1);
 
-				center = 	getPointOnSpline(pos_cubic[i], k);
-				up = 		getPointOnSpline(look_cubic[i], k);
-				look = 		getPointOnSpline(up_cubic[i], k);
-
-				r = crossProduct(up, look);
-				u = crossProduct(look, r * -1);
-				
-				level.cam[level.campathtotal]["path"] = spawn( "script_model", center );
-				level.cam[level.campathtotal]["path"] setModel( "projectile_semtex_grenade_bombsquad" );
-				level.cam[level.campathtotal]["path"].angles = r;
-				level.campathtotal++;
-			}
-		}
-	}*/
 	else self IPrintLn("^1ERROR ^7: Couldn't draw ^1" + level.cam["type"] + " ^7type path !!");
 }
 
@@ -187,14 +153,6 @@ fix360Angles()
 	}
 }
 
-
-/*================================== CAM NODES MANAGING =======================================
-
-	Here you can find the camera points saving threads
-	I used level. instead of self. for more flexibility
-	
-=============================================================================================*/
-
 SetCamMode()
 {
 	self endon("disconnect");
@@ -212,15 +170,15 @@ SetCamMode()
 		
 		if((level.cam["type"] == "bezier" && level.cam["poscount"] <= 13) || level.cam["type"] == "linear" /*|| level.cam["type"] == "cubic"*/)
 		{
-			self IPrintLnBold("^3Camera mode ^7has been set to ^3" + level.cam["type"]);
+			self IPrintLn("^3Camera mode ^7has been set to ^3" + level.cam["type"]);
 			self SetClientDvar("movie_curvetype", level.cam["type"]);
 			self UpdatePath(level.cam["type"]);
 			
 		}
 		else if( (level.cam["type"] == "bezier" && level.cam["poscount"] > 13) )
-			self IPrintLnBold("^1ERROR ^7: Can't calculate ^3bezier ^7path with ^3" + level.cam["poscount"] + " ^7nodes (13 max)");
+			self IPrintLn("^1ERROR ^7: Can't calculate ^3bezier ^7path with ^3" + level.cam["poscount"] + " ^7nodes (13 max)");
 		
-		else self IPrintLnBold("^1ERROR ^7: Camera mode ^1" + level.cam["type"] + " ^7doesn't exist !!");
+		else self IPrintLn("^1ERROR ^7: Camera mode ^1" + level.cam["type"] + " ^7doesn't exist !!");
 	
    	
    	}
@@ -241,7 +199,7 @@ SaveCamPos()
 		
 		if( self.sessionstate == "playing")
 		{
-			self IPrintLnBold("Enter in ^3noclip ^7mode to ^3save ^7!");
+			self IPrintLn("Enter in ^3noclip ^7mode to ^3save ^7!");
 			self suicide();
 		}
 		
@@ -250,7 +208,7 @@ SaveCamPos()
 		
 		if(level.cam["type"] == "bezier" && f > 13)
 		{
-			self IPrintLnBold("^1ERROR ^7: Can't save ^1more than 13 points ^7in ^1bezier ^7mode !!");
+			self IPrintLn("^1ERROR ^7: Can't save ^1more than 13 points ^7in ^1bezier ^7mode !!");
 			self.sessionstate = "playing";
 			wait .1;
 			self suicide();
@@ -271,7 +229,7 @@ SaveCamPos()
 		
 		if(level.cam["poscount"] <= f) level.cam["poscount"] = f;
 		
-		self IPrintLnBold("Position^3 " + f + " ^7saved : " + self.origin );
+		self IPrintLn("Position^3 " + f + " ^7saved : " + self.origin );
 		self UpdatePath();
 		
    	}
@@ -296,7 +254,7 @@ ResetCamPos()
 		self deletepath();
 		
 		if( level.cam["poscount"] == 0 ) 
-			self IPrintLnBold("There's nothing to delete pal");
+			self IPrintLn("There's nothing to delete");
 		else if( d == "all" || f == 1)
 		{		
 			for (i=0 ; i<=level.cam["poscount"] ; i++)
@@ -305,7 +263,7 @@ ResetCamPos()
 				level.cam["angles"][i] = undefined;
 				level.cam[i]["obj"] Delete();
 			}
-			self iPrintLnBold( "^3All ^7positions ^3deleted^7!" );
+			self iPrintLn( "^3All ^7positions ^3deleted^7!" );
 			level.cam["poscount"] = 0;
 		}
 		else if( f > 0 )
@@ -319,10 +277,10 @@ ResetCamPos()
 			level.cam["poscount"] = f-1;
 			self UpdatePath();
 			
-			self iPrintLnBold( "Position number ^3" + f + " ^7and above ^3deleted^7!" );
+			self iPrintLn( "Position number ^3" + f + " ^7and above ^3deleted^7!" );
 		}
 
-		else self IPrintLnBold("^1Looks like you typed something wrong");
+		else self IPrintLn("^1Looks like you typed something wrong");
 		
 		wait .1;
 	}
@@ -346,16 +304,6 @@ SaveAngles()
     }
 }
 
-
-
-
-/*================================== LINEAR CAM =============================================
-
-	That's the linear cam code which was originaly made by luckyy
-	I cleaned it A LOT (even though if it looks a bit messy rn) and managed to make 
-	it working with my own saving system.
-	
-=============================================================================================*/
 
 CameraStart()
 {
@@ -461,34 +409,33 @@ VerifyPath()
 {
 	if(level.cam["type"] != "bezier" && level.cam["type"] != "linear" && level.cam["type"] != "cubic")
 	{
-		self IPrintLnBold("^1ERROR ^7: ^3" + level.cam["type"] + " ^7camera type doesn't exist !!");
+		self IPrintLn("^1ERROR ^7: ^3" + level.cam["type"] + " ^7camera type doesn't exist !!");
 		self.sessionstate = "playing";		
 		wait .1;
 		self suicide();
 	}
 	if(level.cam["poscount"] <= 1)
 	{
-		self IPrintLnBold("^1ERROR ^7: Camera path needs atleast^3 2 ^7points to ^3start ^7!!");
+		self IPrintLn("^1ERROR ^7: Camera path needs atleast^3 2 ^7points to ^3start ^7!!");
 		self.sessionstate = "playing";		
 		wait .1;
 		self suicide();
 	}
 	if(level.cam["type"] == "bezier" && level.cam["poscount"] > 13)
 	{
-		self IPrintLnBold("^1ERROR ^7: Couldn't calculate ^3bezier ^7path with ^3" + level.cam["poscount"] + " ^7nodes !!");
+		self IPrintLn("^1ERROR ^7: Couldn't calculate ^3bezier ^7path with ^3" + level.cam["poscount"] + " ^7nodes !!");
 		self.sessionstate = "playing";		
 		wait .1;
 		self suicide();
 	}
 	if(level.cam["speed"] <= 0)
 	{
-		self IPrintLnBold("^1ERROR ^7: Couldn't ^3draw a path ^7with a ^3" + level.cam["speed"] + " ^7speed !!");
+		self IPrintLn("^1ERROR ^7: Couldn't ^3draw a path ^7with a ^3" + level.cam["speed"] + " ^7speed !!");
 		self.sessionstate = "playing";		
 		wait .1;
 		self suicide();
 	}
 }
-
 
 Prepare() 
 {
@@ -514,15 +461,6 @@ Prepare()
 		level.alldist+=level.angledist[k];
 	}
 }
-
-
-
-/*================================== DEBUG THREAD + GRENADE CAM =============================
-
-	Most of the debugging thread are here, you will find alot of other functions too
-	The grenade cam mode was found by luster
-	
-=============================================================================================*/
 
 InitGrenadeCam()
 {
@@ -616,47 +554,19 @@ ShowCamNode()
 	wait .1;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-float(var) {
+float(var) 
+{
   	setDvar("temp",var);
   	return getDvarfloat("temp");
 }
 
-koeff(x,y){
+koeff(x,y)
+{
 	return (fact(y)/(fact(x)*fact(y-x)));
 }
 
-fact(x){
+fact(x)
+{
 	c=1;
 	if(x==0) return 1;
 	for(i=1;i<=x;i++)
@@ -664,7 +574,8 @@ fact(x){
 	return c;
 }
 
-pow(a,b){
+pow(a,b)
+{
   	x=1;
   	if(b!=0){
   		for(i=1;i<=b;i++)
@@ -673,27 +584,30 @@ pow(a,b){
   	return x;
 }
 
-mod(a) {
+mod(a) 
+{
   	 if (a >= 0) return a;
   	 else return a * (-1);
 }
 
-crossProduct(vecA, vecB){
+crossProduct(vecA, vecB)
+{
   a = (vecA[1] * vecB[2]) - (vecA[2] * vecB[1]);
   b = (vecA[2] * vecB[0]) - (vecA[0] * vecB[2]);
   c = (vecA[0] * vecB[1]) - (vecA[1] * vecB[0]);
   return (a,b,c);
 }
 
-getPointOnSpline(cubic, s){
+getPointOnSpline(cubic, s)
+{
   return (((cubic.d * s) + cubic.c) * s + cubic.b) *s +cubic.a;
 }
 
-//int n | vector v
-calcCubicSpline(n, v){
-  gamma = []; //VEC3
-  delta = []; //VEC3
-  D = []; //VEC3
+calcCubicSpline(n, v)
+{
+  gamma = []; 
+  delta = []; 
+  D = []; 
 
   gamma[0] = (0.5,0.5,0.5);
 
@@ -701,8 +615,6 @@ calcCubicSpline(n, v){
     gamma[i] = (1,1,1) / ((4*(1,1,1)) - gamma[i - 1]);
   }
   gamma[n] = (1,1,1) / ((2 * (1,1,1)) - gamma[n - 1]);
-
-  //V1 359   1
 
   delta[0] = 3 * ((v[1] - v[0])) * gamma[0];
   for( i = 1; i < n ; i++){
@@ -715,7 +627,6 @@ calcCubicSpline(n, v){
     D[i] = delta[i] - gamma[i] * D[i + 1];
   }
 
-  //now compute the coeffiicients of the calcCubics
   C = [];
   for( i = 0; i < n; i++){
     C[i] = createCubic(v[i], D[i], 3 * ((v[i + 1] - v[i])) - 2 * D[i] - D[i + 1], 2 * ((v[i] - v[i + 1])) + D[i] + D[i + 1]);
@@ -724,7 +635,8 @@ calcCubicSpline(n, v){
 }
 
 
-createCubic(a,b,c,d){
+createCubic(a,b,c,d)
+{
   cubic = SpawnStruct();
   cubic.a = a;
   cubic.b = b;

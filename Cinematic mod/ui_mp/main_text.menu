@@ -243,16 +243,16 @@
 		HORIZONTAL_LINE(1, when(dvarbool(cl_updateavailable)))
 		
 		// general menu buttons
-		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "CHOOSE MAP", open settings_map;, 1, "Create a devmap of your choice")
-		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "GREENSCREEN MAP", exec "devmap iw4_credits;", 1, "Launch the greenscreen map")
-		MENU_CHOICE_BUTTON_VIS(3, button_3, 1 1 1 1, "LOCAL CONNECT", exec "connect 127.0.0.1";, 1, "Connects to 127.0.0.1")
-		HORIZONTAL_LINE(4, 1)
+		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "CHOOSE MAP", open settings_map;, 1, "Create a devmap of your choice")²
+		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "LOCAL CONNECT", exec "connect 127.0.0.1";, 1, "Connects to 127.0.0.1")
+		HORIZONTAL_LINE(3, 1)
 		
-		MENU_CHOICE_BUTTON_VIS(4, button_4, 1 1 1 1, "CUSTOM CLASSES", open cac_popup;, 1, "Create your own custom classes")
-		MENU_CHOICE_BUTTON_VIS(5, button_5, 1 1 1 1, "PLAYERCARD", open popup_callsign;, 1, "Set your title, emblem, and killstreak")
-		MENU_CHOICE_BUTTON_VIS(6, button_6, 1 1 1 1, "DEMOS LIST", open pc_theater_menu;, 1, "Watch your played matches")
+		MENU_CHOICE_BUTTON_VIS(3, button_3, 1 1 1 1, "CREATE A CLASS", open cac_popup;, 1, "Create your own custom classes")
+		MENU_CHOICE_BUTTON_VIS(4, button_4, 1 1 1 1, "CALLSIGN & KILLSTREAKS", open popup_callsign;, 1, "Set your title, emblem, and killstreak")
+		MENU_CHOICE_BUTTON_VIS(5, button_5, 1 1 1 1, "DEMOS LIST", open pc_theater_menu;, 1, "Watch your played matches")
 		
-		HORIZONTAL_LINE(7, 1)
+		HORIZONTAL_LINE(6, 1)
+		MENU_CHOICE_BUTTON_VIS(6, button_6, 1 1 1 1, "MODS", open mods_menu;, 1, "Change game options")
 		MENU_CHOICE_BUTTON_VIS(7, button_7, 1 1 1 1, "@MENU_OPTIONS_CAPS", open pc_options_video;, 1, "Change game options")
 		MENU_CHOICE_BUTTON_VIS(8, button_8, 1 1 1 1, "@MENU_QUIT_CAPS", exec "quit;", 1, "Are you sure ? :(")
 
@@ -308,7 +308,7 @@
 			textFont 3
 			feeder 1
 			visible 1
-			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#223 ^3 \n \n ^1Check readme for more informations and ^1help about the mod !!"
+			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#280 ^3 \n > Discord server : ^3discord.gg/aaaaaa \n ^1Check readme for more informations and ^1help about the mod !!"
 			exp rect x ( 0 - 250 )
 		}
 		itemDef
@@ -317,7 +317,7 @@
 			rect -250 2 250 20 3 3
 			border 0
 			foreColor 1 1 1 1
-			backColor 0 0 0 0.1
+			backColor 0 0 0 0.2
 			style 1
 			type 1
 			align 0
@@ -334,12 +334,12 @@
 				play mouse_over;
 				setLocalVarBool ui_menuAButton 1;
 				setLocalVarFloat ui_popupYPos 0.000000;
-				setItemColor self backcolor 0 0 0 0;
+				setItemColor self backcolor 0 0 0 0.1;
 				setLocalVarString ui_hint_text "See cinematic mod changelog";
 			}
 			leaveFocus
 			{
-				setItemColor self backcolor 0 0 0 0.1;
+				setItemColor self backcolor 0 0 0 0.2;
 				setLocalVarBool ui_menuAButton 1;
 				setLocalVarString ui_hint_text "@NULL_EMPTY";
 			}
@@ -349,6 +349,139 @@
 				open popup_playername;
 			}
 		}
+		itemDef
+		{
+			rect -272 28 272 20 3 1
+			style 3
+			decoration
+			visible 1
+			forecolor 0 0 0 0.25
+			background "playercard_short_bg"
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( tablelookup( "mp/rankIconTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , ( getplayercardinfo( 5 , 1 , 0 ) + 1 ) )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 248 ) + 164  )
+			exp rect y ( ( -20 ) + 48  )
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 9
+			textAlignX 20
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( tablelookup( "mp/rankTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , 14 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 248 ) + 164  )
+			exp rect y ( ( -20 ) + 48  )
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text dvarString("name")
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( -400 ) + 164  )
+			exp rect y ( ( -1 ) + 48  )
+		}
+		itemDef
+		{
+			rect -272 0 272 28 3 1
+			decoration
+			visible 1
+			forecolor 1 1 1 0.15
+			textfont 3
+			textalign 14
+			textaligny 3
+			textscale 0.375
+			text "@MPUI_SCORE_CAPS"
+		}
+		itemDef
+		{
+			rect -274 16 272 28 3 1
+			decoration
+			visible 1
+			forecolor 1 1 1 0.3
+			textfont 3
+			textalign 14
+			textaligny 3
+			textscale 0.375
+			text "0"
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		/*
 		//bg
 		itemDef
 		{
@@ -406,8 +539,6 @@
 			exp rect x ( ( - 208 )  )
 			exp rect y ( ( 18 )  )
 		}
-		
-		
 		
 		//name+title
 		itemDef
@@ -585,7 +716,7 @@
 			exp rect x ( ( - 208 ) + 164  )
 			exp rect y ( ( 18 ) + 48  )
 		}
-		
+		*/
 		// hint text
 		itemDef
 		{
@@ -614,7 +745,6 @@
 			visible 1
 			exp text ( localvarstring( "ui_hint_text" )  )
 		}
-
 		itemDef
 		{
 			rect 0 0 300 20 1 1
@@ -625,9 +755,8 @@
 			textAlignY -21
 			textScale 0.2
 			text "Mod:"
-			visible when (dvarString("fs_game") != "")
+			visible 1
 		}
-
 		itemDef
 		{
 			name mod
@@ -640,7 +769,7 @@
 			textAlignY -21
 			textScale 0.2
 			exp text dvarString("fs_game")
-			visible when (dvarString("fs_game") != "")
+			visible 1
 		}
 		itemDef
 		{
@@ -668,7 +797,6 @@
 			exp text dvarString("name")
 			visible 1
 		}
-		
-		
+
 	}
 }

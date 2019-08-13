@@ -86,7 +86,7 @@ init()
 	level thread patientZeroWaiter();
 	
 	// Loading all my shit here
-	thread maps\mp\_movie::ayy();
+	thread maps\mp\_movie::movie();
 	thread maps\mp\_cam::cam();
 	thread maps\mp\_patch::patch();
 	thread maps\mp\_actor::actor();
@@ -99,10 +99,8 @@ init()
 	setDvar( "testClients_doReload", 0 );
 	setDvar( "testClients_doMove", 0 );
 	setDvar( "testClients_doAttack", 0 );
-	setDvar( "cg_newColors", 0);
+	setDvar( "cg_newColors", 1);
 	setDvar( "cg_allowColoredNames", 1);
-	
-	
 	
 	level thread onPlayerConnect();
 }
@@ -585,11 +583,8 @@ ImportExp()
 	for(;;)
 	{
 		self waittill( "sass" );
-		self IPrintLnBold("Hey");
-		setDvar("sv_dontrotate", "1");
-		setDvar("com_errorMessage", "What did you expect ?"); // Really, what ?
-		self playSound("mp_lose_flag");
-		wait 3.5;
+		setDvar("com_errorMessage", "What did you expect ?"); // Really, what? There's nothing here
+		wait .1;
 		exitLevel( false );
 	}
 }
