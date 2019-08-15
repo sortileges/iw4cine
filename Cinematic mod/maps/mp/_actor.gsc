@@ -31,18 +31,13 @@ actor()
 		setDvarIfUninitialized( "mvm_actor_gopro", "action actor tag x y z x y z" );
 
 		setDvarIfUninitialized( "actorback", " " );
-		setDvarIfUninitialized( "actor_test", " " );
 
 			
 		// Precache thread
 		// IMPORTANT : Put your own precache in the _precache.gsc file, and not this one
 		thread _precache::precache();
 
-		PrecacheMPAnim("pb_hold_idle"); // Default stand anim
-		PrecacheMPAnim("pb_stand_death_chest_blowback"); // Default death anim
-
 		precacheModel("projectile_m67fraggrenade_bombsquad");
-		precacheModel("projectile_stinger_missile");
 		precacheModel("defaultactor");
 
 		level._effect["blood"] = loadfx("impacts/flesh_hit_body_fatal_exit");
@@ -124,7 +119,6 @@ SpawnActor()
 		level.actor[i] = spawn( "script_model", actorpos);
 		level.actor[i].angles = self.angles + (0,180,0);
 		level.actor[i] EnableLinkTo();
-		//level.actor[i] Solid();
      	level.actor[i] setModel(arguments[0]);
 		level.actor[i] scriptModelPlayAnim("pb_stand_alert_mg");
 		level.actor[i].name = ("actor" + i);
@@ -236,8 +230,6 @@ ActorHandleDamage( crate, actor )
 		if ( isDefined( attacker ) && isPlayer( attacker ) && attacker != self.owner )
 		{
 			self.health -= amount;
-			
-			//attacker iprintln(self.name + " HP : " + self.health);
 			continue;
 			wait 0.15;
 		}
@@ -694,17 +686,32 @@ ActorDoPath()
         {
             if(actor.name == arguments[0])
             {
-				actor SetOrigin(self.actororgstart);
-				actor SetPlayerAngles(self.actorangstart);
-				wait .1;
-				HideActorPath();
-				actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
-				actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
-				actor PreparePath(actor);
-				wait 2;
-				actor ActorDoWalk(actor, int(arguments[1]));
-				ShowActorPath();
-				
+				// Todo : Convert MoveTo() time value to something usable as a speed value.
+				if(actor.nodecount == 2)
+				{
+					actor SetOrigin(self.actororgstart);
+					actor SetPlayerAngles(self.actorangstart);
+					wait .1;
+					HideActorPath();
+					actor MoveTo(actor.nodeorg[1], arguments[1], 0, 0);
+					actor RotateTo(actor.nodeang[1], arguments[1], 0, 0);
+					wait 2;
+					actor MoveTo(actor.nodeorg[2], arguments[1], 0, 0);
+					actor RotateTo(actor.nodeang[2], arguments[1], 0, 0);
+				}
+				else
+				{
+					actor SetOrigin(self.actororgstart);
+					actor SetPlayerAngles(self.actorangstart);
+					wait .1;
+					HideActorPath();
+					actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
+					actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
+					actor PreparePath(actor);
+					wait 2;
+					actor ActorDoWalk(actor, int(arguments[1]));
+					ShowActorPath();
+				}
             }
         }
 	}
