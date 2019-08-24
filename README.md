@@ -3,7 +3,7 @@
 
 <p align="center">
 <a href="https://discord.gg/f5RSxTW"><img src="https://img.shields.io/discord/609720187855568897?label=Discord&style=flat-square"></a>
-<a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20release&sort=semver&style=flat-square"></a>
+<a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
 </p>
 
 <img src="https://i.imgur.com/m1UXwjN.png" alt="screenshot" align="right" height="240px">
@@ -12,8 +12,9 @@ This mod was designed for video editors who needs to create cinematic shots in t
 
 It is not an external tool. This mod creates new variables (dvars) that executes a script when modified. This is not a game engine modification either. This is all done through scripting using GSC.
 
-The purpose of the mod is to craft and create cinematic scenes or clips, using a plentiful of different features. Ideally, the only thing that would limit the user is its own creativity.
+The purpose of the mod is to craft and create cinematic scenes or clips, using a plentiful of different features. Ideally, the only thing that would limit the user is its own creativity...
 
+<br><br>
 "Ideally", yes. This mod is still not finished and has been a pet project for quite some time, until a few years ago when I stopped putting time on it. After leaving it out in a somewhat usable state, I decided to work on it again in order to "finish" it, or atleast make it the best it could be.
 
-### [How to install](https://github.com/sasseries/iw4-cine-mod/wiki/Prerequired-&-Installation) /// [Discord server](https://discord.gg/f5RSxTW)</p>
+#### Other : [How to install](https://github.com/sasseries/iw4-cine-mod/wiki/Prerequired-&-Installation) /// [Discord server](https://discord.gg/f5RSxTW)</p>
