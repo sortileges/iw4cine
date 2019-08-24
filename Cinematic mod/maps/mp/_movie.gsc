@@ -6,13 +6,12 @@
  *	Discord : sass#1997
  */
 
-#
-include maps\ mp\ _patch;#
-include maps\ mp\ gametypes\ _hud_message;#
-include maps\ mp\ gametypes\ _hud_util;#
-include maps\ mp\ _utility;#
-include common_scripts\ utility;#
-using_animtree("destructibles");
+#include maps\mp\_patch;
+#include maps\mp\gametypes\_hud_message;
+#include maps\mp\gametypes\_hud_util;
+#include maps\mp\_utility;
+#include common_scripts\utility;
+#using_animtree("destructibles");
 
 movie()
 {
