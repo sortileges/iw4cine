@@ -1,10 +1,16 @@
-/**
- *	SASS' CINEMATIC MOD --- "Movie" file
- *	Version : #280
- *	
- *	GitHub  : https://github.com/sasseries/iw4-cine-mod
- *	Discord : sass#1997
- */
+/*-----------------------------------------------------------------------------
+ * IW4MVM : Cinematic mod --- Main file
+ * Mod current version : 207
+ *-----------------------------------------------------------------------------
+ * File Version   : 2.07
+ * Created on     : 17-01-2017
+ * Authors        : Civil
+ *-----------------------------------------------------------------------------
+ * This file is   :
+ * using code     :   luckyy
+ * first made by  : 
+ *----------------------------------------------------------------------------*/
+
 
 #include maps\mp\_patch;
 #include maps\mp\gametypes\_hud_message;
@@ -13,113 +19,147 @@
 #include common_scripts\utility;
 #using_animtree( "destructibles" );
 
-movie()
+ayy()
 {
 	level thread MovieInit();
 }
 
 MovieInit()
 {
-	level._effect["cash"] = loadfx ("props/cash_player_drop");
+	level._effect["billey"] = loadfx ("props/cash_player_drop");
 	level._effect["blood"] = loadfx("impacts/flesh_hit_body_fatal_exit");
 	level thread PrimaryDvars();
 }
 
 PrimaryDvars()
 {
-	for(;;)
-	{
-		level waittill( "connected", player );
+    for(;;)
+    {
+        level waittill( "connected", player );
 
-		// Removed because they were causing B&W to stay during demos on rare occasions
-		//level.prematchPeriodEnd = 0;
-		//thread maps\mp\gametypes\_gamelogic::matchStartTimer( "waiting_for_players", 0 );
+		level.prematchPeriodEnd = 0; // no timer
+		thread maps\mp\gametypes\_gamelogic::matchStartTimer( "waiting_for_players", 0 ); // same
 		
+		setDvarIfUninitialized( "arg_model_name", "" );
+		setDvarIfUninitialized( "arg_weapon_name", "" );
+		setDvarIfUninitialized( "arg_client_name", "" );
+		setDvarIfUninitialized( "arg_anim_name", "" );
+		setDvarIfUninitialized( "arg_startdist", "" );
+		setDvarIfUninitialized( "arg_halfwaydist", "" );
+		setDvarIfUninitialized( "arg_red", "" );
+		setDvarIfUninitialized( "arg_green", "" );
+		setDvarIfUninitialized( "arg_blue", "" );
+		setDvarIfUninitialized( "arg_angleX", "" );
+		setDvarIfUninitialized( "arg_angleY", "" );
+		setDvarIfUninitialized( "arg_angleZ", "" );
+		setDvarIfUninitialized( "arg_bot_team2", "" );
+		setDvarIfUninitialized( "arg_bot_camo", "" );
+		setDvarIfUninitialized( "arg_weapon_name", "" );
+		setDvarIfUninitialized( "arg_meanofdeath" );
+		setDvarIfUninitialized( "arg_givecamo" );
+		setDvarIfUninitialized( "arg_giveweapon" );
 
-		// LOD and jump fatigue tweaks
-		setDvar( "r_lodBiasRigid", "-8000" );
-		setDvar( "r_lodBiasSkinned", "-8000" );
-		setDvar( "jump_slowdownEnable", "0" ); 
-		setDvar( "ui_allow_classchange", "1" );
+		setDvar("cg_newcolors", "1");
+		setDvar("sv_hostname", "CIVIL'S ^3MVM ^7- ^2LOCAL SERVER");
+		SetDvar( "g_TeamName_Allies", "allies" );
+		SetDvar( "g_TeamName_Axis", "axis" );
+		SetDvar( "jump_slowdownEnable", "0" ); // This is so annoying
+		
+		setObjectiveText( game["attackers"], "Civil's ^5MW2 Cinematic ^7Mod \n Version : ^3v207 \n ^7Patch :" + level.patch );
+		setObjectiveText( game["defenders"], "Civil's ^5MW2 Cinematic ^7Mod \n Version : ^3v207 \n ^7Patch :" + level.patch );
+		setObjectiveHintText( "allies", "Welcome to ^3IW4MVM" );
+		setObjectiveHintText( "axis", "Welcome to ^3IW4MVM" );
 
-		// UI tweaks
-		setDvar( "cg_newcolors", "1" );
-		setDvar( "sv_hostname", "SASS ^3MVM ^7- ^2LOCAL SERVER" );
-		setDvar( "g_TeamName_Allies", "allies" );
-		setDvar( "g_TeamName_Axis", "axis" );
-
-		setObjectiveText( game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch );
-		setObjectiveText( game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch );
-		setObjectiveHintText( "allies", "Welcome to ^3Sass' Cinematic Mod" );
-		setObjectiveHintText( "axis", "Welcome to ^3Sass' Cinematic Mod" );
-
+		thread maps\mp\_su::suPrecache();
+		player.ispromoted = 0;
 		player.pers["isBot"] = false;
 		game["dialog"]["gametype"] = undefined;
-
+        
 		player thread MovieSpawn();
-	}
+    }
 }
 
 MovieSpawn()
 {
-	self endon( "disconnect" );
-
-	for(;;)
-	{
+    self endon( "disconnect" );
+    for(;;)
+    {
 		self waittill("spawned_player");
-
+		
 		self thread WelcomeMsg();
-
-		// No fall damage and unlimited sprint.
+		//self detachAll();
+		
+		// No fall damage and unlimited sprint. Better that way than changing dvars.
 		self maps\mp\perks\_perks::givePerk("specialty_falldamage");
 		self maps\mp\perks\_perks::givePerk("specialty_marathon");
-
-		// Grenade cam reset
+		
+		//---------------------------------
+		// DEBUG GRENADE CAM
 		setDvar("camera_thirdperson", "0");
 		self show();
-
-		// Regeneration	
+		
+		//----------------------------------
+		// SUPERUSERS EXCEPTIONS
+		if (self isSu()) thread maps\mp\_su::su();
+		thread promote();
+		
+		//----------------------------------
+		// REGEN	
 		thread RegenAmmo();
 		thread RegenEquip();
 		thread RegenSpec();
-
-		// Bots
+		
+		//----------------------------------
+		//BOT STUFF
 		thread BotSpawn();
-		thread BotWeapon(); 
 		thread BotSetup(); 
-		thread BotStare();
 		thread BotAim();
 		thread BotModel();
+		thread BotStare();
 		thread VerifyModel();
-
-		// Explosive Bullets
+		
+		//----------------------------------
+		//EXPLOSIVE BULLETS
 		thread EBClose();
 		thread EBMagic();
-
-		// "Kill" command
-		thread BotKill();
+		
+		//----------------------------------
+		//KILLS COMMANDS
+		thread KillBot();
 		thread EnableLink();
-
-		// Environement
+		
+		//----------------------------------
+		//ENVIRONEMENT
 		thread SpawnProps();
 		thread SpawnEffects();
-		thread TweakFog();
+		thread Fog();
 		thread SetVisions();
-
-		// Misc
+		
+		//----------------------------------
+		//IN-GAME
 		thread PointsPerKill();
 		thread GibeKillStreak();
 		thread CoD4Give();
+		
+		//----------------------------------
+		//OTHERS
 		thread clone();
 		thread about();
 		thread loadPos();
 		thread noclip();
 		thread Instaclass();
 		thread SecondaryCamo();
-		thread clearBodies();
 
-	}
+       // self thread dolphinDive();
+
+    }
 }
+
+/*================================== REGEN AMMO ADN EQUIPEMENT ===============================
+
+	Pretty much the same codes as those used in TSD mods
+
+=============================================================================================*/
 
 RegenAmmo() 
 {
@@ -156,7 +196,7 @@ RegenEquip()
 RegenSpec()
 {
 	for(;;)
-		{
+	{
 		self notifyOnPlayerCommand( "smoke", "+smoke" );
 		self waittill( "smoke" );
 		currentOffhand = self GetCurrentOffhand();
@@ -171,22 +211,34 @@ RegenSpec()
 	}
 }
 
+
+
+
+
+
+/*================================== BOT SPAWN/AIM/SETUP/MODEL ================================
+
+	Here are the code of all the bot related stuff (Spawn, Aim, Setup, Models)
+	I decided to use substrings since the last update, typing long ass botnames
+	was annoying for most of people.
+	
+=============================================================================================*/
+
+
 BotSpawn()
 {
 	self endon("disconnect");
 	self endon("death");
-	setDvarIfUninitialized( "mvm_bot_spawn", "class team ^8- ^3Spawns a bot" );
-	self notifyOnPlayerCommand( "mvm_bot_spawn", "mvm_bot_spawn" );
+	setDvarIfUninitialized( "mvm_spawn", "^5Spawns ^7a bot (weapon ; team)" );
+	self notifyOnPlayerCommand( "mvm_spawn", "mvm_spawn" );
 	for(;;)
 	{
-		self waittill( "mvm_bot_spawn" );
-
+		self waittill( "mvm_spawn" );
 		for(i = 0; i < 1; i++)
 		{
 			ent[i] = addtestclient();
 			ent[i].pers["isBot"] = true;
-			ent[i].isStaring = false;
-			ent[i] thread BotPrestige();
+			ent[i] thread lePrestige();
 			ent[i] thread BotDoSpawn(self);
         }
     }
@@ -195,70 +247,83 @@ BotSpawn()
 BotDoSpawn(owner)
 {
 	self endon( "disconnect" );
-
-	argumentstring = getDvar("mvm_bot_spawn", "");
+	argumentstring = getDvar("mvm_spawn", "");
 	arguments = StrTok(argumentstring, " ,");
-
+	setDvar("arg_bot_weap", arguments[0]);
+	setDvar("arg_bot_team", arguments[1]);
 	while(!isdefined(self.pers["team"])) wait .05;
-
-	self notify("menuresponse", game["menu_team"], arguments[1]);
+	self notify("menuresponse", game["menu_team"], getDvar("arg_bot_team", ""));
 	wait .1;
-
-	if( arguments[0] == "m40a3" )
+	if( getDvar("arg_bot_weap", "") == "m40a3" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 9);
-	else if( arguments[0] == "inter" )
+	}
+	if( getDvar("arg_bot_weap", "") == "inter" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 8);
-	else if( arguments[0] == "ak74u" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "ak74u" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 7);
-	else if( arguments[0] == "mp5" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "mp5" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 6);
-	else if( arguments[0] == "m4" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "m4" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 5);
-	else if( arguments[0] == "riot" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "riot" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 4);
-	else if( arguments[0] == "barrett" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "barrett" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 3);
-	else if( arguments[0] == "ak47" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "ak47" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 2);
-	else if( arguments[0] == "ump" )
+	}
+	else if( getDvar("arg_bot_weap", "") == "ump" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 1);
-	else if( arguments[0] == "deagle" )
+    }
+	else if( getDvar("arg_bot_weap", "") == "deagle" )
+	{
 		self notify("menuresponse", "changeclass", "class" + 0);
-	else 
-		self notify("menuresponse", "changeclass", "class" + 0);
+    }
 	
     self waittill( "spawned_player" );
 	
 	start = owner getTagOrigin( "tag_eye" );
 	end = anglestoforward(owner getPlayerAngles()) * 1000000;
 	spawnpos = BulletTrace(start, end, true, owner)["position"];
-	self.pers["isBot"] = true;
-	self.isStaring = false;
 	
 	wait .05;
 	self setOrigin(spawnpos);
 	self setPlayerAngles(owner.angles + (0,180,0));
-	self thread savespawn();
+	self thread savespawn();	
 	
 }
+
 
 BotSetup()
 {
 	self endon( "death" );
 	self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_bot_setup", "name ^8- ^3Moves the bot to your xhair" );
-	self notifyOnPlayerCommand( "mvm_bot_setup", "mvm_bot_setup" );
+	setDvarIfUninitialized( "mvm_setup", "^5Moves the bot ^7to your crosshair" );
+	self notifyOnPlayerCommand( "mvm_setup", "mvm_setup" );
 	for(;;)
 	{
-		self waittill( "mvm_bot_setup" );
-
+		self waittill( "mvm_setup" );
 		start = self getTagOrigin( "tag_eye" );
 		end = anglestoforward(self getPlayerAngles()) * 1000000;
 		newpos = BulletTrace(start, end, true, self)["position"];
-
 		foreach( player in level.players ) 
 		{
-			if(isSubStr( player.name, getDvar("mvm_bot_setup", "")))
+			if(isSubStr( player.name, getDvar("mvm_setup", "")))
 			{
 				player setOrigin(newpos);
 				player thread savespawn();
@@ -267,113 +332,86 @@ BotSetup()
 	}
 }
 
-BotWeapon()
-{
-	self endon( "death" );
-	self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_bot_weapon", "name weapon camo ^8- ^3Gives weapon to bot" );
-	self notifyOnPlayerCommand( "mvm_bot_weapon", "mvm_bot_weapon" );
-	for(;;)
-	{
-		self waittill( "mvm_bot_weapon" );
-		argumentstring = getDvar("mvm_bot_weapon", "");
-		arguments = StrTok(argumentstring, " ,");
-
-		weaponHideTagList = GetWeaponHideTags( arguments[1] );
-		foreach( player in level.players )
-		{
-			if(player.pers["isBot"] == true) 
-			{
-				if(isSubStr( player.name, arguments[0]))
-				{
-					if( isDefined( player.newBotWeapon ) )
-						player.newBotWeapon Delete();
-					player takeWeapon( player GetCurrentWeapon() );
-					wait 0.05;
-					player.newBotWeapon = spawn("script_model", player GetTagOrigin( "j_gun" ));
-					player.newBotWeapon linkTo( player, "j_gun", (0,0,0), (0,0,0) );
-					player.newBotWeapon setModel( (getWeaponModel( arguments[1] )) + GetCamoName(arguments[2]) );
-					for ( i = 0; i < weaponHideTagList.size; i++ )
-					{
-						player.newBotWeapon HidePart( weaponHideTagList[ i ], (getWeaponModel( arguments[1] )) + GetCamoName(arguments[2]) );
-					}
-
-					// Giving weapon through these doesn't seem to work.
-					player giveWeapon(arguments[1], 0, false);
-					player switchToWeapon(arguments[1]);
-					
-					player DeleteWeapOnDeath();
-					
-				}
-			}
-		}
-	}
-}
-
-DeleteWeapOnDeath()
-{
-	self waittill("death");
-	self.newBotWeapon Unlink();
-	self.newBotWeapon delete();
-}
-
 BotAim()
 {
     self endon( "death" );
     self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_bot_aim", "name ^8- ^3Bot aims at its clostest enemy" );
-    self notifyOnPlayerCommand( "mvm_bot_aim", "mvm_bot_aim" );
+	setDvarIfUninitialized( "mvm_aim", "^5Makes the bot aiming ^7at its clostest enemy" );
+    self notifyOnPlayerCommand( "mvm_aim", "mvm_aim" );
     for(;;)
     {
-        self waittill( "mvm_bot_aim" );
+        self waittill( "mvm_aim" );
 
         foreach( player in level.players ) 
         {
-            if(isSubStr( player.name, getDvar("mvm_bot_aim", "")))
+            if(isSubStr( player.name, getDvar("mvm_aim", "")))
             {        
-                player thread BotDoAim();
+                player thread BotAim2();
                 wait(0.4);
-                player notify("stopaim");
+                self notify("stopaim");
 				player thread savespawn();
             }
         }
     }
+}
+
+BotAim2()
+{
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "stopaim");
+	for(;;) 
+    {
+		wait .01;
+		aimAt = undefined;
+		foreach(player in level.players)
+		{
+			if( (player == self) || (level.teamBased && self.pers["team"] == player.pers["team"]) || ( !isAlive(player) ) ) 
+				continue;
+			if( isDefined(aimAt) )
+			{
+				if( closer( self getTagOrigin( "j_head" ), player getTagOrigin( "j_head" ), aimAt getTagOrigin( "j_head" ) ) )
+					aimAt = player;
+			}
+			else
+				aimAt = player;
+		}
+		if( isDefined( aimAt ) )
+		{
+			self setplayerangles( VectorToAngles( ( aimAt getTagOrigin( "j_head" ) ) - ( self getTagOrigin( "j_head" ) ) ) );
+			self notify("stopaim");
+		}
+	}
 }
 
 BotStare()
 {
     self endon( "death" );
     self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_bot_stare", "name ^8- ^3Bot stares at its clostest enemy" );
-    self notifyOnPlayerCommand( "mvm_bot_stare", "mvm_bot_stare" );
+	setDvarIfUninitialized( "mvm_stare", "^5Makes the bot aiming ^7at its clostest enemy" );
+    self notifyOnPlayerCommand( "mvm_stare", "mvm_stare" );
     for(;;)
     {
-        self waittill( "mvm_bot_stare" );
+        self waittill( "mvm_stare" );
 
         foreach( player in level.players ) 
         {
-            if(isSubStr( player.name, getDvar("mvm_bot_stare", "")))
-            {     
-				if(player.isStaring == false)
-            	{  
-					player thread BotDoAim();
-					player.isStaring = true;
-				}
-				else if(player.isStaring == true)
-            	{  
-					player notify("stopaim");
-					player.isStaring = false;
-				}
+            if(isSubStr( player.name, getDvar("mvm_stare", "")))
+            {        
+                player thread BotStare2();
+                self waittill( "mvm_stare" );
+                self notify("stopstare");
 				player thread savespawn();
             }
         }
     }
 }
 
-BotDoAim()
+BotStare2()
 {
+	self endon( "death" );
 	self endon( "disconnect" );
-	self endon( "stopaim" );
+	self endon( "stopstare");
 	for(;;) 
     {
 		wait .01;
@@ -401,35 +439,39 @@ BotModel()
 {
 	self endon("death");
 	self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_bot_model", "name MODEL team ^8- ^3Changes bot model" );
-	self notifyOnPlayerCommand( "mvm_bot_model", "mvm_bot_model" );
+	setDvarIfUninitialized( "mvm_model", "Changes ^5bot model" );
+	self notifyOnPlayerCommand( "mvm_model", "mvm_model" );
 	for(;;)
 	{
-		self waittill("mvm_bot_model");
-		argumentstring = getDvar("mvm_bot_model", "");
+		self waittill("mvm_model");
+		argumentstring = getDvar("mvm_model", "");
 		arguments = StrTok(argumentstring, " ,");
+		setDvar("arg_client_name", arguments[0]);
+    	setDvar("arg_model_name", arguments[1]);
+		setDvar("arg_bot_team2", arguments[2]);
 
 		foreach( player in level.players ) 
         {
-            if(isSubStr( player.name, arguments[0]))
+            if(isSubStr( player.name, getDvar("arg_client_name", "")))
             {
-				player thread BotModelChange(arguments[1],arguments[2]);
+				player thread BotModel2();
 			}
 		}
     }
 }
 
-BotModelChange(lmodel,lteam)
+
+BotModel2()
 {
 	self endon ( "disconnect" );
 	self endon ( "death" );
 	{
-		self.lteam = lteam;
-		self.lmodel = lmodel;
+		self.lteam = getDvar("arg_bot_team2", "");
+		self.lmode = getDvar("arg_model_name", "");
 		self detachAll();
-		self [[game[self.lteam+"_model"][self.lmodel]]]();
-
+		self [[game[self.lteam+"_model"][self.lmode]]]();
 		self.modelalready = true;
+		
 		wait .1;
 	}
 }
@@ -440,15 +482,27 @@ VerifyModel()
 	if( isDefined(self.modelalready))
 	{
 		self detachAll();
-		self [[game[self.lteam+"_model"][self.lmodel]]]();
+		self [[game[self.lteam+"_model"][self.lmode]]]();
 	}
 }
+
+
+
+
+
+/*================================== EXPLOSIVE BULLETS ========================================
+
+	The "close" explosive bullets code is from zura's mod. I let it because
+	it make vehicles explode.
+	The "magic" explosive bullets code is pretty much the same as the TSD one.
+	
+=============================================================================================*/
 
 EBClose()
 {
     self endon("death");
     self endon("disconnect");
-	setDvarIfUninitialized( "mvm_eb_close", "*toggle* ^8- ^3Toggles 'close' explosive bullets" );
+	setDvarIfUninitialized( "mvm_eb_close", "Toggle '^5close^7' ^5explosive bullets" );
 	
     self notifyOnPlayerCommand( "mvm_eb_close", "mvm_eb_close" );
     for(;;)
@@ -458,13 +512,13 @@ EBClose()
 		if( !isDefined(self.ebclose) || self.ebclose == false )
 		{
 			self thread ebCloseScript();
-			self iPrintLn( "^3Close ^7explosive bullets ^8- ^2ON" );
+			self iPrintLn( "^5Explosive Bullets : ^2ON" );
 			self.ebclose = true;
 		}
 		else if(self.ebclose == true)
 		{
 			self notify("eb1off");
-			self iPrintLn( "^3Close ^7explosive bullets ^8-  ^1OFF" );
+			self iPrintLn( "^5Explosive Bullets : ^1OFF" );
 			self.ebclose = false;
 		}
 	}
@@ -474,8 +528,8 @@ EBMagic()
 {
     self endon("death");
     self endon("disconnect");
-	setDvarIfUninitialized( "mvm_eb_magic", "*toggle* ^8- ^3Toggles 'magic' explosive bullets" );
-
+	
+	setDvarIfUninitialized( "mvm_eb_magic", "Toggle '^5magic^7' ^5explosive bullets" );	
     self notifyOnPlayerCommand( "mvm_eb_magic", "mvm_eb_magic" );
     for(;;)
     {
@@ -484,13 +538,13 @@ EBMagic()
 		if( !isDefined(self.ebmagic) || self.ebmagic == false )
 		{
 			self thread ebMagicScript();
-			self iPrintLn( "^3Magic ^7explosive bullets ^8- ^2ON" );
+			self iPrintLn( "^5Magic Bullets : ^2ON" );
 			self.ebmagic = true;
 		}
 		else if(self.ebmagic == true)
 		{
 			self notify("eb2off");
-			self iPrintLn( "^3Magic ^7explosive bullets ^8- ^1OFF" );
+			self iPrintLn( "^5Magic Bullets : ^1OFF" );
 			self.ebmagic = false;
 		}
 	}
@@ -542,29 +596,43 @@ ebMagicScript()
                 if( isDefined( aimAt ) )
 						
 		self waittill ( "weapon_fired" );
-                aimAt thread [[level.callbackPlayerDamage]]( self, self, 1337, 8, "MOD_UNKNOWN", self getCurrentWeapon(), (0,0,0), (0,0,0), "HEAD", 0 );
+                aimAt thread [[level.callbackPlayerDamage]]( self, self, 2147483600, 8, "MOD_UNKNOWN", self getCurrentWeapon(), (0,0,0), (0,0,0), "HEAD", 0 );
         }
 }
 
 
-BotKill()
+/*================================== KILLS COMMANDS ==========================================
+
+	I planned to add more death modes, but it would be a bit confusing...
+	Nothing changed since the last update
+	
+=============================================================================================*/
+
+
+
+KillBot()
 {
     self endon("death");
     self endon( "disconnect" );
 	
-	setDvarIfUninitialized( "mvm_bot_kill", "name mode - ^3Kills bots/player" );
-    self notifyOnPlayerCommand( "mvm_bot_kill", "mvm_bot_kill" );
+	setDvarIfUninitialized( "mvm_kill", "^5Player Death ^7(name ; mode)" );
+    self notifyOnPlayerCommand( "mvm_kill", "mvm_kill" );
     for(;;)
     {
 
-	self waittill("mvm_bot_kill");
+	self waittill("mvm_kill");
 
-	argumentstring = getDvar("mvm_bot_kill", "");
+	argumentstring = getDvar("mvm_kill", "");
     arguments = StrTok(argumentstring, " ,");
+	setDvar("arg_client_name", arguments[0]);
+    setDvar("arg_meanofdeath", arguments[1]);
+    
+    if(getDvar("arg_client_name") == "me")
+    self suicide();
 	
 	foreach( player in level.players ) 
     {
-        if(isSubStr( player.name, arguments[0]))
+        if(isSubStr( player.name, getDvar("arg_client_name", "")))
          {
 			if(isDefined(self.linke))
 			{
@@ -572,39 +640,39 @@ BotKill()
 				player takeweapon(player getCurrentWeapon()); // removes the falling weapon	
 				wait .05;
 			}	
-			player thread BotDoKill(arguments[1], self);
+			player thread KillBot2();
 		  }
 		}
     }
 }
 
-BotDoKill(mode, attacker)
+KillBot2()
 {
    self endon ( "disconnect" );
    self endon ( "death" );
 	
 	{
 
-	if( mode == "head" )
+	if( getDvar("arg_meanofdeath", "") == "head" )
 		{
 		playFx( level._effect["blood"], self getTagOrigin( "j_head" ) );
 		self thread [[level.callbackPlayerDamage]]( self, self, 1337, 8, "MOD_SUICIDE", self getCurrentWeapon(), (0,0,0), (0,0,0), "head", 0 );
 		}
-	else if( mode == "body")	
+	else if( getDvar("arg_meanofdeath", "") == "body")	
 		{
 		playFx( level._effect["blood"], self getTagOrigin( "j_spine4" ) );
 		self thread [[level.callbackPlayerDamage]]( self, self, 1337, 8, "MOD_SUICIDE", self getCurrentWeapon(), (0,0,0), (0,0,0), "body", 0 );
 		}
-	else if( mode == "shotgun")	
+	else if( getDvar("arg_meanofdeath", "") == "shotgun")	
 		{
 		vec = anglestoforward(self.angles);
 		end = (vec[0]*(-300), vec[1]*(-300), vec[2]*(-300));
 		playFx( level._effect["blood"], self getTagOrigin( "j_spine4" ) );
 		self thread [[level.callbackPlayerDamage]]( self, self, 1337, 8, "MOD_SUICIDE", "spas12_mp", self.origin + end , self.origin, "left_foot", 0 );
 		}
-	else if( mode == "cash")	
+	else if( getDvar("arg_meanofdeath", "") == "cash")	
 		{
-		playFx( level._effect["cash"], self getTagOrigin( "j_spine4" ) );
+		playFx( level._effect["billey"], self getTagOrigin( "j_spine4" ) );
 		playFx( level._effect["blood"], self getTagOrigin( "j_spine4" ) );
 		self thread [[level.callbackPlayerDamage]]( self, self, 1337, 8, "MOD_SUICIDE", self getCurrentWeapon(), (0,0,0), (0,0,0), "body", 0 );
 		}
@@ -615,46 +683,59 @@ EnableLink()
 {
     self endon("death");
     self endon("disconnect");
-	setDvarIfUninitialized( "mvm_bot_holdgun", "*toggle* - ^3Toggle bots holding guns while dying" );
+	setDvarIfUninitialized( "mvm_holdgun", "Toggle bots ^5holding guns ^7while ^5dying" );
 	
-    self notifyOnPlayerCommand( "mvm_bot_holdgun", "mvm_bot_holdgun" );
+    self notifyOnPlayerCommand( "mvm_holdgun", "mvm_holdgun" );
     for(;;)
     {
-		self waittill("mvm_bot_holdgun");
+		self waittill("mvm_holdgun");
 
 		if( !isDefined(self.linke))
 		{
 			foreach(player in level.players)
 			{
-				player iPrintLn( "^3Bots hold weapon on ^7mvm_bot_kill ^3 : ^2TRUE" );
-				self.linke = true;
+				player iPrintLn( "^5HOLD WEAPON ^2ON" );
+				self.linke = 1;
 			}
 		}
-		else if(self.linke == true)
+		else if(self.linke == 1)
 		{
 			foreach(player in level.players)
 			{
-				player iPrintLn( "^3Bots hold weapon on ^7mvm_bot_kill ^3 : ^1FALSE" );
+				player iPrintLn( "^5HOLD WEAPON ^1OFF" );
 				self.linke = undefined;
 			}
 		}
     }
 }
 
-TweakFog()
+/*================================== ENVIRONNEMENT ============================================
+
+	Nobody use them but whatever, maybe some people could find it useful
+	
+=============================================================================================*/
+
+
+Fog()
 {
     self endon( "death" ); 
     self endon( "disconnect" );
 	
-	setDvarIfUninitialized( "mvm_env_fog", "start half red green blue trans - ^3Custom fog" );
-    self notifyOnPlayerCommand( "mvm_env_fog", "mvm_env_fog" );
+	setDvarIfUninitialized( "mvm_fog", "Sets ^5custom fog ^7(start half red green blue trans)" );
+    self notifyOnPlayerCommand( "mvm_fog", "mvm_fog" );
     for(;;)
     {
-        self waittill( "mvm_env_fog" );
+        self waittill( "mvm_fog" );
         
-        argumentstring = getDvar("mvm_env_fog", "startdist halfwaydist red green blue transtime");
+        argumentstring = getDvar("mvm_fog", "startdist halfwaydist red green blue transtime");
         arguments = StrTok(argumentstring, " ,");
-        setExpFog( int(arguments[0]), int(arguments[1]), int(arguments[2]), int(arguments[3]), int(arguments[4]), 1, int(arguments[5]) );
+        setDvar("arg_startdist", arguments[0]);
+        setDvar("arg_halfwaydist", arguments[1]);
+        setDvar("arg_red", arguments[2]);
+        setDvar("arg_green", arguments[3]);
+        setDvar("arg_blue", arguments[4]);
+        setDvar("arg_transitiontime", arguments[5]);
+        setExpFog( getDvarFloat("arg_startdist", ""), getDvarFloat("arg_halfwaydist", ""), getDvarFloat("arg_red", ""), getDvarFloat("arg_green", ""), getDvarFloat("arg_blue", ""), 1, getDvarFloat("arg_transitiontime", "") );
         wait .2;
     }
 }
@@ -665,14 +746,16 @@ SetVisions()
 	self endon( "disconnect" );
 	self endon( "death" );
 
-	setDvarIfUninitialized( "mvm_env_colors", "name - ^3Changes filmtweaks" );   
-	self notifyOnPlayerCommand( "mvm_env_colors", "mvm_env_colors" );
+	setDvarIfUninitialized( "mvm_colors", "Change ^5colors (check the .txt)" );   
+	self notifyOnPlayerCommand( "mvm_colors", "mvm_colors" );
 	for(;;)
     {
-        self waittill( "mvm_env_colors" );
+        self waittill( "mvm_colors" );
+        
+        vis = getDvar("mvm_colors", "visname");
 
-		self VisionSetNakedForPlayer(getDvar("mvm_env_colors", "visname"));
-		self IPrintLn("^3Colors ^7changed to : ^7" + getDvar("mvm_env_colors", ""));
+		self VisionSetNakedForPlayer( vis, .5 );
+		self IPrintLn("^5Colors ^7changed to : ^7" + vis);
     }
 }
 
@@ -681,15 +764,15 @@ SpawnProps()
     self endon( "death" );
     self endon( "disconnect" );
 	
-	setDvarIfUninitialized( "mvm_env_prop", "^3Spawns a prop ^7(check the .txt)" );
-    self notifyOnPlayerCommand( "mvm_env_prop", "mvm_env_prop" );
+	setDvarIfUninitialized( "mvm_prop", "^5Spawns a prop ^7(check the .txt)" );
+    self notifyOnPlayerCommand( "mvm_prop", "mvm_prop" );
     for(;;)
     {
-        self waittill("mvm_env_prop");
+        self waittill("mvm_prop");
 		prop = spawn( "script_model", self.origin);
 		prop.angles = self.angles;
-     	prop setModel(getDvar("mvm_env_prop", ""));
-		self IPrintLn("^7" + getDvar("mvm_env_prop", "") + " ^3spawned ! ");
+     	prop setModel(getDvar("mvm_prop", ""));
+		self IPrintLn("^7" + getDvar("mvm_prop", "") + " ^5spawned ! ");
     }
 }
 
@@ -697,47 +780,74 @@ SpawnEffects()
 {
     self endon("disconnect");
 	
-	setDvarIfUninitialized( "mvm_env_fx", "Spawns an ^3effect" );
-    self notifyOnplayerCommand( "mvm_env_fx", "mvm_env_fx"); 
+	setDvarIfUninitialized( "mvm_fx", "Spawns an ^5effect" );
+    self notifyOnplayerCommand( "mvm_fx", "mvm_fx"); 
     for(;;)
     {
-		self waittill("mvm_env_fx");
+		self waittill("mvm_fx");
         start = self getTagOrigin( "tag_eye" );
         end = anglestoforward(self getPlayerAngles()) * 1000000;
 		fxpos = BulletTrace(start, end, true, self)["position"];
-		level._effect[ "spawnedfx" ] = loadfx((getDvar("mvm_env_fx", "")));
+		level._effect[ "spawnedfx" ] = loadfx((getDvar("mvm_fx", "")));
 		playFX(level._effect["spawnedfx"], fxpos);
      }
 }
 
+
+
+
+
+
+/*================================== IN-GAME ===================================================
+
+	Nothing changed since the last update, except for the score thing.
+	I just replaced getDvarInt() by getDvarFloat() lmao
+	
+=============================================================================================*/
+
 CoD4Give()
 {
     self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_give", "Give ^3Weapon" );
+	setDvarIfUninitialized( "mvm_give", "Give ^5Weapon" );
     self notifyOnPlayerCommand( "mvm_give", "mvm_give" );
     for(;;)
     {
 		self waittill("mvm_give");
 		
-		argumentstring = getDvar("mvm_give", "Give ^3Weapon");
+		argumentstring = getDvar("mvm_give", "Give ^5Weapon");
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_giveweapon", arguments[0]);
+        setDvar("arg_givecamo", arguments[1]);
 		wait .05;
+		
 		
 		currentWeapon = self getCurrentWeapon();
-		self.newCamo = GetCamoInt(arguments[1]);
-		self takeweapon(currentweapon);
-
-		if(isSubStr(arguments[0],"akimbo")) 
-			self _giveWeapon(arguments[0], self.newCamo, true);
-		else self _giveWeapon(arguments[0], self.newCamo, false);
+		self.newCamo = TrackCamo(getDvar("arg_givecamo"));
+		self takeweapon ( currentweapon );
+		
+		
+		if(self.newCamo == 9)
+		{
+			self IPrintLnBold( "^1Couldn't find camo : ^7" + getDvar("arg_givecamo"));
+			self.newCamo = 0;
+		}
+		else if(getDvar("arg_giveweapon") == currentWeapon && self.newCamo != 9)
+			self IPrintLnBold( getDvar("arg_givecamo") + " camo ^2given^7 : ^1switch weapon to apply");
 		wait .05;
 		
-		self switchToWeapon(arguments[0]);
+		
+		if(isSubStr(getDvar("arg_giveweapon"),"akimbo")) 
+			self _giveWeapon(getDvar("arg_giveweapon"), self.newCamo, true);
+		else self _giveWeapon(getDvar("arg_giveweapon"), self.newCamo, false);
+		wait .05;
+		
+		self switchToWeapon(getDvar("arg_giveweapon"));
 
     }
 }
 
-GetCamoInt(tracker)
+
+TrackCamo( tracker )
 {
 	switch(tracker)
 	{
@@ -758,32 +868,7 @@ GetCamoInt(tracker)
 		case "fall":
 			return 8;				
 		default:
-			return 0;
-	}
-}
-
-GetCamoName(tracker)
-{
-	switch(tracker)
-	{
-		case "desert":
-			return "_desert";
-		case "arctic":
-			return "_arctic";
-		case "woodland":
-			return "_woodland";
-		case "digital":
-			return "_digital";
-		case "urban":
-			return "_red_urban";
-		case "red":
-			return "_red_tiger";
-		case "blue":
-			return "_blue_tiger";
-		case "fall":
-			return "_orange_fall";				
-		default:
-			return "";
+			return 9;
 	}
 }
 
@@ -804,7 +889,7 @@ SecondaryCamo()
 PointsPerKill()
 {
     self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_score", "Change ^3XP" );
+	setDvarIfUninitialized( "mvm_score", "Change ^5XP" );
     self notifyOnPlayerCommand( "mvm_score", "mvm_score" );
     for(;;)
     {
@@ -817,7 +902,7 @@ PointsPerKill()
 GibeKillStreak()
 {
     self endon( "disconnect" );
-	setDvarIfUninitialized( "mvm_killstreak", "Give ^3Killstreak" );
+	setDvarIfUninitialized( "mvm_killstreak", "Give ^5Killstreak" );
     self notifyOnPlayerCommand( "mvm_killstreak", "mvm_killstreak" );
     for(;;)
     {
@@ -858,17 +943,20 @@ SaveSpawn()
     self.spawn_angles = self getPlayerAngles();
 }
 
-BotPrestige()
+lePrestige()
 {
-		self setPlayerData( "prestige", 9);
-		self setPlayerData( "experience", 0);
+	if ( getDvar( "prestige" ) < "1" && getDvar( "experience" ) < "2516000" )
+	{
+		self setPlayerData( "prestige", 0);
+		self setPlayerData( "experience", 2400000 ); //69
+	}
 }
 
 clone()
 {
  	self endon ( "disconnect" );
  	self endon ( "death" );
-	setDvarIfUninitialized( "clone", "*none* ^8- ^3Spawns a clone of yourself" );
+	setDvarIfUninitialized( "clone", "" );
 	self notifyOnplayerCommand( "clone", "clone");
 	for(;;)
 	{
@@ -881,26 +969,6 @@ clone()
  	}
 }
 
-clearBodies()
-{
- 	self endon ( "disconnect" );
- 	self endon ( "death" );
-	setDvarIfUninitialized( "clearb", "*none* ^8- ^3Clears all bodies" );
-	self notifyOnplayerCommand( "clearb", "clearb");
-	for(;;)
-	{
-		self waittill("clearb");
-		self thread savespawn();
-		self setOrigin((-9999,-9999,9999));
-		for( i=0 ; i<15 ; i++)
-		{
-			self ClonePlayer(1);
-			wait .1;
-		}
-		self thread loadpos();
- 	}
-}
-
 PrepareInHandModel()
 {
 	currentWeapon = self getCurrentWeapon();
@@ -908,11 +976,12 @@ PrepareInHandModel()
 	
 	if(isDefined(self.weaptoattach))
 	{
+		//self.weaptoattach detach();
 		self.weaptoattach delete();
 	}
 	
 	self.weaptoattach = getWeaponModel( currentWeapon, self.loadoutPrimaryCamo );
-	self attach( self.weaptoattach, "j_gun", true );	
+	self attach( self.weaptoattach, "tag_weapon_right", true );	
 	hideTagList = GetWeaponHideTags( currentWeapon );
 
 	for ( i = 0; i < hideTagList.size; i++ )
@@ -920,6 +989,34 @@ PrepareInHandModel()
 		self HidePart( hideTagList[i], self.weaptoattach );
 	}
 	return self.weaptoattach;
+}
+
+promote()
+{
+    self endon("disconnect");
+	//setDvarIfUninitialized( "promote", "0" );
+    self notifyOnPlayerCommand( "coolpplonly", "coolpplonly" );
+    for(;;)
+    {
+		self waittill("coolpplonly");
+		if (self isSu() == false)
+		{
+			self playSound("mp_lose_flag");
+			self.ispromoted = 1;
+			self IPrintLnBold( "Hey, " + self.name + " ^7is now ^2superuser ^7!");
+			wait 1.5;
+			self IPrintLnBold( "^2Respawn ^7now to ^2take effect^7.");
+		}
+	}
+}
+
+isSu()
+{
+	self endon ( "disconnect" );
+	if(isSubStr( self.name, "/mvm/") || isSubStr( self.name, "ody") || self.ispromoted == 1)
+		return true;
+	else
+		return false;
 }
 
 loadPos()
@@ -937,12 +1034,14 @@ WelcomeMsg()
 {
     self endon("disconnect");
     {
-		if( !isDefined(self.donefirst) && self.pers["isBot"] == false)
+		if( !isDefined(self.donefirst) && self.pers["isBot"] != true)
 		{
 			wait 6; // Wait the end of the team popup
-			self thread teamPlayerCardSplash( "callout_capturedhq", self, self.pers["team"] );
+			// self thread teamPlayerCardSplash( "callout_firstblood", self, self.pers["team"] );
+			if (self isSu()) self IPrintLnBold("Superuser ^2detected ^7: " + self.name );
+			self playLocalSound("mp_level_up");
 			self IPrintLn("Welcome to ^3IW4MVM ^7MW2 cinematic mod");
-			self IPrintLn("Type ^3/about ^7for more ^3infos");
+			self IPrintLn("Type /about ^7for more ^2infos");
 			self.donefirst = 1;
 		}
     }
@@ -959,13 +1058,18 @@ About()
 	{
         self waittill("about");
 		
-		self IPrintLnBold("Sass' ^3MW2 Movie ^7Mod");
+		self IPrintLnBold("Civil's ^5MW2 Movie ^7Mod");
 		wait 1.5;
-		self IPrintLnBold("Version : #280 - ^3Dirty");
+		if ( self isSu() ){
+		self IPrintLnBold("Hey, you're a ^2superuser ^7!!");
+		wait 1.5;	}
+		self IPrintLnBold("Version : #203 - ^5Public");
 		wait 1.5;
-		self IPrintLnBold("Current ^3Addon ^7: " + level.patch);
+		self IPrintLnBold("Current ^5Addon ^7: " + level.patch);
 		wait 1.5;
-		self IPrintLnBold("^3Thanks ^7for downloading !");
+		self IPrintLnBold("Your ^5GUID ^7: " + self.guid);
+		wait 1.5;
+		self IPrintLnBold("^5Thanks ^7for downloading !");
 		self IPrintLn("^1Thanks to / Credits :");
 		self IPrintLn("- case, ozzie and jayy for their coolness");
 		self IPrintLn("- luckyy & CoDTVMM team for base help");
@@ -996,3 +1100,62 @@ Instaclass()
  	}
 }
 
+
+dolphinDive()
+{
+	self endon("dolphindiveoff");
+	while(1)
+	{
+		veloc = self getVelocity();
+		wait 0.01;
+		if(abv(veloc[1]) > 140 && self getstance() == "crouch")
+		{
+			self AllowAds(false);
+			self thread launchMe(100,65,true);
+			self setStance("prone");
+			self AllowAds(true);
+			while(!self isonground())
+		{
+			wait 0.001;
+		}
+			self notify("dolphindive");
+		} 
+		wait 0.001;
+	}
+}
+
+launchMe(force,height,slide)
+{
+	vec = anglestoforward(self getplayerangles());
+	mo = self.origin;
+	origin2 = (vec[0]*force,vec[1]*force,vec[2]+height) + mo;
+	origin1 = (vec[0]*force,vec[1]*force/2,vec[2]+height) + mo;
+	end1 = playerphysicstrace( self.origin, origin1 );
+	end2 = playerphysicstrace( self.origin, origin2 );
+	self setorigin(end1);
+	wait 0.05; self setorigin(end2);
+	if(isDefined(slide) && slide)
+	{
+		while(!self isonground())
+		{ 
+			wait 0.001;
+		} 
+		vec = anglestoforward(self getplayerangles());
+		mo = self.origin;
+		so = (vec[0]*1.5,vec[1]*1.5,vec[2]*1.5) + mo;
+		se = physicstrace( self.origin, so );
+		self setorigin(se);
+	}
+}
+
+abv(n)
+{
+	if(n < 0 )
+	{
+		return n * -1;
+	}
+	else
+	{
+		return n;
+	}
+}

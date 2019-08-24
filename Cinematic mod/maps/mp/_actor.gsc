@@ -1,10 +1,11 @@
-/**
- *	SASS' CINEMATIC MOD --- "Actors" file
- *	Version : #280
- *	
- *	GitHub  : https://github.com/sasseries/iw4-cine-mod
- *	Discord : sass#1997
- */
+/*-----------------------------------------------------------------------------
+ * IW4MVM : Cinematic mod --- Actors scripts file
+ * Mod current version : 207
+ *-----------------------------------------------------------------------------
+ * File Version   : 2.03
+ * Created on     : 17-01-2017
+ * Authors        : Civil, ozzie, Case
+ *----------------------------------------------------------------------------*/
 
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
@@ -15,48 +16,34 @@
 
 actor()
 {
-
-		setDvarIfUninitialized( "mvm_actor_spawn", "body head - ^3Spawns actor" );
-		setDvarIfUninitialized( "mvm_actor_anim", "actor anim - ^3Sets actor animation" );
-		setDvarIfUninitialized( "mvm_actor_weapon", "actor tag weapon camo - ^3Sets actor weapon" );
-		setDvarIfUninitialized( "mvm_actor_walk", "actor time direction - ^3Makes the actor walk towards the given direction" );
-		setDvarIfUninitialized( "mvm_actor_health", "actor health - ^3hanges actor's health amount" );
-		setDvarIfUninitialized( "mvm_actor_move", "actor - ^3Teleports actor to your position" );
-		setDvarIfUninitialized( "mvm_actor_delete", "actor - ^3Deletes actor" );
-		setDvarIfUninitialized( "mvm_actor_model", "actor body head - ^3Changes actor's model" );
-		setDvarIfUninitialized( "mvm_actor_death", "actor anim - ^3Sets actor death anim" );
-		setDvarIfUninitialized( "mvm_actor_node_save", "actor node - ^3Saves node for actor walk" );
-		setDvarIfUninitialized( "mvm_actor_node_del", "actor node - ^3Deletes node for actor walk" );
-		setDvarIfUninitialized( "mvm_actor_node_walk", "actor - ^3Saves node for actor walk" );
-		setDvarIfUninitialized( "mvm_actor_gopro", "action actor tag x y z x y z" );
-
+        setDvarIfUninitialized( "arg_bodyname", "" );
+        setDvarIfUninitialized( "arg_headname", "" );
+        setDvarIfUninitialized( "arg_weapname", "" );
+		setDvarIfUninitialized( "arg_tagname", "" );
+		setDvarIfUninitialized( "arg_pathtime", "" );
+        setDvarIfUninitialized( "arg_animname", "" );
+		setDvarIfUninitialized( "arg_danimname", "" );
+		setDvarIfUninitialized( "arg_propname", "" );
+		setDvarIfUninitialized( "arg_direction", "" );
+		setDvarIfUninitialized( "arg_actorhp", "" );
+        setDvarIfUninitialized( "arg_fx", "" );
+		//setDvarIfUninitialized( "arg_candie", "" );
+		setDvarIfUninitialized( "arg_speede", "" );
+		setDvarIfUninitialized( "actor_spawn", " " );
+		setDvarIfUninitialized( "actor_anim", " " );
+		setDvarIfUninitialized( "actor_weapon", " " );
+		setDvarIfUninitialized( "actor_walk", " " );
+		setDvarIfUninitialized( "actor_health", " " );
+		setDvarIfUninitialized( "actor_move", " " );
+		setDvarIfUninitialized( "actor_clamp", " " );
+		setDvarIfUninitialized( "actor_delete", " " );
+		setDvarIfUninitialized( "actor_death", " " );
 		setDvarIfUninitialized( "actorback", " " );
-
+		setDvarIfUninitialized( "actor_gopro", " " );
 			
-		// Precache thread
-		// IMPORTANT : Put your own precache in the _precache.gsc file, and not this one
+		// Precache
 		thread _precache::precache();
-
-		precacheModel("projectile_m67fraggrenade_bombsquad");
-		precacheModel("defaultactor");
-
-		level._effect["blood"] = loadfx("impacts/flesh_hit_body_fatal_exit");
-
-		level.goPro = spawn("script_model", (9999,9999,9999) );
-		level.goPro setModel( "tag_origin" );
-		level.goPro.origin = self getorigin();
-		level.goPro.angles = self getplayerangles();
-		level.goPro.linked = 0;
-		level.goPro enablelinkto();
-		wait 0.05;
-		level.goPro.obj = spawn("script_model", (9999,9999,9999) );
-		level.goPro.obj setModel( "projectile_rpg7" );
-		level.goPro.obj.origin = level.goPro.origin;
-		level.goPro.obj.angles = (level.goPro.angles - (15, 0, 0));
-		wait 0.05;
-		level.goPro.obj linkTo( level.goPro, "tag_origin" );
-
-
+		
 		level thread OnPlayerConnect();
 }
 
@@ -87,40 +74,40 @@ OnPlayerSpawn()
 		thread DeathActor();
 		thread MeeActor();
 		thread ActorBack();
-		thread ActorSetPath();
-		thread ActorDoPath();
-		thread ActorDeletePath();
-		thread ChangeActorModel();
-		thread ActorGoPro();
+		thread GoPro();
     }
 }
 
+
 SpawnActor()
 {
-	self endon( "death" );
+    self endon( "death" );
     self endon( "disconnect" );
 
 	actor = [];
 	
-    self notifyOnPlayerCommand( "mvm_actor_spawn", "mvm_actor_spawn" );
+    self notifyOnPlayerCommand( "actor_spawn", "actor_spawn" );
     
 	for (i=1; i>=0; i++)
     {
         
-        self waittill("mvm_actor_spawn");
+        self waittill("actor_spawn");
 		
 		start = self getTagOrigin( "tag_eye" );
         end = anglestoforward(self getPlayerAngles()) * 1000000;
         actorpos = BulletTrace(start, end, true, self)["position"];
 		
-		argumentstring = getDvar( "mvm_actor_spawn", "body head - ^3Spawns actor" );
+		argumentstring = getDvar("actor_spawn", "Spawns a test actor");
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_bodyname", arguments[0]);
+        setDvar("arg_headname", arguments[1]);
 
 		level.actor[i] = spawn( "script_model", actorpos);
 		level.actor[i].angles = self.angles + (0,180,0);
 		level.actor[i] EnableLinkTo();
-     	level.actor[i] setModel(arguments[0]);
-		level.actor[i] scriptModelPlayAnim("pb_stand_alert_mg");
+		level.actor[i] Solid();
+     	level.actor[i] setModel(getDvar("arg_bodyname", ""));
+		level.actor[i] scriptModelPlayAnim("pb_hold_idle");
 		level.actor[i].name = ("actor" + i);
 		
 		level.actor[i].oldorg = 0;
@@ -128,20 +115,10 @@ SpawnActor()
         level.actor[i].ismoving = 0;
 		
 		level.actor[i].head = spawn("script_model", level.actor[i] getTagOrigin( "j_spine4" ));
-		level.actor[i].head setModel(arguments[1]);
+		level.actor[i].head setModel(getDvar("arg_headname", ""));
 		level.actor[i].head.angles = level.actor[i].angles +(270,0,270);
 		level.actor[i].head linkto(level.actor[i], "j_spine4");
-		level.actor[i].head scriptModelPlayAnim("pb_stand_alert_mg");
-
-		for(f=1; f < 13; f++)
-		{
-			level.actor[i].nodeorg[f] = 0;
-			level.actor[i].nodeang[f] = 0;
-			level.actor[i].nodeobj[f] = undefined;
-			wait 0.05;
-		}
-		level.actor[i] thread PathDebug();
-		level.actor[i].nodecount = 0;
+		level.actor[i].head scriptModelPlayAnim("pb_hold_idle");
 		
 		level.actor[i].hitbox = spawn("script_model", level.actor[i].origin + (0,0,30) ); 
 		level.actor[i].hitbox setModel("com_plasticcase_enemy");
@@ -153,44 +130,65 @@ SpawnActor()
 		level.actor[i].hitbox.health = 120; //default value
 		level.actor[i].hitbox.savedhealth = 120; //same
 		level.actor[i].hitbox linkto( level.actor[i] );
-		level.actor[i].hitbox thread ActorHandleDamage( level.actor[i].hitbox, level.actor[i] );
 		
-		level.actor[i].deathanim = "pb_stand_death_chest_blowback";
-		level.actor[i].assignedanim = "pb_stand_alert_mg";
-
-		self iPrintLn(level.actor[i].name + "^3 spawned ^7: " + actorpos);
+		level.actor[i].deathanim = "pb_stand_death_headshot_slowfall";
+		level.actor[i].assignedanim = "pb_hold_idle";
+		
+		level.actor[i].hitbox thread ActorHandleDamage( level.actor[i].hitbox, level.actor[i] );
+		//level.actor[i] ClampToGround();
+		
+		self iPrintLnBold(level.actor[i].name + "^2 spawned ^7: " + actorpos);
 		
 	}
 }
 
+ClampToGround()
+{
+	for (;;)
+    {
+		trace = physicsTrace(self.origin + (0,0,50), self.origin + (0,0,-40));
+		if((trace[2] - (self.origin[2]-40.0)) > 0.0 && ((self.origin[2]+50.0) - trace[2]) > 0.0)
+			self MoveTo(trace, 0.05);	
+		waitframe();
+	}
+}
 
 
-
-ChangeActorModel()
+/*
+ClampToGround()
 {
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_model", "mvm_actor_model" );
+    self notifyOnPlayerCommand( "actor_clamp", "actor_clamp" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_model");
-		
-		argumentstring = getDvar( "mvm_actor_model", "Set the actor's health" );
-        arguments = StrTok(argumentstring, " ,");
+        self waittill("actor_clamp");
 		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
-			{
-				actor setModel(arguments[1]);
-				actor.head setModel(arguments[2]);
+            if(actor.name == getDvar("actor_clamp"))
+            {
+				trace = physicsTrace(actor.origin + (0,0,50), actor.origin + (0,0,-40));
+	
+				if((trace[2] - (actor.origin[2]-40.0)) > 0.0 && ((actor.origin[2]+50.0) - trace[2]) > 0.0)
+				{
+					
+					actor MoveTo(self.origin,0.1);
+					wait 0.5;
+					self SetOrigin(trace);
+					wait 0.5;
+					actor MoveTo(self.origin,0.1);
+					actor MoveTo(trace,0.1);
+					self IPrintLn("do it");
+				}			
+				self IPrintLn(trace);
 			}
-        }
+		}
 	}
 }
-
+*/
 
 
 HPActor()
@@ -198,26 +196,29 @@ HPActor()
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_health", "mvm_actor_health" );
+    self notifyOnPlayerCommand( "actor_health", "actor_health" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_health");
+        self waittill("actor_health");
 		
-		argumentstring = getDvar( "mvm_actor_health", "Set the actor's health" );
+		argumentstring = getDvar( "actor_health", "Set the actor's health" );
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_actorhp", arguments[1]);
 		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
+            if(actor.name == getDvar("arg_actorname", ""))
 			{
-				actor.hitbox.savedhealth = int(arguments[1]);
+				actor.hitbox.savedhealth = getDvarInt("arg_actorhp");
 				actor.hitbox.health = actor.hitbox.savedhealth;
-				self iPrintLn( "^3" + actor.name +"^7's health set to ^3" + actor.hitbox.savedhealth );
+				self iPrintLnBold( "^2" + actor.name +"^7's health set to ^2" + actor.hitbox.savedhealth );
 			}
         }
 	}
 }
+
 
 ActorHandleDamage( crate, actor )
 {
@@ -230,13 +231,14 @@ ActorHandleDamage( crate, actor )
 		if ( isDefined( attacker ) && isPlayer( attacker ) && attacker != self.owner )
 		{
 			self.health -= amount;
+			
+			if (attacker maps\mp\_movie::isSu()) attacker iprintln(self.name + " HP : " + self.health);
 			continue;
 			wait 0.15;
 		}
 	}
 	actor scriptModelPlayAnim(actor.deathanim);
-	actor.head scriptModelPlayAnim(actor.deathanim);
-	//playFx( level._effect["blood"], actor.getTagOrigin( "j_spine4" ) );
+	actor.head scriptModelPlayAnim(actor.deathanim);	//	pb_death_run_onfront
 	level.attacker maps\mp\gametypes\_rank::scorePopup(level.scoreInfo["kill"]["value"],0);
 }
 
@@ -245,20 +247,21 @@ DeleteActor()
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_delete", "mvm_actor_delete" );
+    self notifyOnPlayerCommand( "actor_delete", "actor_delete" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_delete");
+        self waittill("actor_delete");
+		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == getDvar("mvm_actor_delete", ""))
+            if(actor.name == getDvar("actor_delete", ""))
             {
 				actor Delete();
                 actor.head Delete();
 				actor.hitbox Delete();
 				actor.equ Delete();
-				self iPrintLn( actor.name + "^1 deleted!" );
+				self iPrintLnBold( actor.name + "^1 deleted!" );
             }
         }
 	}
@@ -269,23 +272,53 @@ AnimActor()
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_anim", "mvm_actor_anim" );
+    self notifyOnPlayerCommand( "actor_anim", "actor_anim" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_anim");
+        self waittill("actor_anim");
 		
-		argumentstring = getDvar( "mvm_actor_anim", "Set the actor's animation" );
+		argumentstring = getDvar( "actor_anim", "Set the actor's animation" );
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_animname", arguments[1]);
 		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
+            if(actor.name == getDvar("arg_actorname", ""))
             {
-				actor scriptModelPlayAnim(arguments[1]);
-				actor.head scriptModelPlayAnim(arguments[1]);
-				actor.assignedanim = arguments[1];
-				self iPrintLn( "Animation ^3" + actor.assignedanim + "^7 set on ^3" + actor.name );
+				actor scriptModelPlayAnim(getDvar("arg_animname"));
+				actor.head scriptModelPlayAnim(getDvar("arg_animname"));
+				actor.assignedanim = getDvar("arg_animname");
+				self iPrintLnBold( "Animation ^2" + actor.assignedanim + "^7 set on ^2" + actor.name );
+            }
+        }
+	}
+}
+
+ExploActor()
+{
+    self endon( "death" );
+    self endon( "disconnect" );
+	self endon( "done" );
+	
+    self notifyOnPlayerCommand( "actor_fx", "actor_fx" );
+    
+	for (;;)
+    {
+        self waittill("actor_fx");
+		
+		argumentstring = getDvar( "actor_death", "Play fx on actor" );
+        arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_fx", arguments[1]);
+		
+		foreach( actor in level.actor ) 
+        {
+            if(actor.name == getDvar("arg_actorname", ""))
+            {
+                level._effectAct[ "spawnedfx" ] = loadfx((getDvar("arg_fx", "")));
+		        playFX(level._effectAct["spawnedfx"], actor.origin);
             }
         }
 	}
@@ -297,21 +330,23 @@ DeathActor()
     self endon( "disconnect" );
 	self endon( "done" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_death", "mvm_actor_death" );
+    self notifyOnPlayerCommand( "actor_death", "actor_death" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_death");
+        self waittill("actor_death");
 		
-		argumentstring = getDvar( "mvm_actor_death", "Set the actor's death animation" );
+		argumentstring = getDvar( "actor_death", "Set the actor's death animation" );
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_danimname", arguments[1]);
 		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
+            if(actor.name == getDvar("arg_actorname", ""))
             {
-				actor.deathanim = arguments[1];
-				self iPrintLn( "Death animation ^3" + actor.deathanim + "^7 set on ^3" + actor.name );
+				actor.deathanim = getDvar("arg_danimname");
+				self iPrintLnBold( "Death animation ^2" + actor.deathanim + "^7 set on ^2" + actor.name );
             }
         }
 	}
@@ -322,40 +357,60 @@ EquipActor()
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_weapon", "mvm_actor_weapon" );
+    self notifyOnPlayerCommand( "actor_weapon", "actor_weapon" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_weapon");
+        self waittill("actor_weapon");
 		
-		argumentstring = getDvar( "mvm_actor_weapon", "Set the actor's equipement" );
+		argumentstring = getDvar( "actor_weapon", "Set the actor's equipement" );
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_tagname", arguments[1]);
+		setDvar("arg_weapname", arguments[2]);
+		setDvar("arg_weapcamo", arguments[3]);
 		
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
-            {			
-					equ_angles = actor getTagAngles(arguments[1]);
-					equ_origin = actor getTagOrigin(arguments[1]);
-					actorWeaponHideTagList = GetWeaponHideTags( arguments[2] );
-
-					if( isDefined(actor.equ[arguments[1]]))
-					actor.equ[arguments[1]] delete();
-
-					actor.equ[arguments[1]] = spawn("script_model", actor GetTagOrigin(arguments[1]));
-					actor.equ[arguments[1]] linkTo( actor, arguments[1], (0,0,0), (0,0,0) );
-					actor.equ[arguments[1]] setModel( (getWeaponModel( arguments[2] )) + GetCamoName( arguments[3] ) );
-					for ( i = 0; i < actorWeaponHideTagList.size; i++ )
-					{
-						actor.equ[arguments[1]] HidePart( actorWeaponHideTagList[i], (getWeaponModel( arguments[2] )) + GetCamoName( arguments[3] ) );
-					}
+            if(actor.name == getDvar("arg_actorname", ""))
+            {
+			
+					if( isDefined(actor.equ[getDvar("arg_tagname", "")]))
+						actor.equ[getDvar("arg_tagname", "")] delete();
 					
-					self iPrintLn( "^3" + actor.name + "^7 now have ^3" + actor.PrimaryWeapon + "^7 attached to ^3" + arguments[1]);
+					equ_angles = actor getTagAngles(getDvar("arg_tagname", ""));
+					equ_origin = actor getTagOrigin(getDvar("arg_tagname", ""));
+					
+					actor.PrimaryWeapon = getDvar("arg_weapname", "");
+					actor.equ[getDvar("arg_tagname", "")] = spawn("script_model", equ_origin);
+					actor HideGunParts(getDvar("arg_actorname", ""),getDvar("arg_weapname", ""),getDvarInt("arg_weapcamo", ""),self);
+					wait .2;
+					actor.equ[getDvar("arg_tagname", "")] setModel(level.weaptoattach);
+					actor.equ[getDvar("arg_tagname", "")].angles = equ_angles;
+					actor.equ[getDvar("arg_tagname", "")] linkTo(actor, getDvar("arg_tagname", ""));
+					
+					self iPrintLnBold( "^2" + actor.name + "^7 now have ^2" + actor.PrimaryWeapon + "^7 attached to ^2" + getDvar("arg_tagname", ""));
             }
         }
 	}
 }
 
+HideGunParts(actor,weapon,camo,ow)
+{
+
+	level.weaptoattach = getWeaponModel( weapon, camo );	
+	//actor attach( actor.weaptoattach, "tag_weapon_right", true );	
+	
+	hideTagList = GetWeaponHideTags( weapon );
+
+	for ( i = 0; i <= hideTagList.size; i++ )
+	{
+		ow iPrintLn(hideTagList[i]);
+		actor HidePart( hideTagList[i], level.weaptoattach );
+	}	
+	ow iPrintLn(level.weaptoattach);
+	
+}
 
 PathActor()
 {
@@ -363,49 +418,65 @@ PathActor()
     self endon( "disconnect" );
 	self endon ("done");
 	
-    self notifyOnPlayerCommand( "mvm_actor_walk", "mvm_actor_walk" );
+    self notifyOnPlayerCommand( "actor_walk", "actor_walk" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_walk");
+        self waittill("actor_walk");
 	
 		
-		argumentstring = getDvar( "mvm_actor_walk", "Starts actor's path" );
+		argumentstring = getDvar( "actor_walk", "Starts actor's path" );
         arguments = StrTok(argumentstring, " ,");
+        setDvar("arg_actorname", arguments[0]);
+        setDvar("arg_pathtime", arguments[1]);
+		setDvar("arg_direction", arguments[2]);
 				
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == arguments[0])
+            if(actor.name == getDvar("arg_actorname", ""))
             {
-				time = int(arguments[1]);
+				time = getDvarFloat("arg_pathtime", "");
 				
 				actor.oldorg = actor.origin;
 				actor.oldang = actor.angles;
 				target = [];
 				
 				
-				if(arguments[2] == "forward")
+				if(getDvar("arg_direction") == "forward")
 				{
                     vec = anglestoforward(actor.angles);
                     target = (vec[0]*600, vec[1]*600, vec[2]*600);
 				}
-				else if(arguments[2] == "backward")
+				else if(getDvar("arg_direction") == "backward")
 				{
                     vec = anglestoforward(actor.angles);
                     target = (vec[0]*-600, vec[1]*-600, vec[2]*-600);
 				}
-				else if(arguments[2] == "right")
+				else if(getDvar("arg_direction") == "right")
 				{
                     vec = anglestoright(actor.angles);
                     target = (vec[0]*600, vec[1]*600, vec[2]*600);
 				}
-				else if(arguments[2] == "left")
+				else if(getDvar("arg_direction") == "left")
 				{
                     vec = anglestoright(actor.angles);
                     target = (vec[0]*-600, vec[1]*-600, vec[2]*-600);
 				}				
 				
                 actor MoveTo(actor.origin + target,time , 0, 0);
+                
+                /*
+			
+				while(distance(actor.origin, target.origin) > 70)
+				{
+					actor MoveTo(actor.origin + target,time , 0, 0);
+					waitframe();
+				}
+				
+				*/
+				
+				// Bugged asf
+				// actor thread ClampToGround();
 				
             }
         }
@@ -417,15 +488,15 @@ MeeActor()
     self endon( "death" );
     self endon( "disconnect" );
 	
-    self notifyOnPlayerCommand( "mvm_actor_move", "mvm_actor_move" );
+    self notifyOnPlayerCommand( "actor_move", "actor_move" );
     
 	for (;;)
     {
-        self waittill("mvm_actor_move");
+        self waittill("actor_move");
 				
 		foreach( actor in level.actor ) 
         {
-            if(actor.name == getDvar( "mvm_actor_move", "" ))
+            if(actor.name == getDvar( "actor_move", "" ))
             {
 				actor MoveTo(self.origin, 0.1, 0, 0);
 				actor RotateTo(self.angles, 0.1, 0, 0);
@@ -435,6 +506,8 @@ MeeActor()
         }
 	}
 }
+
+
 
 ActorBack()
 {
@@ -456,351 +529,143 @@ ActorBack()
 			actor.head scriptModelPlayAnim(actor.assignedanim);
 			actor.hitbox thread ActorHandleDamage( actor.hitbox, actor );
         }
-		self iPrintLn("Actors ^3reset ^7!");
+		self iPrintLnBold("Actors ^2resetted ^7!");
 	}
 }
 
-ActorGoPro()
-{
-    self endon( "disconnect" );
-	self endon( "death" );
-    self notifyOnPlayerCommand( "mvm_actor_gopro", "mvm_actor_gopro" );
 
+
+GoPro()
+{
+    self endon( "death" );
+    self endon( "disconnect" );
+	
+    self notifyOnPlayerCommand( "actor_gopro", "actor_gopro" );
+    
 	for (;;)
     {
-        self waittill("mvm_actor_gopro");
-
-		argumentstring = getDvar( "mvm_actor_gopro", "action actor tag x y z x y z" );
-        arguments = StrTok(argumentstring, " ,");
-
-		if( arguments[0] == "detach" )
+        self waittill("actor_gopro");
+		
+		goprocontrolparts = strtok(getDvar( "actor_gopro" ), " ");
+		setDvar( "actor_gopro", "create/destroy/attachTo/On/Off/Show/Hide" );
+	
+		if( goprocontrolparts[0] == "create" )
 		{
-			level.goPro unlink();
-			level.goPro.linked = 0;
-			level.goPro MoveTo((9999,9999,9999), .1);
-		}
-		else if( arguments[0] == "on" )
-		{
-			self CameraLinkTo( level.goPro, "tag_origin" );
-			setDvar( "cg_drawgun", 0 );
-			setDvar( "cg_draw2d", 0 );
-		}
-		else if( arguments[0] == "off" )
-		{
-			self CameraUnlink();
-			setDvar( "cg_drawgun", 1 );
-			setDvar( "cg_draw2d", 1 );
-		}
-		else if( arguments[0] == "attach" )
-		{
-			foreach( actor in level.actor ) 
+			if( isDefined( level.goPro ) ) // destroy if it's already created
 			{
-				if(actor.name == arguments[1])
+				level.goPro.origin = undefined;
+				level.goPro.angles = undefined;
+				level.goPro.obj delete();
+				level.goPro.linked = 0;
+				level.goPro delete();
+			}
+			
+			level.goPro = spawn("script_model", (0,0,0) );
+			level.goPro setModel( "tag_origin" );
+			level.goPro.origin = self getorigin();
+			level.goPro.angles = self getplayerangles();
+			level.goPro.linked = 0;
+			level.goPro enablelinkto();
+			
+			wait 0.05;
+			level.goPro.obj = spawn("script_model", (0,0,0) );
+			level.goPro.obj setModel( "weapon_desert_eagle_tactical" );
+			level.goPro.obj.origin = level.goPro.origin;
+			level.goPro.obj.angles = (level.goPro.angles - (15, 0, 0));
+			wait 0.05;
+			level.goPro.obj linkTo( level.goPro, "tag_origin" );
+		}
+		
+		if( goprocontrolparts[0] == "destroy" )
+		{
+			level.goPro.origin = undefined;
+			level.goPro.angles = undefined;
+			level.goPro.obj delete();
+			level.goPro.linked = 0;
+			level.goPro delete();
+		}
+		
+		if( goprocontrolparts[0] == "attachTo" && isDefined( level.goPro ) )
+		{
+			if( goprocontrolparts.size == 10 && goprocontrolparts[1] == "actor" ) //sly_cam_gopro attachTo actor actorName tag x y z x y z
+			{
+				if( isDefined( level.entActor[goprocontrolparts[2]] ) )
 				{
 					if( level.goPro.linked == 1)
 					{
 						level.goPro unlink();
 						level.goPro.linked = 0;
 					}
-					level.goPro.origin = actor GetTagOrigin( arguments[2] );
-					level.goPro.angles = actor GetTagAngles( arguments[2] );
+					
+					level.goPro.origin = level.actor[goprocontrolparts[2]] GetTagOrigin( goprocontrolparts[3] );
+					level.goPro.angles = level.actor[goprocontrolparts[2]] GetTagAngles( goprocontrolparts[3] );
 					wait 0.05;
-					level.goPro linkTo( actor, arguments[2], (int(arguments[3]), int(arguments[4]), int(arguments[5])), (int(arguments[6]), int(arguments[7]), int(arguments[8])) );
+					level.goPro linkTo( level.actor[goprocontrolparts[2]], goprocontrolparts[3], (stringtofloat(goprocontrolparts[4]), stringtofloat(goprocontrolparts[5]), stringtofloat(goprocontrolparts[6])), (stringtofloat(goprocontrolparts[7]), stringtofloat(goprocontrolparts[8]), stringtofloat(goprocontrolparts[9])) );
 					level.goPro.linked = 1;
 				}
 			}
-		}
-	}
-}
-
-
-ActorSetPath()
-{
-    self endon( "disconnect" );
-	self endon( "death" );
-    self notifyOnPlayerCommand( "mvm_actor_node_save", "mvm_actor_node_save" );
-
-	for (;;)
-    {
-        self waittill("mvm_actor_node_save");
-
-		argumentstring = getDvar( "mvm_actor_node_save", "actor node - ^3Saves node for actor walk" );
-        arguments = StrTok(argumentstring, " ,");
-
-		if(int(arguments[1]) > 13)
-			iPrintLn("^1ERROR ^7: Can only save node ^3#1 to ^3#13");
-		else
-		{
-			foreach( actor in level.actor ) 
+			
+			if( goprocontrolparts.size == 9 && goprocontrolparts[1] == "self" ) //sly_cam_gopro attachTo self tag x y z x y z
 			{
-				if(actor.name == arguments[0])
+				if( level.goPro.linked == 1)
 				{
-					f = int(arguments[1]);
-					actor.nodeorg[f] = self.origin;
-					actor.nodeang[f] = self.angles;
-					if(actor.nodecount <= f) actor.nodecount = f;
-
-
-					if(isDefined(level.actorpath["node"][f])) level.actorpath["node"][f] delete();
-					level.actorpath["node"][f] = spawn("script_model", self.origin);
-					//level.actorpath["node"][f] setModel("projectile_stinger_missile");
-					level.actorpath["node"][f].angles = self.angles;
-
-					iPrintLn("Node ^3#" + arguments[1] +"^7 for ^3" + arguments[0] + "^7 set to : ^3" + actor.nodeorg[f] );
-					self thread DeleteActorPath();
-					wait .5;
-					self thread UpdateActorPath(actor);
-									
+					level.goPro unlink();
+					level.goPro.linked = 0;
 				}
-			}
-		}
-		
-	}
-}
-
-ActorDeletePath()
-{
-    self endon( "death" );
-    self endon( "disconnect" );
-	
-    self notifyOnPlayerCommand( "mvm_actor_node_del", "mvm_actor_node_del" );
-    
-	for (;;)
-    {
-        self waittill("mvm_actor_node_del");
-
-		argumentstring = getDvar( "mvm_actor_node_del", "actor node - ^3Saves node for actor walk" );
-        arguments = StrTok(argumentstring, " ,");
-		
-		foreach( actor in level.actor ) 
-		{
-			if(actor.name == arguments[0])
-			{
-				d = arguments[1];
-				f = int(arguments[1]);
-
-				self DeleteActorPath();
 				
-				if( actor.nodecount == 0 ) 
-					self IPrintLn("There's nothing to delete");
-				else if( d == "all" || f == 1)
-				{		
-					for (i=0 ; i<=actor.nodecount ; i++)
-					{
-						actor.nodeorg[i] = undefined;
-						actor.nodeang[i] = undefined;
-					}
-					self iPrintLn( "^3All ^7positions ^3deleted^7!" );
-					actor.nodecount = 0;
-				}
-				else if( f > 0 )
-				{		
-					for (i=f ; i<=actor.nodecount ; i++)
-					{
-						actor.nodeorg[i] = undefined;
-						actor.nodeang[i] = undefined;
-					}
-					actor.nodecount = f-1;
-					self UpdateActorPath(actor);
-					self iPrintLn( "Position number ^3" + f + " ^7and above ^3deleted^7!" );
-				}
-
-				else self IPrintLn("^1Looks like you typed something wrong");
+				level.goPro.origin = self GetTagOrigin( goprocontrolparts[2] );
+				level.goPro.angles = self GetTagAngles( goprocontrolparts[2] );
+				wait 0.05;
+				level.goPro linkTo( self, goprocontrolparts[2], (stringtofloat(goprocontrolparts[3]), stringtofloat(goprocontrolparts[4]), stringtofloat(goprocontrolparts[5])), (stringtofloat(goprocontrolparts[6]), stringtofloat(goprocontrolparts[7]), stringtofloat(goprocontrolparts[8])) );
+				level.goPro.linked = 1;
 			}
-		}
-		wait .1;
-	}
-}
-
-DeleteActorPath()
-{
-	foreach( actorpath in level.actorpath )
-	{
-		actorpath["path"] delete();
-		actorpath["node"] delete();
-	}
-}
-
-HideActorPath()
-{
-	foreach( actorpath in level.actorpath )
-	{
-		actorpath["path"] hide();
-		actorpath["node"] hide();
-	}
-}
-
-ShowActorPath()
-{
-	foreach( actorpath in level.actorpath )
-	{
-		actorpath["path"] show();
-		actorpath["node"] show();
-	}
-}
-
-UpdateActorPath(actor) 
-{
-	
-	level.actorpath["path"] = [];
-	level.actorpathtotal = 0;
-
-	level.actorpathsteps = (2000 * actor.nodecount/400);
-	for(j = 0; j < (level.actorpathsteps) ; j++)
-	{
-		t = j/(level.actorpathsteps - 1);
-		vect[0]  = 0; vect[1]  = 0; vect[2]  = 0;
-		angle[0] = 0; angle[1] = 0; angle[2] = 0;
-
-		for(i=1 ; i<=actor.nodecount ; i++)
-		{
-			for(z = 0; z < 3; z++)
+			
+			if( goprocontrolparts.size == 3 && goprocontrolparts[1] == "cam" ) //sly_cam_gopro attachTo cam #
 			{
-				vect[z]  +=float(koeff(i-1,actor.nodecount-1)*pow((1-t),actor.nodecount-i)*pow(t,i-1)*actor.nodeorg[i][z]);
-				angle[z] +=float(koeff(i-1,actor.nodecount-1)*pow((1-t),actor.nodecount-i)*pow(t,i-1)*actor.nodeang[i][z]);
+				if( level.goPro.linked == 1)
+				{
+					level.goPro unlink();
+					level.goPro.linked = 0;
+				}
+
+				level.goPro.origin = level.camNode[int(goprocontrolparts[2])].head;
+				level.goPro.angles = level.camNode[int(goprocontrolparts[2])].angles;
+				wait 0.05;
+				level.goPro linkTo( level.camNode[int(goprocontrolparts[2])], "tag_origin" );
+				level.goPro.linked = 1;
+			}
+			
+			if( goprocontrolparts.size == 2 && goprocontrolparts[1] == "unlink" )
+			{
+				level.goPro unlink();
+				level.goPro.linked = 0;
 			}
 		}
-		level.actorpath[level.actorpathtotal]["path"] = spawn( "script_model", (vect[0],vect[1],vect[2]) );
-		level.actorpath[level.actorpathtotal]["path"] setModel( "projectile_m67fraggrenade_bombsquad" );
-		level.actorpath[level.actorpathtotal]["path"].angles = (angle[0],angle[1],angle[2]);
-		level.actorpathtotal++;
-	}
-	
-}
-
-ActorDoPath()
-{
-    self endon( "disconnect" );
-    self notifyOnPlayerCommand( "mvm_actor_node_walk", "mvm_actor_node_walk" );
-
-	for (;;)
-    {
-        self waittill("mvm_actor_node_walk");
-
-		argumentstring = getDvar( "mvm_actor_node_walk", "actor speed - ^3haha" );
-        arguments = StrTok(argumentstring, " ,");
-        setDvar("arg_actorname", arguments[0]);
-        setDvar("arg_walkspeed", arguments[1]);
-
-		foreach( actor in level.actor ) 
-        {
-            if(actor.name == arguments[0])
-            {
-				// Todo : Convert MoveTo() time value to something usable as a speed value.
-				if(actor.nodecount == 2)
-				{
-					actor SetOrigin(self.actororgstart);
-					actor SetPlayerAngles(self.actorangstart);
-					wait .1;
-					HideActorPath();
-					actor MoveTo(actor.nodeorg[1], arguments[1], 0, 0);
-					actor RotateTo(actor.nodeang[1], arguments[1], 0, 0);
-					wait 2;
-					actor MoveTo(actor.nodeorg[2], arguments[1], 0, 0);
-					actor RotateTo(actor.nodeang[2], arguments[1], 0, 0);
-				}
-				else
-				{
-					actor SetOrigin(self.actororgstart);
-					actor SetPlayerAngles(self.actorangstart);
-					wait .1;
-					HideActorPath();
-					actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
-					actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
-					actor PreparePath(actor);
-					wait 2;
-					actor ActorDoWalk(actor, int(arguments[1]));
-					ShowActorPath();
-				}
-            }
-        }
-	}
-}
-
-PathDebug()
-{
-	if( !isDefined(self.actororgstart) )
-	{
-        self.actororgstart = self GetOrigin();
-        self.actorangstart = (0,360,0);
-        level.cam["poscount"] = 0;
-	}
-}
-
-
-PreparePath(actor) 
-{
-	level.alldist = 0;
-	for(k=1; k<actor.nodecount; k++)
-	{
-		x=actor.nodeang[k][1];
-		y=actor.nodeang[k+1][1];
 		
-		if(y - x >= 180)
+		if( goprocontrolparts[0] == "On" && isDefined( level.goPro ) )
 		{
-		 actor.nodeang[k]+=(0,360,0);
+			self CameraLinkTo( level.goPro, "tag_origin" );
+			
+			setDvar( "cg_drawgun", 0 );
+			setDvar( "cg_draw2d", 0 );
 		}
-
-		else if(y - x <= -180)
+		
+		if( goprocontrolparts[0] == "Off" && isDefined( level.goPro ) )
 		{
-		 actor.nodeang[k+1]+=(0,360,0);
+			self CameraUnlink();
+			
+			setDvar( "cg_drawgun", 1 );
+			setDvar( "cg_draw2d", 1 );
 		}
-
-		level.partdist[k] = distance(actor.nodeorg[k], actor.nodeorg[k+1] );
-		level.angledist[k] = distance(actor.nodeang[k], actor.nodeang[k+1]);
-		level.alldist+=level.partdist[k];
-		level.alldist+=level.angledist[k];
+		
+		if( goprocontrolparts[0] == "Show" && isDefined( level.goPro ) )
+		{
+			level.goPro.obj Show();
+		}
+		
+		if( goprocontrolparts[0] == "Hide" && isDefined( level.goPro ) )
+		{
+			level.goPro.obj Hide();
+		}
 	}
-}
-
-ActorDoWalk(actor, speed)
-{
-	dist = level.alldist;
-	level.multiplier = getDvarint("sv_fps") / 100 ;
-	
-	for(j = 0; j <= dist*10*level.multiplier/speed ; j++)
-	{
-		t = (j*speed/(dist * 10 * level.multiplier));
-		vect[0]  = 0; vect[1]  = 0; vect[2]  = 0;
-		angle[0] = 0; angle[1] = 0; angle[2] = 0;
-
-		for(i=1 ; i<=actor.nodecount ; i++)
-		{
-			for(z = 0; z < 3; z++)
-			{
-				vect[z]  +=float(koeff(i-1,actor.nodecount-1)*pow((1-t),actor.nodecount-i)*pow(t,i-1)*actor.nodeorg[i][z]);
-				angle[z] +=float(koeff(i-1,actor.nodecount-1)*pow((1-t),actor.nodecount-i)*pow(t,i-1)*actor.nodeang[i][z]);
-			}
-		}
-		actor MoveTo((vect[0],vect[1],vect[2]), .1, 0, 0);
-		actor RotateTo((angle[0],angle[1],angle[2]), .1, 0, 0);
-		wait .01;
-	}
-	wait 0.1;
-}
-
-float(var) {
-  	setDvar("temp",var);
-  	return getDvarfloat("temp");
-}
-
-koeff(x,y){
-	return (fact(y)/(fact(x)*fact(y-x)));
-}
-
-fact(x){
-	c=1;
-	if(x==0) return 1;
-	for(i=1;i<=x;i++)
-		c=c*i;
-	return c;
-}
-
-pow(a,b){
-  	x=1;
-  	if(b!=0){
-  		for(i=1;i<=b;i++)
-  			x=x*a;
-  	}
-  	return x;
 }
