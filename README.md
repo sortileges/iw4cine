@@ -1,26 +1,19 @@
-# **Sass' Modern Warfare 2 Cinematic Mod**
-An in-game modification for IW4M to create cinematics!
+<h3 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/ModernWarfare2_logo.png/800px-ModernWarfare2_logo.png" alt="logo" height="100px"></h3>
+<p align="center"><b>An in-game modification for IW4M to create cinematics</b></p>
 
-## How does this works
+<p align="center">
+<a href="https://discord.gg/f5RSxTW"><img src="https://img.shields.io/discord/609720187855568897?label=Discord&style=flat-square"></a>
+<a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20release&sort=semver&style=flat-square"></a>
+</p>
 
-This mod creates new variables (dvars) that executes a script when modified. This is not an game engine modification. This is all done through scripting using GSC.
+<img src="https://i.imgur.com/m1UXwjN.png" alt="screenshot" align="right" height="240px">
 
+This mod was designed for video editors who needs to create cinematic shots in the Multiplayer version of the game Call of Duty : Modern Warfare 2.
 
-## Installation
+It is not an external tool. This mod creates new variables (dvars) that executes a script when modified. This is not a game engine modification either. This is all done through scripting using GSC.
 
-You would need a client such as [IW4x](https://iw4x.tumblr.com) in order to get this working. This mod has been built on IW4x, although it works with other MW2 clients.
+The purpose of the mod is to craft and create cinematic scenes or clips, using a plentiful of different features. Ideally, the only thing that would limit the user is its own creativity.
 
-> **NOTE:** Do not use this mod on the vanilla game with external tools since it can cause VAC bans.
+"Ideally", yes. This mod is still not finished and has been a pet project for quite some time, until a few years ago when I stopped putting time on it. After leaving it out in a somewhat usable state, I decided to work on it again in order to "finish" it, or atleast make it the best it could be.
 
-### How to install
-
-1. Make sure you got a `mods` folder in your game directory. If not, create it.
-2. Extract the `Cinematic mod` folder inside that `mods` folder. You can rename it to whatever you like if you want to.
-3. The `Cinematic mod` folder should now appear in the "Mods" in-game main menu.
-
-> **TIP :** You can create a shortcut of your client's .exe and paste the following into the `Target` field to launch your game with the mod already loaded : `+set fs_game "mods/<TheModNameHere>"`
-
-
-## Usage
-
-See wiki
+### [How to install](https://github.com/sasseries/iw4-cine-mod/wiki/Prerequired-&-Installation) /// [Discord server](https://discord.gg/f5RSxTW)</p>
