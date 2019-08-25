@@ -49,6 +49,7 @@ PrimaryDvars()
 		setDvar("g_TeamName_Axis", "axis");
 		setDvar("con_gameMsgWindow0MsgTime", "9");
 		setDvar("con_gameMsgWindow0LineCount", "9");
+		setDvar("cg_weaponHintsCOD1Style", "0");
 
 		setObjectiveText(game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch);
 		setObjectiveText(game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch);
@@ -71,10 +72,11 @@ MovieSpawn()
 		self waittill("spawned_player");
 
 		self thread WelcomeMsg();
+		self.newBotWeapon = undefined;
 
 		// No fall damage and unlimited sprint.
-		self maps\ mp\ perks\ _perks::givePerk("specialty_falldamage");
-		self maps\ mp\ perks\ _perks::givePerk("specialty_marathon");
+		self maps\mp\perks\_perks::givePerk("specialty_falldamage");
+		self maps\mp\perks\_perks::givePerk("specialty_marathon");
 
 		// Grenade cam reset
 		setDvar("camera_thirdperson", "0");
@@ -288,8 +290,8 @@ BotWeapon()
 			{
 				if (isSubStr(player.name, arguments[0]))
 				{
-					if (isDefined(player.newBotWeapon))
-						player.newBotWeapon Delete();
+					/*if (isDefined(player.newBotWeapon))
+						player.newBotWeapon Delete();*/
 					player takeWeapon(player GetCurrentWeapon());
 					wait 0.05;
 					player.newBotWeapon = spawn("script_model", player GetTagOrigin("j_gun"));
@@ -304,7 +306,8 @@ BotWeapon()
 					player giveWeapon(arguments[1], 0, false);
 					player switchToWeapon(arguments[1]);
 
-					player DeleteWeapOnDeath();
+					if (!isDefined(self.linke))
+						player DeleteWeapOnDeath();
 
 				}
 			}
@@ -312,7 +315,7 @@ BotWeapon()
 	}
 }
 
-DeleteWeapOnDeath()
+DeleteWeapOnDeath(owner)
 {
 	self waittill("death");
 	self.newBotWeapon Unlink();
@@ -568,7 +571,7 @@ BotKill()
 		{
 			if (isSubStr(player.name, arguments[0]))
 			{
-				if (isDefined(self.linke))
+				if (isDefined(self.linke) && !isDefined(self.newBotWeapon))
 				{
 					player PrepareInHandModel();
 					player takeweapon(player getCurrentWeapon()); // removes the falling weapon	
@@ -824,7 +827,7 @@ GibeKillStreak()
 	for (;;)
 	{
 		self waittill("mvm_killstreak");
-		self maps\ mp\ killstreaks\ _killstreaks::giveKillstreak(getDvar("mvm_killstreak"), false);
+		self maps\mp\killstreaks\_killstreaks::giveKillstreak(getDvar("mvm_killstreak"), false);
 	}
 }
 
@@ -840,7 +843,7 @@ Noclip()
 	self endon("killnoclip");
 	setDvarIfUninitialized("noclip2", "");
 	self notifyOnPlayerCommand("noclip2", "noclip2");
-	maps\ mp\ gametypes\ _spectating::setSpectatePermissions();
+	maps\mp\gametypes\_spectating::setSpectatePermissions();
 	for (;;)
 	{
 		self waittill("noclip2");
@@ -905,23 +908,25 @@ clearBodies()
 
 PrepareInHandModel()
 {
-	currentWeapon = self getCurrentWeapon();
-
-
-	if (isDefined(self.weaptoattach))
+	if (!isDefined(self.newBotWeapon))
 	{
-		self.weaptoattach delete();
-	}
+		currentWeapon = self getCurrentWeapon();
 
-	self.weaptoattach = getWeaponModel(currentWeapon, self.loadoutPrimaryCamo);
-	self attach(self.weaptoattach, "j_gun", true);
-	hideTagList = GetWeaponHideTags(currentWeapon);
+		if (isDefined(self.weaptoattach))
+		{
+			self.weaptoattach delete();
+		}
 
-	for (i = 0; i < hideTagList.size; i++)
-	{
-		self HidePart(hideTagList[i], self.weaptoattach);
+		self.weaptoattach = getWeaponModel(currentWeapon, self.loadoutPrimaryCamo);
+		self attach(self.weaptoattach, "j_gun", true);
+		hideTagList = GetWeaponHideTags(currentWeapon);
+
+		for (i = 0; i < hideTagList.size; i++)
+		{
+			self HidePart(hideTagList[i], self.weaptoattach);
+		}
+		return self.weaptoattach;
 	}
-	return self.weaptoattach;
 }
 
 loadPos()
@@ -986,13 +991,13 @@ Instaclass()
 		if (self.pers["class"] != oldclass)
 		{
 			assert(isValidClass(self.class));
-			self maps\ mp\ gametypes\ _class::setClass(self.class);
-			self maps\ mp\ gametypes\ _class::giveloadout(self.team, self.class);
+			self maps\mp\gametypes\_class::setClass(self.class);
+			self maps\mp\gametypes\_class::giveloadout(self.team, self.class);
 			oldclass = self.pers["class"];
 			thread SecondaryCamo();
 			self thread VerifyModel();
-			self maps\ mp\ perks\ _perks::givePerk("specialty_falldamage");
-			self maps\ mp\ perks\ _perks::givePerk("specialty_marathon");
+			self maps\mp\perks\_perks::givePerk("specialty_falldamage");
+			self maps\mp\perks\_perks::givePerk("specialty_marathon");
 		}
 		wait 0.05;
 	}
