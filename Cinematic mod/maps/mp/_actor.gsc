@@ -440,8 +440,8 @@ MeeActor()
             {
 				actor MoveTo(self.origin, 0.1, 0, 0);
 				actor RotateTo(self.angles, 0.1, 0, 0);
-				actor.oldorg = actor.origin;
-				actor.oldang = actor.angles;
+				actor.oldorg = self.origin;
+				actor.oldang = self.angles;
             }
         }
 	}
@@ -489,7 +489,7 @@ ActorGoPro()
 		argumentstring = getDvar( "mvm_actor_gopro", "action actor tag x y z x y z" );
         arguments = StrTok(argumentstring, " ,");
 
-		if( arguments[0] == "detach" )
+		if( arguments[0] == "remove" )
 		{
 			level.goPro unlink();
 			level.goPro.linked = 0;
@@ -500,14 +500,18 @@ ActorGoPro()
 			self CameraLinkTo( level.goPro, "tag_origin" );
 			setDvar( "cg_drawgun", 0 );
 			setDvar( "cg_draw2d", 0 );
+			self allowSpectateTeam("freelook", true);
+			self.sessionstate = "spectator";
 		}
 		else if( arguments[0] == "off" )
 		{
 			self CameraUnlink();
 			setDvar( "cg_drawgun", 1 );
 			setDvar( "cg_draw2d", 1 );
+			self.sessionstate = "playing";
+			self allowSpectateTeam("freelook", false);
 		}
-		else if( arguments[0] == "attach" )
+		else if( arguments[0] == "set" )
 		{
 			foreach( actor in level.actor ) 
 			{
