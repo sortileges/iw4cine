@@ -153,7 +153,7 @@ MsgAbout()
 		self IPrintLn("- You and everybody who supported the project :D");
 		wait 10;
 		self IPrintLn("Don't forget to join the ^3discord server ^7:");
-		self IPrintLn("^3>>> ^7https://discord.gg/f5RSxTW");
+		self IPrintLn("^3>>> ^7discord.gg/wgRJDJJ");
 	}
 }
 
