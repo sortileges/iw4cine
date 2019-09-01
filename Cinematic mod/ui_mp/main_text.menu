@@ -308,7 +308,7 @@
 			textFont 3
 			feeder 1
 			visible 1
-			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#283 ^3 \n > Discord server : ^3discord.gg/"
+			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#283 ^3 \n > Discord server : ^3discord.gg/wgRJDJJ"
 			exp rect x ( 0 - 250 )
 		}
 		itemDef
