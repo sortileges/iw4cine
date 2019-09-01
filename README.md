@@ -2,7 +2,7 @@
 <p align="center"><b>An in-game modification for IW4M to create cinematics</b></p>
 
 <p align="center">
-<a href="https://discord.gg/f5RSxTW"><img src="https://img.shields.io/discord/609720187855568897?label=Discord&style=flat-square"></a>
+<a href="https://discord.gg/f5RSxTW"><img src="https://img.shields.io/discord/617736623412740146?label=Discord&style=flat-square"></a>
 <a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
 </p>
 
