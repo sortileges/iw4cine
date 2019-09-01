@@ -1,6 +1,6 @@
 /**
  *	SASS' CINEMATIC MOD --- "Camera" file
- *	Version : #280
+ *	Version : #283
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
@@ -13,16 +13,11 @@
 
 cam()
 {
-	level thread CStart();
-
-	precacheModel("projectile_semtex_grenade_bombsquad");
-	precacheModel("test_sphere_silver");
-	precacheModel("projectile_rpg7");
+	level thread CamConnect();
 }
 
-CStart()
+CamConnect()
 {
-
     for(;;)
     {
 		level waittill( "connected", player );

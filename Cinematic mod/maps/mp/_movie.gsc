@@ -1,60 +1,31 @@
 /**
  *	SASS' CINEMATIC MOD --- "Movie" file
- *	Version : #280
+ *	Version : #283
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
  */
 
-#include maps\mp\_patch;
 #include maps\mp\gametypes\_hud_message;
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
+#include maps\mp\_custom;
 #using_animtree("destructibles");
 
 movie()
 {
-	level thread MovieInit();
+	level thread MovieConnect();
 }
 
-MovieInit()
-{
-	level._effect["cash"] = loadfx("props/cash_player_drop");
-	level._effect["blood"] = loadfx("impacts/flesh_hit_body_fatal_exit");
-	level thread PrimaryDvars();
-}
-
-PrimaryDvars()
+MovieConnect()
 {
 	for (;;)
 	{
 		level waittill("connected", player);
 
-		// Removed because they were causing B&W to stay during demos on rare occasions
-		//level.prematchPeriodEnd = 0;
-		//thread maps\mp\gametypes\_gamelogic::matchStartTimer( "waiting_for_players", 0 );
-
-
-		// LOD and jump fatigue tweaks
-		setDvar("r_lodBiasRigid", "-8000");
-		setDvar("r_lodBiasSkinned", "-8000");
-		setDvar("jump_slowdownEnable", "0");
-		setDvar("ui_allow_classchange", "1");
-
-		// UI tweaks
-		setDvar("cg_newcolors", "1");
-		setDvar("sv_hostname", "SASS ^3MVM ^7- ^2LOCAL SERVER");
-		setDvar("g_TeamName_Allies", "allies");
-		setDvar("g_TeamName_Axis", "axis");
-		setDvar("con_gameMsgWindow0MsgTime", "9");
-		setDvar("con_gameMsgWindow0LineCount", "9");
-		setDvar("cg_weaponHintsCOD1Style", "0");
-
-		setObjectiveText(game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch);
-		setObjectiveText(game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#280 \n ^7Patch :" + level.patch);
-		setObjectiveHintText("allies", "Welcome to ^3Sass' Cinematic Mod");
-		setObjectiveHintText("axis", "Welcome to ^3Sass' Cinematic Mod");
+		level._effect["cash"] = loadfx("props/cash_player_drop");
+		level._effect["blood"] = loadfx("impacts/flesh_hit_body_fatal_exit");
 
 		player.pers["isBot"] = false;
 		game["dialog"]["gametype"] = undefined;
@@ -71,12 +42,7 @@ MovieSpawn()
 	{
 		self waittill("spawned_player");
 
-		self thread WelcomeMsg();
 		self.newBotWeapon = undefined;
-
-		// No fall damage and unlimited sprint.
-		self maps\mp\perks\_perks::givePerk("specialty_falldamage");
-		self maps\mp\perks\_perks::givePerk("specialty_marathon");
 
 		// Grenade cam reset
 		setDvar("camera_thirdperson", "0");
@@ -94,7 +60,6 @@ MovieSpawn()
 		thread BotStare();
 		thread BotAim();
 		thread BotModel();
-		thread VerifyModel();
 
 		// Explosive Bullets
 		thread EBClose();
@@ -111,15 +76,9 @@ MovieSpawn()
 		thread SetVisions();
 
 		// Misc
-		thread PointsPerKill();
-		thread GibeKillStreak();
-		thread CoD4Give();
 		thread clone();
-		thread about();
 		thread loadPos();
 		thread noclip();
-		thread Instaclass();
-		thread SecondaryCamo();
 		thread clearBodies();
 
 	}
@@ -208,7 +167,7 @@ BotDoSpawn(owner)
 	self notify("menuresponse", game["menu_team"], arguments[1]);
 	wait .1;
 
-	if (arguments[0] == "m40a3")
+	if (arguments[0] == "custom")
 		self notify("menuresponse", "changeclass", "class" + 9);
 	else if (arguments[0] == "inter")
 		self notify("menuresponse", "changeclass", "class" + 8);
@@ -290,8 +249,8 @@ BotWeapon()
 			{
 				if (isSubStr(player.name, arguments[0]))
 				{
-					/*if (isDefined(player.newBotWeapon))
-						player.newBotWeapon Delete();*/
+					if (isDefined(player.newBotWeapon))
+						player.newBotWeapon Delete();
 					player takeWeapon(player GetCurrentWeapon());
 					wait 0.05;
 					player.newBotWeapon = spawn("script_model", player GetTagOrigin("j_gun"));
@@ -436,16 +395,6 @@ BotModelChange(lmodel, lteam)
 
 		self.modelalready = true;
 		wait .1;
-	}
-}
-
-VerifyModel()
-{
-	self endon("disconnect");
-	if (isDefined(self.modelalready))
-	{
-		self detachAll();
-		self[[game[self.lteam + "_model"][self.lmodel]]]();
 	}
 }
 
@@ -715,33 +664,6 @@ SpawnEffects()
 	}
 }
 
-CoD4Give()
-{
-	self endon("disconnect");
-	setDvarIfUninitialized("mvm_give", "Give ^3Weapon");
-	self notifyOnPlayerCommand("mvm_give", "mvm_give");
-	for (;;)
-	{
-		self waittill("mvm_give");
-
-		argumentstring = getDvar("mvm_give", "Give ^3Weapon");
-		arguments = StrTok(argumentstring, " ,");
-		wait .05;
-
-		currentWeapon = self getCurrentWeapon();
-		self.newCamo = GetCamoInt(arguments[1]);
-		self takeweapon(currentweapon);
-
-		if (isSubStr(arguments[0], "akimbo"))
-			self _giveWeapon(arguments[0], self.newCamo, true);
-		else self _giveWeapon(arguments[0], self.newCamo, false);
-		wait .05;
-
-		self switchToWeapon(arguments[0]);
-
-	}
-}
-
 GetCamoInt(tracker)
 {
 	switch (tracker)
@@ -793,43 +715,7 @@ GetCamoName(tracker)
 }
 
 
-SecondaryCamo()
-{
-	sec = self.secondaryWeapon;
-	self takeweapon(sec);
-	wait .1;
 
-	if (isSubStr(sec, "akimbo"))
-		self _giveWeapon(sec, self.loadoutPrimaryCamo, true);
-	else self _giveWeapon(sec, self.loadoutPrimaryCamo, false);
-	wait .1;
-}
-
-
-PointsPerKill()
-{
-	self endon("disconnect");
-	setDvarIfUninitialized("mvm_score", "Change ^3XP");
-	self notifyOnPlayerCommand("mvm_score", "mvm_score");
-	for (;;)
-	{
-		self waittill("mvm_score");
-		level.scoreInfo["kill"]["value"] = getDvarFloat("mvm_score");
-	}
-}
-
-
-GibeKillStreak()
-{
-	self endon("disconnect");
-	setDvarIfUninitialized("mvm_killstreak", "Give ^3Killstreak");
-	self notifyOnPlayerCommand("mvm_killstreak", "mvm_killstreak");
-	for (;;)
-	{
-		self waittill("mvm_killstreak");
-		self maps\mp\killstreaks\_killstreaks::giveKillstreak(getDvar("mvm_killstreak"), false);
-	}
-}
 
 
 /*================================== OTHER ====================================================
@@ -940,65 +826,3 @@ loadPos()
 }
 
 
-WelcomeMsg()
-{
-	self endon("disconnect");
-	{
-		if (!isDefined(self.donefirst) && self.pers["isBot"] == false)
-		{
-			wait 6; // Wait the end of the team popup
-			self thread teamPlayerCardSplash("callout_capturedhq", self, self.pers["team"]);
-			self IPrintLn("Welcome to ^3IW4MVM ^7MW2 cinematic mod");
-			self IPrintLn("Type ^3/about ^7for more ^3infos");
-			self.donefirst = 1;
-		}
-	}
-}
-
-About()
-{
-	self endon("disconnect");
-	self endon("death");
-
-	setDvarIfUninitialized("about", "About the mod...");
-	self notifyOnplayerCommand("about", "about");
-	for (;;)
-	{
-		self waittill("about");
-
-		self IPrintLnBold("Sass' ^3MW2 Movie ^7Mod");
-		wait 1.5;
-		self IPrintLnBold("Version : #280 - ^3Dirty");
-		wait 1.5;
-		self IPrintLnBold("Current ^3Addon ^7: " + level.patch);
-		wait 1.5;
-		self IPrintLnBold("^3Thanks ^7for downloading !");
-		self IPrintLn("^1Thanks to / Credits :");
-		self IPrintLn("- case, ozzie and jayy for their coolness");
-		self IPrintLn("- luckyy & CoDTVMM team for base help");
-		self IPrintLn("- Lasko for the menus");
-		self IPrintLn("- You and everybody who supported the project :D");
-	}
-}
-
-Instaclass()
-{
-	self endon("disconnect");
-
-	oldclass = self.pers["class"];
-	for (;;)
-	{
-		if (self.pers["class"] != oldclass)
-		{
-			assert(isValidClass(self.class));
-			self maps\mp\gametypes\_class::setClass(self.class);
-			self maps\mp\gametypes\_class::giveloadout(self.team, self.class);
-			oldclass = self.pers["class"];
-			thread SecondaryCamo();
-			self thread VerifyModel();
-			self maps\mp\perks\_perks::givePerk("specialty_falldamage");
-			self maps\mp\perks\_perks::givePerk("specialty_marathon");
-		}
-		wait 0.05;
-	}
-}

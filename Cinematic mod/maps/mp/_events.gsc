@@ -5,7 +5,7 @@
 init()
 {
 	maps\mp\gametypes\_rank::registerScoreInfo( "headshot", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "kill", 10 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "kill", 5 );
 	maps\mp\gametypes\_rank::registerScoreInfo( "execution", 0 );
 	maps\mp\gametypes\_rank::registerScoreInfo( "avenger", 0 );
 	maps\mp\gametypes\_rank::registerScoreInfo( "defender", 0 );
@@ -23,17 +23,17 @@ init()
 
 	registerAdrenalineInfo( "damage", 0 );
 	registerAdrenalineInfo( "damaged", 0 );
-	registerAdrenalineInfo( "kill", 10);
+	registerAdrenalineInfo( "kill", 5);
 	registerAdrenalineInfo( "killed", 0 );
 	
-	registerAdrenalineInfo( "headshot", 10 );
-	registerAdrenalineInfo( "melee", 10 );
-	registerAdrenalineInfo( "backstab", 10 );
-	registerAdrenalineInfo( "longshot", 10);
+	registerAdrenalineInfo( "headshot", 5 );
+	registerAdrenalineInfo( "melee", 5 );
+	registerAdrenalineInfo( "backstab", 5 );
+	registerAdrenalineInfo( "longshot", 5 );
 	registerAdrenalineInfo( "assistedsuicide", 0);
 	registerAdrenalineInfo( "defender", 0 );
 	registerAdrenalineInfo( "avenger", 0);
-	registerAdrenalineInfo( "execution", 10 );
+	registerAdrenalineInfo( "execution", 5 );
 	registerAdrenalineInfo( "comeback", 0 );
 	registerAdrenalineInfo( "revenge", 0 );
 	registerAdrenalineInfo( "buzzkill", 0 );	

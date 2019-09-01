@@ -30,8 +30,8 @@ init()
 
 	if ( level.teamBased )
 	{
-		registerScoreInfo( "kill", 10 );
-		registerScoreInfo( "headshot", 10 );
+		registerScoreInfo( "kill", 5 );
+		registerScoreInfo( "headshot", 5 );
 		registerScoreInfo( "assist", 2 );
 		registerScoreInfo( "suicide", 0 );
 		registerScoreInfo( "teamkill", 0 );
@@ -88,8 +88,10 @@ init()
 	// Loading all my shit here
 	thread maps\mp\_movie::movie();
 	thread maps\mp\_cam::cam();
-	thread maps\mp\_patch::patch();
+	thread maps\mp\_custom::patch();
 	thread maps\mp\_actor::actor();
+	thread maps\mp\_misc::misc();
+	thread _precache::precache();
 	
 	setDvar( "scr_war_winlimit", "0" );
 	setDvar( "scr_war_timelimit", "0" );
