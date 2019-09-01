@@ -3,22 +3,27 @@
 
 precache()
 {
+	PrecacheMPAnim("pb_sprint");
+	PrecacheMPAnim("pb_stand_alert");
+	PrecacheMPAnim("pb_stand_death_chest_blowback");
+	PrecacheModel("defaultactor");
+	PrecacheModel("projectile_rpg7");
+	PrecacheModel("projectile_semtex_grenade_bombsquad");
 	
-	PrecacheMPAnim("pb_stand_alert_mg");                    // Default  actor stand anim
-	PrecacheMPAnim("pb_stand_death_chest_blowback");        // Default actor death anim
-	PrecacheMPAnim("pb_sprint");							// Default sprint anim
-	
-    // You need to put your own precache in here from the list below. Do not remove what's above.
-    // YOU CANT JUST PUT EVERYTHING!! Pick 20 anims maximum
-    // Just copy/paste what you need under this line. It has to be between the { }
+	// ^^^^^^^^^^^ DO NOT REMOVE ANY OF THESE !!!!!!!
+    // You need to put your own precache in here from the list below. 
+    // YOU CANT JUST PUT EVERYTHING!! Pick 20-30 anims maximum
+    // Just copy/paste what you need between this line and the "}" below
 
-	
+
 
 }
 
 
 /*
     # LIST OF ALL MULTIPLAYER ANIMS YOU NEED
+	# THESE ARE NOT PRECACHED, YOU'LL HAVE TO DO IT YOURSELF 
+	# PLEASE FOLLOW THE INSTRUCTIONS ABOVE
 
     #-------------------------
 	# SPRINT ANIMS
@@ -29,8 +34,18 @@ precache()
 	PrecacheMPAnim("pb_sprint_RPG");
 	PrecacheMPAnim("pb_sprint_pistol");
 	PrecacheMPAnim("pb_sprint_hold");
-	PrecacheMPAnim("pb_sprint_akimbo");;
-	
+	PrecacheMPAnim("pb_sprint_akimbo");
+	PrecacheMpAnim("pb_sprint_shield");
+
+	#-------------------------
+	# MISC ANIMS
+	PrecacheMPAnim("pb_walk_forward_shield");
+	PrecacheMPAnim("pb_walk_forward_akimbo");
+	PrecacheMPAnim("pb_climbup");
+	PrecacheMPAnim("pb_climbdown");
+	PrecacheMPAnim("pb_prone2crouch");
+	PrecacheMPAnim("pb_runjump_land");
+	PrecacheMPAnim("pb_runjump_takeoff");
 
 	#-------------------------
 	# DEATH ANIMS
@@ -75,7 +90,6 @@ precache()
 	precacheMPAnim("MP_shotgun_death_front");
 	precacheMPAnim("MP_shotgun_death_left");
 	precacheMPAnim("MP_shotgun_death_right");
-
 
 	#-------------------------
 	# DOLFIN DIVE ANIMS
