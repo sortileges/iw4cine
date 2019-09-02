@@ -2,7 +2,7 @@
 <p align="center"><b>An in-game modification for IW4M to create cinematics</b></p>
 
 <p align="center">
-<a href="https://discord.gg/f5RSxTW"><img src="https://img.shields.io/discord/617736623412740146?label=Discord&style=flat-square"></a>
+<a href="https://discord.gg/wgRJDJJ"><img src="https://img.shields.io/discord/617736623412740146?label=Discord&style=flat-square"></a>
 <a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
 </p>
 
@@ -17,4 +17,4 @@ The purpose of the mod is to craft and create cinematic scenes or clips, using a
 <br><br>
 "Ideally", yes. This mod is still not finished and has been a pet project for quite some time, until a few years ago when I stopped putting time on it. After leaving it out in a somewhat usable state, I decided to work on it again in order to "finish" it, or atleast make it the best it could be.
 
-#### Other : [How to install](https://github.com/sasseries/iw4-cine-mod/wiki/Prerequired-&-Installation) /// [Discord server](https://discord.gg/f5RSxTW)</p>
+#### Other : [How to install](https://github.com/sasseries/iw4-cine-mod/wiki/Prerequired-&-Installation) /// [Discord server](https://discord.gg/wgRJDJJ)</p>
