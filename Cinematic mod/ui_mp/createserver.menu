@@ -1,11 +1,279 @@
 #include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
 
-#define NO_PROFILES
+#define CHOICE_X_START			-80
+#define CHOICE_Y_START			34
+
+#define CHOICE_GROUP			"createserver"
+
+#define STYLE_PC	1
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+#define SETUP_ACTION_STARTDEV \
+	if (dvarstring(ui_mapname) == "mp_afghan") \
+	{ \
+		exec "devmap mp_afghan"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_boneyard") \
+	{ \
+		exec "devmap mp_boneyard"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_brecourt") \
+	{ \
+		exec "devmap mp_brecourt"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_checkpoint") \
+	{ \
+		exec "devmap mp_checkpoint"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_derail") \
+	{ \
+		exec "devmap mp_derail"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_estate") \
+	{ \
+		exec "devmap mp_estate"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_favela") \
+	{ \
+		exec "devmap mp_favela"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_highrise") \
+	{ \
+		exec "devmap mp_highrise"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_invasion") \
+	{ \
+		exec "devmap mp_invasion"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_nightshift") \
+	{ \
+		exec "devmap mp_nightshift"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_quarry") \
+	{ \
+		exec "devmap mp_quarry"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rundown") \
+	{ \
+		exec "devmap mp_rundown"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rust") \
+	{ \
+		exec "devmap mp_rust"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_subbase") \
+	{ \
+		exec "devmap mp_subbase"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_terminal") \
+	{ \
+		exec "devmap mp_terminal"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_underpass") \
+	{ \
+		exec "devmap mp_underpass"; \
+	} \
+	if (dvarstring(ui_mapname) == "af_caves") \
+	{ \
+		exec "devmap af_caves"; \
+	} \
+	if (dvarstring(ui_mapname) == "af_chase") \
+	{ \
+		exec "devmap af_chase"; \
+	} \
+	if (dvarstring(ui_mapname) == "airport") \
+	{ \
+		exec "devmap airport"; \
+	} \
+	if (dvarstring(ui_mapname) == "arcadia") \
+	{ \
+		exec "devmap arcadia"; \
+	} \
+	if (dvarstring(ui_mapname) == "boneyard") \
+	{ \
+		exec "devmap boneyard"; \
+	} \
+	if (dvarstring(ui_mapname) == "cliffhanger") \
+	{ \
+		exec "devmap cliffhanger"; \
+	} \
+	if (dvarstring(ui_mapname) == "co_hunted") \
+	{ \
+		exec "devmap co_hunted"; \
+	} \
+	if (dvarstring(ui_mapname) == "contingency") \
+	{ \
+		exec "devmap contingency"; \
+	} \
+	if (dvarstring(ui_mapname) == "dc_whitehouse") \
+	{ \
+		exec "devmap dc_whitehouse"; \
+	} \
+	if (dvarstring(ui_mapname) == "dcburning") \
+	{ \
+		exec "devmap dcburning"; \
+	} \
+	if (dvarstring(ui_mapname) == "dcemp") \
+	{ \
+		exec "devmap dcemp"; \
+	} \
+	if (dvarstring(ui_mapname) == "ending") \
+	{ \
+		exec "devmap ending"; \
+	} \
+	if (dvarstring(ui_mapname) == "estate") \
+	{ \
+		exec "devmap estate"; \
+	} \
+	if (dvarstring(ui_mapname) == "favela") \
+	{ \
+		exec "devmap favela"; \
+	} \
+	if (dvarstring(ui_mapname) == "favela_escape") \
+	{ \
+		exec "devmap favela_escape"; \
+	} \
+	if (dvarstring(ui_mapname) == "gulag") \
+	{ \
+		exec "devmap gulag"; \
+	} \
+	if (dvarstring(ui_mapname) == "invasion") \
+	{ \
+		exec "devmap invasion"; \
+	} \
+	if (dvarstring(ui_mapname) == "iw4_credits") \
+	{ \
+		exec "devmap iw4_credits"; \
+	} \
+	if (dvarstring(ui_mapname) == "oilrig") \
+	{ \
+		exec "devmap oilrig"; \
+	} \
+	if (dvarstring(ui_mapname) == "so_bridge") \
+	{ \
+		exec "devmap so_bridge"; \
+	} \
+	if (dvarstring(ui_mapname) == "so_ghillies") \
+	{ \
+		exec "devmap so_ghillies"; \
+	} \
+	if (dvarstring(ui_mapname) == "trainer") \
+	{ \
+		exec "devmap trainer"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_abandon") \
+	{ \
+		exec "devmap mp_abandon"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bloc") \
+	{ \
+		exec "devmap mp_bloc"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bog_sh") \
+	{ \
+		exec "devmap mp_bog_sh"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cargoship") \
+	{ \
+		exec "devmap mp_cargoship"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cargoship_sh") \
+	{ \
+		exec "devmap mp_cargoship_sh"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_compact") \
+	{ \
+		exec "devmap mp_compact"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_complex") \
+	{ \
+		exec "devmap mp_complex"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_crash") \
+	{ \
+		exec "devmap mp_crash"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cross_fire") \
+	{ \
+		exec "devmap mp_cross_fire"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_fuel2") \
+	{ \
+		exec "devmap mp_fuel2"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_killhouse") \
+	{ \
+		exec "devmap mp_killhouse"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_nuked") \
+	{ \
+		exec "devmap mp_nuked"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_overgrown") \
+	{ \
+		exec "devmap mp_overgrown"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_storm") \
+	{ \
+		exec "devmap mp_storm"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_strike") \
+	{ \
+		exec "devmap mp_strike"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_trailerpark") \
+	{ \
+		exec "devmap mp_trailerpark"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_vacant") \
+	{ \
+		exec "devmap mp_vacant"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_estate_tropical") \
+	{ \
+		exec "devmap mp_estate_tropical"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_fav_tropical") \
+	{ \
+		exec "devmap mp_fav_tropical"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_crash_trop") \
+	{ \
+		exec "devmap mp_crash_trop"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_storm_spring") \
+	{ \
+		exec "devmap mp_storm_spring"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_shipment") \
+	{ \
+		exec "devmap mp_shipment"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_shipment_long") \
+	{ \
+		exec "devmap mp_shipment_long"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rust_long") \
+	{ \
+		exec "devmap mp_rust_long"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_firingrange") \
+	{ \
+		exec "devmap mp_firingrange"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bloc_sh") \
+	{ \
+		exec "devmap mp_bloc_sh"; \
+	}
+	
+
 
 {
 	menuDef
 	{
-		name main_text
+		name createserver
 		fullscreen 1
 		rect 0 0 640 480
 		style 0
@@ -25,16 +293,29 @@
 		blurWorld 0
 		onOpen
 		{
-			exec "selectStringTableEntryInDvar mp/didyouknow.csv 0 didyouknow";
-			setdvar sv_cheats 1;
-			setdvar cg_newColors 1;
+			uiScript "loadArenas";
+			execnow xblive_rankedmatch 0;
+			execnow xblive_privatematch 1;
+			exec "exec dvar_defaults.cfg";
+		}
+		onClose
+		{
+			open main_text;
 		}
 		onESC
 		{
-			open quit_popmenu;
+			exec "xstopparty";
+			if (inprivateparty() && !privatepartyhost() && privatepartyhostinlobby())
+			{
+				exec "xstopprivateparty";
+				exec "xstartprivateparty";
+			}
+			setdvar xblive_privatematch 0;
+			close self;
 		}
 		focusColor 1 1 1 1
-		#define WHAT_THE_HELL_KIND_OF_NAME_IS_SOAP
+		#define DO_THE_CHICKEN_WING_2
+		#include "ui_mp/bg.inc"
 		#include "ui_mp/bg.inc"
 
 
@@ -153,11 +434,6 @@
 			visible visArg \
 		}
 
-#define CHECK_FOR_UPDATE_ACTION \
-	exec checkforupdate \
-	open auconfirm
-		
-		// default title
 		itemDef
 		{
 			rect 0 20 272 28 1 1
@@ -180,16 +456,18 @@
 			textStyle 0
 			textFont 9
 			feeder 0
-			text "^7CINEMATIC ^3MOD"
+			text "^7START DEVMAP"
 			visible 1
-			visible when(!dvarbool(cl_updateavailable))
 		}
 		
-		// show only when update is available
+		// general menu buttons
+		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "LAUNCH DEVMAP", SETUP_ACTION_STARTDEV, 1, "Start the currently selected map")
+		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "CHANGE DEVMAP", open settings_map, 1, "Select another map")
+		
 		itemDef
 		{
-			rect 0 -1 272 28 1 1
-			style 0
+			rect 0 -139 216 122 1 3
+			style 3
 			border 0
 			ownerdraw 0
 			ownerdrawFlag 0
@@ -198,38 +476,74 @@
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
+			decoration
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ("preview_" + dvarString (ui_mapname))
+		}
+		itemDef
+		{
+			rect 0 -37 216 20 1 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 0.65
+			backColor 0 0 0 0.5
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			background white
 			decoration 
+			autoWrapped 
 			type 0
 			align 0
 			textAlign 6
-			textAlignX -59
+			textAlignX -4
 			textAlignY 0
-			textScale 0.5
+			textScale 0.375
 			textStyle 0
-			textFont 9
+			textFont 3
 			feeder 0
-			text "^7CINEMATIC ^3MOD"
 			visible 1
-			visible when(dvarbool(cl_updateavailable))
+			exp text ( "Moviemaking" )
 		}
-		
-		// update button
-		MENU_CHOICE_BUTTON_VIS(0, button_0, 1 1 1 1, "^3NEW CLIENT UPDATE", CHECK_FOR_UPDATE_ACTION, when(dvarbool(cl_updateavailable)), "Update your client (V2/React/IW4x) ?")
-		HORIZONTAL_LINE(1, when(dvarbool(cl_updateavailable)))
-		
-		// general menu buttons
-		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "START DEVMAP", open createserver;, 1, "Create a devmap of your choice")²
-		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "LOCAL CONNECT", exec "connect 127.0.0.1";, 1, "Connects to 127.0.0.1")
-		HORIZONTAL_LINE(3, 1)
-		
-		MENU_CHOICE_BUTTON_VIS(3, button_3, 1 1 1 1, "CREATE A CLASS", open cac_popup;, 1, "Create your own custom classes")
-		MENU_CHOICE_BUTTON_VIS(4, button_4, 1 1 1 1, "CALLSIGN & KILLSTREAKS", open popup_callsign;, 1, "Set your title, emblem, and killstreak")
-		MENU_CHOICE_BUTTON_VIS(5, button_5, 1 1 1 1, "DEMOS LIST", open pc_theater_menu;, 1, "Watch your played matches")
-		
-		HORIZONTAL_LINE(6, 1)
-		MENU_CHOICE_BUTTON_VIS(6, button_6, 1 1 1 1, "MODS", open mods_menu;, 1, "Change game options")
-		MENU_CHOICE_BUTTON_VIS(7, button_7, 1 1 1 1, "@MENU_OPTIONS_CAPS", open pc_options_video;, 1, "Change game options")
-		MENU_CHOICE_BUTTON_VIS(8, button_8, 1 1 1 1, "@MENU_QUIT_CAPS", exec "quit;", 1, "Are you sure ? :(")
+		itemDef
+		{
+			rect 0 -139 216 20 1 3
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.5
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			background white
+			decoration 
+			autoWrapped 
+			type 0
+			align 0
+			textAlign 6
+			textAlignX -4
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( dvarString(ui_map_long) );
+		}
+
 
 
 		itemDef
@@ -282,7 +596,7 @@
 			textFont 3
 			feeder 1
 			visible 1
-			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#285 ^3 \n > Discord server : ^3discord.gg/wgRJDJJ"
+			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#283 ^3 \n > Discord server : ^3discord.gg/wgRJDJJ"
 			exp rect x ( 0 - 250 )
 		}
 		itemDef
@@ -445,7 +759,7 @@
 		itemDef
 		{
 			name hint_area
-			rect 0 270 215 18 1 1
+			rect 0 240 215 18 1 1
 			style 0
 			border 0
 			ownerdraw 0
@@ -523,4 +837,3 @@
 		}
 
 	}
-}
