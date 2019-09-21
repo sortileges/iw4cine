@@ -1,6 +1,6 @@
 /**
  *	SASS' CINEMATIC MOD --- "Misc" file
- *	Version : #283
+ *	Version : #285
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
@@ -35,12 +35,12 @@ MiscConnect()
 		setDvar("sv_hostname", "SASS ^3MVM ^7- ^2LOCAL SERVER");
 		setDvar("g_TeamName_Allies", "allies");
 		setDvar("g_TeamName_Axis", "axis");
-		setDvar("con_gameMsgWindow0MsgTime", "9");
+		setDvar("con_gameMsgWindow0MsgTime", "5");
 		setDvar("con_gameMsgWindow0LineCount", "9");
 		setDvar("cg_weaponHintsCOD1Style", "0");
 
-		setObjectiveText(game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#283 \n ^7Custom :" + level.patch);
-		setObjectiveText(game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#283 \n ^7Custom :" + level.patch);
+		setObjectiveText(game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#285 \n ^7Custom :" + level.patch);
+		setObjectiveText(game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#285 \n ^7Custom :" + level.patch);
 		setObjectiveHintText("allies", " ");
 		setObjectiveHintText("axis", " ");
 
@@ -76,6 +76,7 @@ MiscSpawn()
         thread earfquake();
 		thread thermal();
 		thread watermark();
+		thread discord();
 	}
 }
 
@@ -139,21 +140,20 @@ MsgAbout()
 	{
 		self waittill("about");
 
-		self IPrintLnBold("Sass/Civil ^3MW2 Movie ^7Mod");
+		self IPrintLnBold("^3Sass/Civil ^7MW2 Movie Mod");
 		wait 1.5;
-		self IPrintLnBold("Version : ^7#283");
+		self IPrintLnBold("^3Version ^7: #285");
 		wait 1.5;
-		self IPrintLnBold("Custom ^3scripts ^7: " + level.patch);
+		self IPrintLnBold("^3Custom ^7scripts : " + level.patch);
 		wait 1.5;
 		self IPrintLnBold("^3Thanks ^7for downloading !");
 		self IPrintLn("^1Thanks to / Credits :");
 		self IPrintLn("- case, ozzie and jayy for their coolness");
 		self IPrintLn("- luckyy & CoDTVMM team for base help");
-		self IPrintLn("- Lasko for the menus");
+		self IPrintLn("- Lasko for the menus (on old versions)");
 		self IPrintLn("- You and everybody who supported the project :D");
-		wait 10;
-		self IPrintLn("Don't forget to join the ^3discord server ^7:");
-		self IPrintLn("^3>>> ^7discord.gg/wgRJDJJ");
+		wait 1.4;
+		self IPrintLnBold("^3Discord server link ^7: discord.gg/wgRJDJJ");
 	}
 }
 
@@ -300,4 +300,18 @@ watermark()
 	watermark.hideWhenInMenu = true;
 	watermark setText("Sass' Cinematic Mod");
 
+}
+
+discord()
+{
+	self endon("disconnect");
+	self endon("death");
+
+	setDvarIfUninitialized("discord", "Discord server link");
+	self notifyOnplayerCommand("discord", "discord");
+	for (;;)
+	{
+		self waittill("discord");
+		self IPrintLnBold("^3Discord link ^7: discord.gg/wgRJDJJ");
+	}
 }

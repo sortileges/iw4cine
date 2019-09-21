@@ -1,6 +1,6 @@
 /**
  *	SASS' CINEMATIC MOD --- "Actors" file
- *	Version : #283
+ *	Version : #285
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
@@ -31,12 +31,12 @@ actor()
 	level.gopro.linked = 0;
 	level.gopro enablelinkto();
 	wait 0.05;
-	level.gopro.model = spawn("script_model", (9999, 9999, 9999));
-	level.gopro.model setModel("projectile_rpg7");
-	level.gopro.model.origin = level.gopro.origin;
-	level.gopro.model.angles = (level.gopro.angles - (15, 0, 0));
+	level.gopro.object = spawn("script_model", (9999, 9999, 9999));
+	level.gopro.object setModel("projectile_rpg7");
+	level.gopro.object.origin = level.gopro.origin;
+	level.gopro.object.angles = (level.gopro.angles - (15, 0, 0));
 	wait 0.05;
-	level.gopro.model linkTo(level.gopro, "tag_origin");
+	level.gopro.object linkTo(level.gopro, "tag_origin");
 
 	level thread OnPlayerConnect();
 }
@@ -519,21 +519,21 @@ ActorGoPro()
 			self.sessionstate = "playing";
 			self allowSpectateTeam("freelook", false);
 		}
-		else if (arguments[0] == "set")
+		else
 		{
 			foreach(actor in level.actor)
 			{
-				if (actor.name == arguments[1])
+				if (actor.name == arguments[0])
 				{
 					if (level.gopro.linked == 1)
 					{
 						level.gopro unlink();
 						level.gopro.linked = 0;
 					}
-					level.gopro.origin = actor GetTagOrigin(arguments[2]);
-					level.gopro.angles = actor GetTagAngles(arguments[2]);
+					level.gopro.origin = actor GetTagOrigin(arguments[1]);
+					level.gopro.angles = actor GetTagAngles(arguments[1]);
 					wait 0.05;
-					level.gopro linkTo(actor, arguments[2], (int(arguments[3]), int(arguments[4]), int(arguments[5])), (int(arguments[6]), int(arguments[7]), int(arguments[8])));
+					level.gopro linkTo(actor, arguments[1], (int(arguments[2]), int(arguments[3]), int(arguments[4])), (int(arguments[5]), int(arguments[6]), int(arguments[7])));
 					level.gopro.linked = 1;
 				}
 			}
