@@ -8,7 +8,7 @@
 <a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
 <a href="paypal.me/cxvl"><img src="https://img.shields.io/badge/Donate-Paypal-orange?style=flat-square"></a>
 
-This mod was designed for video editors who needs to create cinematic shots in the Multiplayer version of the game Call of Duty : Modern Warfare 2.
+This mod was designed for video editors who needs to create cinematics in the Multiplayer version of the game Call of Duty : Modern Warfare 2.
 
 It is not an external tool. This mod creates new variables (dvars) that executes a script when modified. This is not a game engine modification either. This is all done through scripting using GSC.
 
@@ -27,7 +27,7 @@ I always recommend IW4x (personnal preference), but some people might want to us
 
 Simply download the mod through [this link](https://github.com/sasserism/iw4-cine-mod/releases/latest). Scroll down and click on "Source code (zip)" and download the file.
 
-<img src="https://i.gyazo.com/76f56263d5f84a2490384a8c2850e0c6.png" alt="screenshot" height="250px" align="right"/>
+<img src="https://i.gyazo.com/76f56263d5f84a2490384a8c2850e0c6.png" alt="screenshot" height="230px" align="right"/>
 
 Once the mod downloaded, open the ZIP file and drag the "Cinematic Mod" folder into your `MW2/mods` folder. If the `mods` folder doesn't exist, create it. (*You can also rename the mod if you'd like.*)
 
