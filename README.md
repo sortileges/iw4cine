@@ -6,7 +6,7 @@
 
 <a href="https://discord.gg/wgRJDJJ"><img src="https://img.shields.io/discord/617736623412740146?label=Discord&style=flat-square"></a>
 <a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
-<a href="paypal.me/cxvl"><img src="https://img.shields.io/badge/Donate-Paypal-orange?style=flat-square"></a>
+<a href="https://paypal.me/cxvl"><img src="https://img.shields.io/badge/Donate-Paypal-orange?style=flat-square"></a>
 
 This mod was designed for video editors who needs to create cinematics in the Multiplayer version of the game Call of Duty : Modern Warfare 2.
 
