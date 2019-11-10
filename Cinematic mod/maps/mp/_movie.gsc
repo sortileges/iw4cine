@@ -1,6 +1,6 @@
 /**
  *	SASS' CINEMATIC MOD --- "Movie" file
- *	Version : #283
+ *	Version : #290
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
@@ -74,12 +74,6 @@ MovieSpawn()
 		thread SpawnEffects();
 		thread TweakFog();
 		thread SetVisions();
-
-		// Misc
-		thread clone();
-		thread loadPos();
-		thread noclip();
-		thread clearBodies();
 
 	}
 }
@@ -581,6 +575,7 @@ EnableLink()
 			foreach(player in level.players)
 			{
 				player iPrintLn("^3Bots hold weapon on ^7mvm_bot_kill ^3 : ^2TRUE");
+                setDvarIfUninitialized("mvm_throwgun", "0");
 				self.linke = true;
 			}
 		}
@@ -714,34 +709,36 @@ GetCamoName(tracker)
 	}
 }
 
+GetCamoNameFromInt(tracker)
+{
+	switch (tracker)
+	{
+		case 2:
+			return "_desert";
+		case 3:
+			return "_arctic";
+		case 1:
+			return "_woodland";
+		case 4:
+			return "_digital";
+		case 5:
+			return "_red_urban";
+		case 6:
+			return "_red_tiger";
+		case 7:
+			return "_blue_tiger";
+		case 8:
+			return "_orange_fall";
+		default:
+			return "";
+	}
+}
 
 
 
 
 /*================================== OTHER ====================================================
 =============================================================================================*/
-
-
-Noclip()
-{
-	self endon("disconnect");
-	self endon("death");
-	self endon("killnoclip");
-	setDvarIfUninitialized("noclip2", "");
-	self notifyOnPlayerCommand("noclip2", "noclip2");
-	maps\mp\gametypes\_spectating::setSpectatePermissions();
-	for (;;)
-	{
-		self waittill("noclip2");
-		self openMenu("noclip");
-		self allowSpectateTeam("freelook", true);
-		self.sessionstate = "spectator";
-		self waittill("noclip2");
-		self closeMenu("noclip");
-		self.sessionstate = "playing";
-		self allowSpectateTeam("freelook", false);
-	}
-}
 
 SaveSpawn()
 {
@@ -753,43 +750,6 @@ BotPrestige()
 {
 	self setPlayerData("prestige", 9);
 	self setPlayerData("experience", 0);
-}
-
-clone()
-{
-	self endon("disconnect");
-	self endon("death");
-	setDvarIfUninitialized("clone", "*none* ^8- ^3Spawns a clone of yourself");
-	self notifyOnplayerCommand("clone", "clone");
-	for (;;)
-	{
-		self waittill("clone");
-		self PrepareInHandModel();
-		wait .1;
-		self ClonePlayer(1);
-		wait .1;
-		self.weaptoattach delete();
-	}
-}
-
-clearBodies()
-{
-	self endon("disconnect");
-	self endon("death");
-	setDvarIfUninitialized("clearb", "*none* ^8- ^3Clears all bodies");
-	self notifyOnplayerCommand("clearb", "clearb");
-	for (;;)
-	{
-		self waittill("clearb");
-		self thread savespawn();
-		self setOrigin((-9999, -9999, 9999));
-		for (i = 0; i < 15; i++)
-		{
-			self ClonePlayer(1);
-			wait .1;
-		}
-		self thread loadpos();
-	}
 }
 
 PrepareInHandModel()
@@ -814,15 +774,4 @@ PrepareInHandModel()
 		return self.weaptoattach;
 	}
 }
-
-loadPos()
-{
-	self freezecontrols(true);
-	wait .05;
-	self setPlayerAngles(self.spawn_angles);
-	self setOrigin(self.spawn_origin);
-	wait .05;
-	self freezecontrols(false);
-}
-
 
