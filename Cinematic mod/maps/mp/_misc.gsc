@@ -1,6 +1,6 @@
 /**
  *	SASS' CINEMATIC MOD --- "Misc" file
- *	Version : #285
+ *	Version : #290
  *	
  *	GitHub  : https://github.com/sasseries/iw4-cine-mod
  *	Discord : sass#1997
@@ -35,12 +35,12 @@ MiscConnect()
 		setDvar("sv_hostname", "SASS ^3MVM ^7- ^2LOCAL SERVER");
 		setDvar("g_TeamName_Allies", "allies");
 		setDvar("g_TeamName_Axis", "axis");
-		setDvar("con_gameMsgWindow0MsgTime", "5");
+		setDvar("con_gameMsgWindow0MsgTime", "3");
 		setDvar("con_gameMsgWindow0LineCount", "9");
 		setDvar("cg_weaponHintsCOD1Style", "0");
 
-		setObjectiveText(game["attackers"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#285 \n ^7Custom :" + level.patch);
-		setObjectiveText(game["defenders"], "Sass' ^3 Cinematic ^7Mod \n Version : ^3#285 \n ^7Custom :" + level.patch);
+		setObjectiveText(game["attackers"], "Sass' ^3Cinematic ^7Mod \n Version : ^3#290 \n ^7Custom file:" + level.patch);
+		setObjectiveText(game["defenders"], "Sass' ^3Cinematic ^7Mod \n Version : ^3#290 \n ^7Custom file:" + level.patch);
 		setObjectiveHintText("allies", " ");
 		setObjectiveHintText("axis", " ");
 
@@ -68,6 +68,10 @@ MiscSpawn()
         thread MsgWelcome();
 		thread WeaponChangeClass();
 		thread WeaponSecondaryCamo();
+        thread CreateClone();
+        thread ClearBodies();
+        thread LoadPos();
+		thread Noclip();
 
         // Hidden
         thread VerifyModel();
@@ -77,6 +81,7 @@ MiscSpawn()
 		thread thermal();
 		thread watermark();
 		thread discord();
+
 	}
 }
 
@@ -163,8 +168,8 @@ MsgWelcome()
 	{
 		if (!isDefined(self.donefirst) && self.pers["isBot"] == false)
 		{
-			wait 6; // Wait the end of the team popup
-			self thread teamPlayerCardSplash("used_emp", self, self.pers["team"]);
+			wait 6;
+			self thread teamPlayerCardSplash("callout_killcarrier", self, self.pers["team"]);
 			self IPrintLn("Welcome to ^3Sass' / Civil's ^7MW2 cinematic mod");
 			self IPrintLn("Type ^3/about ^7for more ^3infos");
 			self.donefirst = 1;
@@ -174,24 +179,21 @@ MsgWelcome()
 
 WeaponChangeClass()
 {
-	self endon("disconnect");
+	self endon("death");
+    self endon("disconnect");
 
 	oldclass = self.pers["class"];
-	for (;;)
-	{
-		if (self.pers["class"] != oldclass)
-		{
-			assert(isValidClass(self.class));
-			self maps\mp\gametypes\_class::setClass(self.class);
-			self maps\mp\gametypes\_class::giveloadout(self.team, self.class);
-			oldclass = self.pers["class"];
-			thread WeaponSecondaryCamo();
-			self thread VerifyModel();
-			self maps\mp\perks\_perks::givePerk("specialty_falldamage");
-			self maps\mp\perks\_perks::givePerk("specialty_marathon");
-		}
-		wait 0.05;
-	}
+    for(;;)
+    {
+        if(self.pers["class"] != oldclass)
+        {
+            self maps\mp\gametypes\_class::giveloadout(self.pers["team"],self.pers["class"]);
+            oldclass = self.pers["class"];
+            self maps\mp\perks\_perks::givePerk("specialty_falldamage");
+		    self maps\mp\perks\_perks::givePerk("specialty_marathon");
+        }
+        wait 0.05;
+    }
 }
 
 WeaponSecondaryCamo()
@@ -205,6 +207,52 @@ WeaponSecondaryCamo()
 	else self _giveWeapon(sec, self.loadoutPrimaryCamo, false);
 	wait .1;
 }
+
+
+CreateClone()
+{
+	self endon("disconnect");
+	self endon("death");
+	setDvarIfUninitialized("clone", "*none* ^8- ^3Spawns a clone of yourself");
+	self notifyOnplayerCommand("clone", "clone");
+	for (;;)
+	{
+		self waittill("clone");
+
+        if ( getDvar("clone", "") == "1")
+        {
+		    self PrepareInHandModel();
+            wait .1;
+		    self ClonePlayer(1);
+        }
+        else 
+        {
+            self.weaptoattach delete();
+            self ClonePlayer(1);
+        }
+        setDvar("clone", "*none* ^8- ^3Spawns a clone of yourself");
+	}
+}
+
+ClearBodies()
+{
+    self endon("disconnect");
+    self endon("death");
+    setDvarIfUninitialized("clearbodies", "*none* ^8- ^3Clears all bodies");
+    self notifyOnplayerCommand("clearbodies", "clearbodies");
+    for (;;)
+    {
+        self waittill("clearbodies");
+        self iPrintLn("Clearing bodies...");
+        for (i = 0; i < 15; i++)
+        {
+            clone = self ClonePlayer(1);
+            clone delete();
+            wait .1;
+        }
+    }
+}
+
 
 VerifyModel()
 {
@@ -275,6 +323,7 @@ thermal()
 		}
 		else if (self.thermalOn == 2)
 		{
+            self visionSetThermalForPlayer( "thermal_mp", 1 );
 			self ThermalVisionOff();
 			self.thermalOn = 0;
 		}
@@ -314,4 +363,35 @@ discord()
 		self waittill("discord");
 		self IPrintLnBold("^3Discord link ^7: discord.gg/wgRJDJJ");
 	}
+}
+
+Noclip()
+{
+	self endon("disconnect");
+	self endon("death");
+	self endon("killnoclip");
+	setDvarIfUninitialized("noclip2", "");
+	self notifyOnPlayerCommand("noclip2", "noclip2");
+	maps\mp\gametypes\_spectating::setSpectatePermissions();
+	for (;;)
+	{
+		self waittill("noclip2");
+		self openMenu("noclip");
+		self allowSpectateTeam("freelook", true);
+		self.sessionstate = "spectator";
+		self waittill("noclip2");
+		self closeMenu("noclip");
+		self.sessionstate = "playing";
+		self allowSpectateTeam("freelook", false);
+	}
+}
+
+LoadPos()
+{
+	self freezecontrols(true);
+	wait .05;
+	self setPlayerAngles(self.spawn_angles);
+	self setOrigin(self.spawn_origin);
+	wait .05;
+	self freezecontrols(false);
 }
