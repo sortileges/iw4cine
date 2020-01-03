@@ -147,7 +147,7 @@ MsgAbout()
 
 		self IPrintLnBold("^3Sass/Civil ^7MW2 Movie Mod");
 		wait 1.5;
-		self IPrintLnBold("^3Version ^7: #285");
+		self IPrintLnBold("^3Version ^7: #290");
 		wait 1.5;
 		self IPrintLnBold("^3Custom ^7scripts : " + level.patch);
 		wait 1.5;
