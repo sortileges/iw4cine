@@ -1,6 +1,287 @@
 #include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
 
-#define NO_PROFILES
+#define CHOICE_X_START			-80
+#define CHOICE_Y_START			34
+
+#define CHOICE_GROUP			"createserver"
+
+#define STYLE_PC	1
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+#define SETUP_ACTION_STARTDEV \
+	if (dvarstring(ui_mapname) == "mp_afghan") \
+	{ \
+		exec "devmap mp_afghan"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_boneyard") \
+	{ \
+		exec "devmap mp_boneyard"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_brecourt") \
+	{ \
+		exec "devmap mp_brecourt"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_checkpoint") \
+	{ \
+		exec "devmap mp_checkpoint"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_derail") \
+	{ \
+		exec "devmap mp_derail"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_estate") \
+	{ \
+		exec "devmap mp_estate"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_favela") \
+	{ \
+		exec "devmap mp_favela"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_highrise") \
+	{ \
+		exec "devmap mp_highrise"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_invasion") \
+	{ \
+		exec "devmap mp_invasion"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_nightshift") \
+	{ \
+		exec "devmap mp_nightshift"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_quarry") \
+	{ \
+		exec "devmap mp_quarry"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rundown") \
+	{ \
+		exec "devmap mp_rundown"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rust") \
+	{ \
+		exec "devmap mp_rust"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_subbase") \
+	{ \
+		exec "devmap mp_subbase"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_terminal") \
+	{ \
+		exec "devmap mp_terminal"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_underpass") \
+	{ \
+		exec "devmap mp_underpass"; \
+	} \
+	if (dvarstring(ui_mapname) == "af_caves") \
+	{ \
+		exec "devmap af_caves"; \
+	} \
+	if (dvarstring(ui_mapname) == "af_chase") \
+	{ \
+		exec "devmap af_chase"; \
+	} \
+	if (dvarstring(ui_mapname) == "airport") \
+	{ \
+		exec "devmap airport"; \
+	} \
+	if (dvarstring(ui_mapname) == "arcadia") \
+	{ \
+		exec "devmap arcadia"; \
+	} \
+	if (dvarstring(ui_mapname) == "boneyard") \
+	{ \
+		exec "devmap boneyard"; \
+	} \
+	if (dvarstring(ui_mapname) == "cliffhanger") \
+	{ \
+		exec "devmap cliffhanger"; \
+	} \
+	if (dvarstring(ui_mapname) == "co_hunted") \
+	{ \
+		exec "devmap co_hunted"; \
+	} \
+	if (dvarstring(ui_mapname) == "contingency") \
+	{ \
+		exec "devmap contingency"; \
+	} \
+	if (dvarstring(ui_mapname) == "dc_whitehouse") \
+	{ \
+		exec "devmap dc_whitehouse"; \
+	} \
+	if (dvarstring(ui_mapname) == "dcburning") \
+	{ \
+		exec "devmap dcburning"; \
+	} \
+	if (dvarstring(ui_mapname) == "dcemp") \
+	{ \
+		exec "devmap dcemp"; \
+	} \
+	if (dvarstring(ui_mapname) == "ending") \
+	{ \
+		exec "devmap ending"; \
+	} \
+	if (dvarstring(ui_mapname) == "estate") \
+	{ \
+		exec "devmap estate"; \
+	} \
+	if (dvarstring(ui_mapname) == "favela") \
+	{ \
+		exec "devmap favela"; \
+	} \
+    if (dvarstring(ui_mapname) == "roadkill") \
+	{ \
+		exec "devmap roadkill"; \
+	} \
+	if (dvarstring(ui_mapname) == "favela_escape") \
+	{ \
+		exec "devmap favela_escape"; \
+	} \
+	if (dvarstring(ui_mapname) == "gulag") \
+	{ \
+		exec "devmap gulag"; \
+	} \
+	if (dvarstring(ui_mapname) == "invasion") \
+	{ \
+		exec "devmap invasion"; \
+	} \
+	if (dvarstring(ui_mapname) == "iw4_credits") \
+	{ \
+		exec "devmap iw4_credits"; \
+	} \
+	if (dvarstring(ui_mapname) == "oilrig") \
+	{ \
+		exec "devmap oilrig"; \
+	} \
+	if (dvarstring(ui_mapname) == "so_bridge") \
+	{ \
+		exec "devmap so_bridge"; \
+	} \
+	if (dvarstring(ui_mapname) == "so_ghillies") \
+	{ \
+		exec "devmap so_ghillies"; \
+	} \
+	if (dvarstring(ui_mapname) == "trainer") \
+	{ \
+		exec "devmap trainer"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_abandon") \
+	{ \
+		exec "devmap mp_abandon"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bloc") \
+	{ \
+		exec "devmap mp_bloc"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bog_sh") \
+	{ \
+		exec "devmap mp_bog_sh"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cargoship") \
+	{ \
+		exec "devmap mp_cargoship"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cargoship_sh") \
+	{ \
+		exec "devmap mp_cargoship_sh"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_compact") \
+	{ \
+		exec "devmap mp_compact"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_complex") \
+	{ \
+		exec "devmap mp_complex"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_crash") \
+	{ \
+		exec "devmap mp_crash"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_cross_fire") \
+	{ \
+		exec "devmap mp_cross_fire"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_fuel2") \
+	{ \
+		exec "devmap mp_fuel2"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_killhouse") \
+	{ \
+		exec "devmap mp_killhouse"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_nuked") \
+	{ \
+		exec "devmap mp_nuked"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_overgrown") \
+	{ \
+		exec "devmap mp_overgrown"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_storm") \
+	{ \
+		exec "devmap mp_storm"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_strike") \
+	{ \
+		exec "devmap mp_strike"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_trailerpark") \
+	{ \
+		exec "devmap mp_trailerpark"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_vacant") \
+	{ \
+		exec "devmap mp_vacant"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_estate_tropical") \
+	{ \
+		exec "devmap mp_estate_tropical"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_fav_tropical") \
+	{ \
+		exec "devmap mp_fav_tropical"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_crash_trop") \
+	{ \
+		exec "devmap mp_crash_trop"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_storm_spring") \
+	{ \
+		exec "devmap mp_storm_spring"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_shipment") \
+	{ \
+		exec "devmap mp_shipment"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_shipment_long") \
+	{ \
+		exec "devmap mp_shipment_long"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_rust_long") \
+	{ \
+		exec "devmap mp_rust_long"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_firingrange") \
+	{ \
+		exec "devmap mp_firingrange"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_frost") \
+	{ \
+		exec "devmap mp_frost"; \
+	} \
+	if (dvarstring(ui_mapname) == "mp_bloc_sh") \
+	{ \
+		exec "devmap mp_bloc_sh"; \
+	}
+	
+#define CHECK_FOR_UPDATE_ACTION \
+	exec checkforupdate \
+	open auconfirm \
+
+#define OPEN_DISC_LINK \
+	exec "openlink www.discord.gg/wgRJDJJ" \
 
 {
 	menuDef
@@ -25,9 +306,10 @@
 		blurWorld 0
 		onOpen
 		{
-			exec "selectStringTableEntryInDvar mp/didyouknow.csv 0 didyouknow";
-			setdvar sv_cheats 1;
-			setdvar cg_newColors 1;
+			uiScript "loadArenas";
+			execnow xblive_rankedmatch 0;
+			execnow xblive_privatematch 1;
+			exec "exec dvar_defaults.cfg";
 		}
 		onESC
 		{
@@ -35,132 +317,20 @@
 		}
 		focusColor 1 1 1 1
 		#define WHAT_THE_HELL_KIND_OF_NAME_IS_SOAP
+		#define DO_THE_CHICKEN_WING_2
 		#include "ui_mp/bg.inc"
 
 
 #define CHOICE_Y(i) ( 28 + ( i * 20 ) )
-//half pixels are GREAT - well, they seem to work here
 #define HR_ORIGIN(i) 0 ( CHOICE_Y(i) - 0.5 )
 #define CHOICE_ORIGIN(i) -64 CHOICE_Y(i)
 #define CHOICE_RECT(i) CHOICE_ORIGIN(i) 336 20 1 1
 #define HR_RECT(i) HR_ORIGIN(i) 216 1 1 1
 
-#define MENU_CHOICE_NEWICON_VIS(itemIndex, imageArg, visArg) \
-		itemDef \
-		{ \
-			style		WINDOW_STYLE_SHADER \
-			rect		236 CHOICE_Y(itemIndex) 40 20 1 1 \
-			exp			material(imageArg) \
-			visible		visArg \
-			align 2 \
-			decoration \
-		}
-#define MENU_CHOICE_BUTTON_VIS( itemIndex, buttonName, forecolorArg, textArg, actionArg, visArg, descArg) \
-		itemDef \
-		{ \
-			name buttonName \
-			rect CHOICE_RECT(itemIndex) \
-			forecolor forecolorArg \
-			backColor 0 0 0 0 \
-			style 1 \
-			origin 0 0 \
-			background menu_button_selection_bar \
-			group mw2_button \
-			type 1 \
-			textAlign 6 \
-			textAlignX -60 \
-			textScale 0.375 \
-			textFont 3 \
-			text textArg \
-			onFocus \
-			{ \
-				play mouse_over; \
-				setItemColor self backcolor 0 0 0 1; \
-				setLocalVarBool ui_menuAButton 1; \
-				setLocalVarFloat ui_popupYPos 0.000000; \
-				setLocalVarString ui_hint_text descArg; \
-			} \
-			leaveFocus \
-			{ \
-				setItemColor self backcolor 0 0 0 0.0; \
-				setLocalVarBool ui_menuAButton 1; \
-				setLocalVarString ui_hint_text "@NULL_EMPTY"; \
-			} \
-			action \
-			{ \
-				play mouse_click; \
-				actionArg \
-			} \
-			visible visArg \
-		}
-#define MENU_CHOICE_DBUTTON_VIS( itemIndex, buttonName, textArg, visArg, descArg) \
-		itemDef \
-		{ \
-			name buttonName \
-			rect CHOICE_RECT(itemIndex) \
-			forecolor 1 1 1 0.5 \
-			backColor 0 0 0 0 \
-			style 1 \
-			origin 0 0 \
-			background menu_button_selection_bar \
-			group mw2_button \
-			type 1 \
-			textAlign 6 \
-			textAlignX -60 \
-			textScale 0.375 \
-			textFont 3 \
-			text textArg \
-			onFocus \
-			{ \
-				play mouse_over; \
-				setItemColor self backcolor 0 0 0 1; \
-				setLocalVarBool ui_menuAButton 1; \
-				setLocalVarFloat ui_popupYPos 0.000000; \
-				setLocalVarString ui_hint_text descArg; \
-			} \
-			leaveFocus \
-			{ \
-				setItemColor self backcolor 0 0 0 0.0; \
-				setLocalVarBool ui_menuAButton 1; \
-				setLocalVarString ui_hint_text "@NULL_EMPTY"; \
-			} \
-			visible visArg \
-		}
-#define HORIZONTAL_LINE(itemIndex, visArg) \
-	itemDef \
-		{ \
-			rect HR_RECT(itemIndex) \
-			style 3 \
-			border 0 \
-			ownerdraw 0 \
-			ownerdrawFlag 0 \
-			borderSize 0 \
-			foreColor 1 1 1 0.65 \
-			backColor 0 0 0 0 \
-			borderColor 0 0 0 0 \
-			outlineColor 0 0 0 0 \
-			background gradient_fadein \
-			decoration \
-			type 0 \
-			align 0 \
-			textAlign 0 \
-			textAlignX 0 \
-			textAlignY 0 \
-			textScale 0.55 \
-			textStyle 0 \
-			textFont 0 \
-			feeder 0 \
-			visible visArg \
-		}
 
-#define CHECK_FOR_UPDATE_ACTION \
-	exec checkforupdate \
-	open auconfirm
-		
-		// default title
 		itemDef
 		{
-			rect 0 20 272 28 1 1
+			rect 86 64 272 28 1 1
 			style 0
 			border 0
 			ownerdraw 0
@@ -173,76 +343,371 @@
 			decoration 
 			type 0
 			align 0
-			textAlign 6
+			textAlign 0
 			textAlignX -59
 			textAlignY 0
 			textScale 0.5
 			textStyle 0
 			textFont 9
 			feeder 0
-			text "^7CINEMATIC ^3MOD"
+			text "IW4cine"
+			visible 1
+		}
+		itemDef
+		{
+			rect -700 -340 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textStyle 0
+			textFont 8
+			visible 1
+			text "START DEVMAP"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Starts the currently selected map";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				SETUP_ACTION_STARTDEV;
+			}
+		}
+		itemDef
+		{
+			rect -700 -320 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "CHOOSE MAP"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Choose devmap to start";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open settings_map;
+			}
+		}
+		itemDef
+		{
+			rect -700 -300 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "CREATE A CLASS"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Create custom classes";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+			    open cac_popup;
+			}
+		}
+		itemDef
+		{
+			rect -700 -280 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "CALLSIGN & KILLSTREAKS"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Change callsign & killstreaks";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open popup_callsign;
+			}
+		}
+		itemDef
+		{
+			rect -700 -260 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "MODS"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Load a mod";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open mods_menu;
+			}
+		}
+		itemDef
+		{
+			rect -700 -240 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "THEATER"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "See your saved matches";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open pc_theater_menu;
+			}
+		}
+		itemDef
+		{
+			rect -700 -220 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "OPTIONS"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Change video, audio, and game options";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				open pc_options_video;
+			}
+		}
+		itemDef
+		{
+			rect -700 -200 190 20 3 3
+			border 0
+			foreColor 1 1 1 0.3
+			backColor 0 0 0 0.2
+			decoration
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
 			visible 1
 			visible when(!dvarbool(cl_updateavailable))
+			text "UPDATE"
 		}
-		
-		// show only when update is available
+
+
 		itemDef
 		{
-			rect 0 -1 272 28 1 1
-			style 0
+			rect -700 -200 190 20 3 3
+			border 0
+			foreColor 1 0.3 0.3 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			visible when(dvarbool(cl_updateavailable))
+			text "[!] UPDATE"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Update your MW2 client!";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				CHECK_FOR_UPDATE_ACTION;
+			}
+		}
+		itemDef
+		{
+			rect -700 -180 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.2
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
+			visible 1
+			text "QUIT"
+			onFocus
+			{
+				play mouse_over;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarFloat ui_popupYPos 0.000000;
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Are you sure ? :(";
+			}
+			leaveFocus
+			{
+				setItemColor self backColor 0 0 0 0.2;
+				setLocalVarBool ui_menuAButton 1;
+				setLocalVarString ui_hint_text "@NULL_EMPTY";
+			}
+			action
+			{
+				play mouse_click;
+				exec quit;
+			}
+		}
+		itemDef
+		{
+			rect 313 -110 250 80 3 3
+			style 1
 			border 0
 			ownerdraw 0
 			ownerdrawFlag 0
-			borderSize 0
-			foreColor 1 1 1 1
-			backColor 0 0 0 0
-			borderColor 0 0 0 0
-			outlineColor 0 0 0 0
-			decoration 
-			type 0
-			align 0
-			textAlign 6
-			textAlignX -59
-			textAlignY 0
-			textScale 0.5
-			textStyle 0
-			textFont 9
-			feeder 0
-			text "^7CINEMATIC ^3MOD"
-			visible 1
-			visible when(dvarbool(cl_updateavailable))
-		}
-		
-		// update button
-		MENU_CHOICE_BUTTON_VIS(0, button_0, 1 1 1 1, "^3NEW CLIENT UPDATE", CHECK_FOR_UPDATE_ACTION, when(dvarbool(cl_updateavailable)), "Update your client (V2/React/IW4x) ?")
-		HORIZONTAL_LINE(1, when(dvarbool(cl_updateavailable)))
-		
-		// general menu buttons
-		MENU_CHOICE_BUTTON_VIS(1, button_1, 1 1 1 1, "START DEVMAP", open createserver;, 1, "Create a devmap of your choice")²
-		MENU_CHOICE_BUTTON_VIS(2, button_2, 1 1 1 1, "LOCAL CONNECT", exec "connect 127.0.0.1";, 1, "Connects to 127.0.0.1")
-		HORIZONTAL_LINE(3, 1)
-		
-		MENU_CHOICE_BUTTON_VIS(3, button_3, 1 1 1 1, "CREATE A CLASS", open cac_popup;, 1, "Create your own custom classes")
-		MENU_CHOICE_BUTTON_VIS(4, button_4, 1 1 1 1, "CALLSIGN & KILLSTREAKS", open popup_callsign;, 1, "Set your title, emblem, and killstreak")
-		MENU_CHOICE_BUTTON_VIS(5, button_5, 1 1 1 1, "DEMOS LIST", open pc_theater_menu;, 1, "Watch your played matches")
-		
-		HORIZONTAL_LINE(6, 1)
-		MENU_CHOICE_BUTTON_VIS(6, button_6, 1 1 1 1, "MODS", open mods_menu;, 1, "Change game options")
-		MENU_CHOICE_BUTTON_VIS(7, button_7, 1 1 1 1, "@MENU_OPTIONS_CAPS", open pc_options_video;, 1, "Change game options")
-		MENU_CHOICE_BUTTON_VIS(8, button_8, 1 1 1 1, "@MENU_QUIT_CAPS", exec "quit;", 1, "Are you sure ? :(")
-
-
-		itemDef
-		{
-			rect 313 -100 250 100 3 3
-			style 1
-			border 1
-			ownerdraw 0
-			ownerdrawFlag 0
-			borderSize 0.5
-			foreColor 1 1 1 0.8
-			backColor 1 1 1 0.1
-			borderColor 1 1 1 0.2
+			borderSize 2
+			backColor 0 0 0 0.2
+			borderColor 1 1 1 1
 			outlineColor 0 0 0 0.5
 			decoration 
 			autoWrapped 
@@ -260,13 +725,13 @@
 		}
 		itemDef
 		{
-			rect 313 -100 250 100 3 3
+			rect 313 -109 250 100 3 3
 			style 1
 			border 0
 			ownerdraw 0
 			ownerdrawFlag 0
 			borderSize 0
-			foreColor 1 1 1 0.8
+			foreColor 1 1 1 1
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
@@ -279,16 +744,17 @@
 			textAlignY 20
 			textScale 0.375
 			textStyle 3
-			textFont 3
+			textFont 8
 			feeder 1
 			visible 1
-			text "> Welcome to ^3Sass' MW2 Cinematic Mod \n > ^7Current verion : ^3#290 ^3 \n > Discord server : ^3discord.gg/wgRJDJJ"
+			text "- Welcome to ^3Sass' MW2 Cinematic Mod \n - ^7Mod version : ^3#301 ^3 \n - Twitter : ^3@sasseries \n - Discord guild : ^3discord.gg/wgRJDJJ"
 			exp rect x ( 0 - 250 )
 		}
+
 		itemDef
 		{
 			name changelog
-			rect -250 2 250 20 3 3
+			rect -250 -28 250 20 3 3
 			border 0
 			foreColor 1 1 1 1
 			backColor 0 0 0 0.2
@@ -299,17 +765,17 @@
 			textAlignX 0
 			textAlignY 16
 			textScale 0.3
-			textFont 3
+			textFont 8
 			visible 1
-			//visible when(dvarbool(ui_showChangelog))
-			text "CHANGELOG"
+			visible when(dvarstring( "shortversion" ) == "0.6.0")
+			text "JOIN DISCORD SERVER"
 			onFocus
 			{
 				play mouse_over;
 				setLocalVarBool ui_menuAButton 1;
 				setLocalVarFloat ui_popupYPos 0.000000;
-				setItemColor self backcolor 0 0 0 0.1;
-				setLocalVarString ui_hint_text "See cinematic mod changelog";
+				setItemColor self backcolor 0 0 0 0.6;
+				setLocalVarString ui_hint_text "Join the discord server!";
 			}
 			leaveFocus
 			{
@@ -320,18 +786,153 @@
 			action
 			{
 				play mouse_click;
-				open popup_playername;
+				OPEN_DISC_LINK;
 			}
+		}
+
+		itemDef
+		{
+			rect 0 0 208 70 3 1
+			style 1
+			border 1
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0.8
+			foreColor 1 1 1 0.3
+			backColor 0 0 0 0.3
+			borderColor 1 1 1 0.4
+			outlineColor 0 0 0 0
+			background black
+			decoration 
+			type 0
+			align 0
+			textAlign 4
+			textAlignX 0
+			textAlignY -20
+			textScale 0.375
+			textStyle 7
+			textFont 6
+			feeder 0
+			visible 1
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( ( - 208 )  )
+			exp rect y ( ( 18 )  )
 		}
 		itemDef
 		{
-			rect -272 28 272 20 3 1
-			style 3
+			rect 0 0 160 32 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
 			decoration
+			type 1
+			align 0
+			textAlign 9
+			textAlignX 0
+			textAlignY 0
+			textScale 0.375
+			textStyle 8
+			textFont 8
+			feeder 0
 			visible 1
-			forecolor 0 0 0 0.25
-			background "playercard_short_bg"
-			textscale 0.55
+			exp text ( "@" + tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 1 )  )
+			exp material ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 2 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( - 208  )
+			exp rect y ( 18 - 2  )
+			exp forecolor r ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 3 )  )
+			exp forecolor g ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 4 )  )
+			exp forecolor b ( tablelookupbyrow( "mp/cardTitleTable.csv" , getplayercardinfo( 1 , 1 , 0 ) , 5 )  )
+		}
+		itemDef
+		{
+			rect 0 0 160 18 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration
+			type 1
+			align 0
+			textAlign 4
+			textAlignX 8
+			textAlignY 0
+			textScale 0.3333
+			textStyle 8
+			textFont 10
+			feeder 0
+			visible 1
+			exp text ( getplayercardinfo( 8 , 1 , 0 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( - 208  )
+			exp rect y ( ( 16 ) + 30  )
+		}
+		itemDef
+		{
+			rect 0 0 48 48 3 1
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( tablelookupbyrow( "mp/cardIconTable.csv" , getplayercardinfo( 2 , 1 , 0 ) , 1 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 )  )
+			exp rect x ( ( - 208 ) + 160  )
+			exp rect y ( ( 18 ) )
+		}
+		itemDef
+		{
+			rect 0 0 208 20 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 8
+			textAlignX 8
+			textAlignY 0
+			textScale 0.375
+			textStyle 7
+			textFont 8
+			feeder 0
+			visible 1
+			exp text ( "[" + getplayercardinfo( 9 , 1 , 0 ) + "]"  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && getplayercardinfo( 9 , 1 , 0 ) != ""  )
+			exp rect x ( ( - 208 )  )
+			exp rect y ( ( 18 ) + 48  )
 		}
 		itemDef
 		{
@@ -358,8 +959,8 @@
 			visible 1
 			exp material ( tablelookup( "mp/rankIconTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , ( getplayercardinfo( 5 , 1 , 0 ) + 1 ) )  )
 			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
-			exp rect x ( ( - 248 ) + 164  )
-			exp rect y ( ( -20 ) + 48  )
+			exp rect x ( ( - 208 ) + 164  )
+			exp rect y ( ( 18 ) + 48  )
 		}
 		itemDef
 		{
@@ -380,147 +981,135 @@
 			textAlignX 20
 			textAlignY 0
 			textScale 0.375
-			textStyle 0
-			textFont 3
+			textStyle 7
+			textFont 8
 			feeder 0
 			visible 1
 			exp text ( tablelookup( "mp/rankTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , 14 )  )
 			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
-			exp rect x ( ( - 248 ) + 164  )
-			exp rect y ( ( -20 ) + 48  )
+			exp rect x ( ( - 208 ) + 164  )
+			exp rect y ( ( 18 ) + 48  )
 		}
 		itemDef
 		{
-			rect 0 0 20 20 3 1
-			style 0
+			rect 25.6 -159.5 189.6 110 1 3
+			style 3
 			border 0
 			ownerdraw 0
 			ownerdrawFlag 0
 			borderSize 0
-			foreColor 1 1 1 1
+			foreColor 0.8 0.8 0.8 1
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
-			decoration 
+			decoration
 			type 0
 			align 0
 			textAlign 0
 			textAlignX 0
 			textAlignY 0
-			textScale 0.375
+			textScale 0.55
 			textStyle 0
-			textFont 3
+			textFont 0
 			feeder 0
 			visible 1
-			exp text dvarString("name")
-			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
-			exp rect x ( ( -400 ) + 164  )
-			exp rect y ( ( -1 ) + 48  )
+			exp material ("preview_" + dvarString (ui_mapname))
 		}
 		itemDef
 		{
-			rect -272 0 272 28 3 1
+			rect -700 -70 190 20 3 3
+			border 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0.5
 			decoration
+			style 1
+			type 1
+			align 0
+			textAlign 0
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
 			visible 1
-			forecolor 1 1 1 0.15
-			textfont 3
-			textalign 14
-			textaligny 3
-			textscale 0.375
-			text "@MPUI_SCORE_CAPS"
+			exp text ("DEVMAP : " + dvarString (ui_mapname))
 		}
 		itemDef
 		{
-			rect -274 16 272 28 3 1
+			rect -764 -376.5 -190 1 10 10
+			style 3
 			decoration
 			visible 1
-			forecolor 1 1 1 0.3
-			textfont 3
-			textalign 14
-			textaligny 3
-			textscale 0.375
-			text "0"
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
 		}
-		// hint text
+		itemDef
+		{
+			rect -764 -336.5 -190 1 10 10
+			style 3
+			decoration
+			visible 1
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -764 -296.5 -190 1 10 10
+			style 3
+			decoration
+			visible 1
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -764 -236.5 -190 1 10 10
+			style 3
+			decoration
+			visible 1
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -764 -196.5 -190 1 10 10
+			style 3
+			decoration
+			visible 1
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -764 -86.5 -190 1 10 10
+			style 3
+			decoration
+			visible 1
+			forecolor 0.7 0.7 0.7 1
+			background "stencil_fill" 
+			textscale 0.55
+		}
 		itemDef
 		{
 			name hint_area
-			rect 0 270 215 18 1 1
-			style 0
+			rect -700 -48 190 20 3 3
 			border 0
-			ownerdraw 0
-			ownerdrawFlag 0
-			borderSize 0
-			foreColor 1 1 1 0.65
+			foreColor 1 1 1 0.4
 			backColor 0 0 0 0
-			borderColor 0 0 0 0
-			outlineColor 0 0 0 0
-			decoration 
-			autoWrapped 
-			type 0
+			style 1
+			type 1
 			align 0
-			textAlign 6
-			textAlignX 0
-			textAlignY 0
-			textScale 0.375
-			textStyle 0
-			textFont 3
-			feeder 0
-			visible 1
-			exp text ( localvarstring( "ui_hint_text" )  )
-		}
-		itemDef
-		{
-			rect 0 0 300 20 1 1
-			decoration
-			foreColor 1 1 1 0.5
-			type 1
 			textAlign 0
-			textAlignY -21
-			textScale 0.2
-			text "Mod:"
+			textAlignX 10
+			textAlignY 18
+			textScale 0.35
+			textFont 8
 			visible 1
+			exp text ( localvarstring( "ui_hint_text" ) )
 		}
-		itemDef
-		{
-			name mod
-			rect 0 0 300 20 1 1
-			decoration
-			foreColor 1 1 1 0.5
-			type 1
-			textAlign 0
-			textAlignX 16
-			textAlignY -21
-			textScale 0.2
-			exp text dvarString("fs_game")
-			visible 1
-		}
-		itemDef
-		{
-			rect 0 -11 300 20 1 1
-			decoration
-			foreColor 1 1 1 0.5
-			type 1
-			textAlign 0
-			textAlignY 0
-			textScale 0.2
-			text "Player: "
-			visible 1
-		}
-		itemDef
-		{
-			name getname
-			rect 22 -11 300 20 1 1
-			decoration
-			foreColor 1 1 1 0.5
-			type 1
-			textAlign 0
-			textAlignX 0
-			textAlignY 0
-			textScale 0.2
-			exp text dvarString("name")
-			visible 1
-		}
-
 	}
 }

@@ -1,4 +1,4 @@
 menuDef
 {
-name "playercard_killedby_hd"
-}  
+	name "playercard_killedby_hd"
+}

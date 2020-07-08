@@ -1,4 +1,4 @@
-		itemDef
+        itemDef
 		{
 			rect 0 0 640 480 4 4
 			style 3
@@ -6,7 +6,34 @@
 			ownerdraw 0
 			ownerdrawFlag 0
 			borderSize 0
-			foreColor 1 1 1 1
+			foreColor 0.1 0.1 0.1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			origin 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			text "(null)"
+			visible 1
+            exp material ("preview_" + dvarString (ui_mapname))
+		}
+        itemDef
+		{
+			rect 0 0 640 480 4 4
+			style 3
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 0.25
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
@@ -60,7 +87,7 @@
 			ownerdraw 0
 			ownerdrawFlag 0
 			borderSize 0
-			foreColor 1 1 1 1
+			foreColor 0.8 0.8 0.8 1
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
@@ -154,31 +181,3 @@
 			visible 1
 			exp forecolor a ( ( ( sin ( milliseconds( ) / 480 ) + 1 ) * 0.250000 ) + 0.250000  )
 		}
-#ifndef DONT_DO_THE_SIDEBAR_THINGY
-		itemDef
-		{
-			rect -64 0 280 480 1 0
-			style 3
-			border 0
-			ownerdraw 0
-			ownerdrawFlag 0
-			borderSize 0
-			foreColor 1 1 1 0.1
-			backColor 0 0 0 0
-			borderColor 0 0 0 0
-			outlineColor 0 0 0 0
-			origin 0 0
-			background gradient_fadein_fadebottom
-			decoration 
-			type 0
-			align 0
-			textAlign 0
-			textAlignX 0
-			textAlignY 0
-			textScale 0.55
-			textStyle 0
-			textFont 0
-			feeder 0
-			visible 1
-		}
-#endif
