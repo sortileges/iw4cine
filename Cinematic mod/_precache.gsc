@@ -1,20 +1,28 @@
+/*
+ *	SASS' CINEMATIC MOD - Precache file (#301)
+ */
+
+//   INFO & STUFF :
+//   All animations needs to be precached
+//   Normal MP playermodels don't need to be precached, but SP/Custom ones do
+//   List of MP models : https://pastebin.com/raw/0a53Npp8
+//   List of MP anims : https://pastebin.com/raw/KGbrSCdx
+
+//   HOW TO USE :
+//   Put your precache between the "{ }" brackets below
+//   PrecacheModel("name_of_model");
+//   PrecacheMPAnim("name_of_anim");
+
+
 #include maps\mp\_utility;
 #include common_scripts\utility;
+#using_animtree("multiplayer");
 
 precache()
 {
-	PrecacheMPAnim("pb_sprint");
-	PrecacheMPAnim("pb_stand_alert");
-	PrecacheMPAnim("pb_stand_death_chest_blowback");
-	PrecacheModel("defaultactor");
-	PrecacheModel("projectile_rpg7");
-	PrecacheModel("projectile_semtex_grenade_bombsquad");
-	
-	// ^^^^^^^^^^^ DO NOT REMOVE ANY OF THESE !!!!!!!
 
-    // You need to put your own precache in here from the link below. 
-	// https://pastebin.com/raw/KGbrSCdx
-    // Pick 20-30 anims maximum to avoid overflow
+
+
 
 
 
