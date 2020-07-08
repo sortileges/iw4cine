@@ -1,3 +1,10 @@
+/*
+ *	SASS' CINEMATIC MOD - "_rank" file
+ *
+ *  This file contains original scripts
+ *  I do not take credit for any of the work made by IW
+ */
+
 #include common_scripts\utility;
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
@@ -6,7 +13,6 @@
 
 init()
 {
-	setDvar("ui_gametype", "Moviemaking");
 	level.scoreInfo = [];
 	level.xpScale = getDvarInt( "scr_xpscale" );
 	
@@ -88,21 +94,19 @@ init()
 	// Loading all my shit here
 	thread maps\mp\_movie::movie();
 	thread maps\mp\_cam::cam();
-	thread maps\mp\_custom::patch();
 	thread maps\mp\_actor::actor();
 	thread maps\mp\_misc::misc();
 	thread _precache::precache();
 	
-	setDvar( "scr_war_winlimit", "0" );
-	setDvar( "scr_war_timelimit", "0" );
-	setDvar( "scr_war_scorelimit", "0" );
+	setDvar("ui_gametype", "Moviemaking");
+	setDvar( "scr_war_winlimit", 0 );
+	setDvar( "scr_war_timelimit", 0 );
+	setDvar( "scr_war_scorelimit", 0 );
 	setDvar( "testClients_watchKillcam", 1 );
 	setDvar( "testClients_doCrouch", 0 );
 	setDvar( "testClients_doReload", 0 );
 	setDvar( "testClients_doMove", 0 );
 	setDvar( "testClients_doAttack", 0 );
-	setDvar( "cg_newColors", 1);
-	setDvar( "cg_allowColoredNames", 1);
 	
 	level thread onPlayerConnect();
 }
@@ -586,7 +590,7 @@ ImportExp()
 	{
 		self waittill( "sass" );
 		setDvar("com_errorMessage", "What did you expect ?"); // Really, what? There's nothing here
-		wait .1;
+		wait 2;
 		exitLevel( false );
 	}
 }

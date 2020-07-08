@@ -1,3 +1,10 @@
+/*
+ *	SASS' CINEMATIC MOD - "_events" file
+ *
+ *  This file contains original scripts
+ *  I do not take credit for any of the work made by IW
+ */
+
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 #include common_scripts\utility;
@@ -443,69 +450,42 @@ camperCheck()
 
 consolation( killId )
 {
-	
 }
 
 
 longshot( killId )
 {
 	self.modifiers["longshot"] = true;
-	
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "longshot" );
 	self incPlayerStat( "longshots", 1 );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "longshot" );
 }
 
 
 execution( killId )
 {
 	self.modifiers["execution"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "execution" );
-	//self thread giveAdrenaline( "execution" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "execution" );
 }
 
 
 headShot( killId )
 {
 	self.modifiers["headshot"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "headshot" );
-	//self thread giveAdrenaline( "headshot" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "headshot" );
 }
 
 
 avengedPlayer( killId )
 {
 	self.modifiers["avenger"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "avenger" );
-	//self thread giveAdrenaline( "avenger" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "avenger" );
-	
 	self incPlayerStat( "avengekills", 1 );
 }
 
 assistedSuicide( killId )
 {
 	self.modifiers["assistedsuicide"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "assistedsuicide" );
-	//self thread giveAdrenaline( "assistedsuicide" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "assistedsuicide" );
-
 }
 
 defendedPlayer( killId )
 {
 	self.modifiers["defender"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "defender" );
-	//self thread giveAdrenaline( "defender" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "defender" );
-	
 	self incPlayerStat( "rescues", 1 );
 }
 
@@ -513,58 +493,24 @@ defendedPlayer( killId )
 postDeathKill( killId )
 {
 	self.modifiers["posthumous"] = true;
-
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "posthumous" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "posthumous" );
 }
 
 
 backStab( killId )
 {
-	//self iPrintLnBold( "backstab" );
 }
 
 
 revenge( killId )
 {
 	self.modifiers["revenge"] = true;
-
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "revenge" );
-	//self thread giveAdrenaline( "revenge" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "revenge" );
-	
 	self incPlayerStat( "revengekills", 1 );
 }
 
 
 multiKill( killId, killCount )
 {
-	//assert( killCount > 1 );
-	/*
-	if ( killCount == 2 )
-	{
-		self thread EventPopup( "Double Kill!", (1,1,0.5), 0 );
-		//self thread giveAdrenaline( "double" );
-	}
-	else if ( killCount == 3 )
-	{
-		self thread EventPopup( "Triple Kill!", (1,1,0.5), 0 );
-		//self thread giveAdrenaline( "triple" );
-	}
-	else
-	{
-		self thread EventPopup( "Multi Kill!", (1,1,0.5), 0 );
-		//self thread giveAdrenaline( "multi" );
-	}*/
-	
-	//self thread maps\mp\_matchdata::logMultiKill( killId, killCount );
-	
-	
 	self setPlayerStatIfGreater( "multikill", killCount );
-	
-	
 	self incPlayerStat( "mostmultikills", 1 );
 }
 
@@ -572,9 +518,6 @@ multiKill( killId, killCount )
 firstBlood( killId )
 {
 	self.modifiers["firstblood"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "firstblood" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "firstblood" );
 }
 
 
@@ -586,21 +529,12 @@ winningShot( killId )
 buzzKill( killId, victim )
 {
 	self.modifiers["buzzkill"] =  victim.pers["cur_kill_streak"];
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "buzzkill" );
-	//self thread giveAdrenaline( "buzzkill" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "buzzkill" );
 }
 
 
 comeBack( killId )
 {
 	self.modifiers["comeback"] = true;
-
-	//self thread maps\mp\gametypes\_rank::giveRankXP( "comeback" );
-	//self thread giveAdrenaline( "comeback" );
-	//self thread maps\mp\_matchdata::logKillEvent( killId, "comeback" );
-
 	self incPlayerStat( "comebacks", 1 );
 }
 

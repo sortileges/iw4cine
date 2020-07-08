@@ -1,12 +1,8 @@
-/**
- *	SASS' CINEMATIC MOD --- "Weapon" file
- *	Version : #290
- *	
- *  This file contains weapon vanilla scripts
- *  I do not take credit for any of the work made by IW
+/*
+ *	SASS' CINEMATIC MOD - "_weapons" file
  *
- *	GitHub  : https://github.com/sasseries/iw4-cine-mod
- *	Discord : sass#1997
+ *  This file contains original scripts
+ *  I do not take credit for any of the work made by IW
  */
 
 #include maps\mp\_movie;
@@ -437,8 +433,8 @@ onPlayerSpawned()
 		self thread watchWeaponReload();
 		self thread maps\mp\gametypes\_class::trackRiotShield();
 
-        self thread MWGunFall();
-        setDvar("phys_gravity", "-400");
+		self thread PhysGunFall();
+		setDvar("phys_gravity", "-400");
 
 		self.lastHitTime = [];
 		
@@ -456,44 +452,45 @@ onPlayerSpawned()
 	}
 }
 
-MWGunFall()
+PhysGunFall()
 {
-    self endon("gunDone");
+	self endon("death");
+	self endon("disconnect");
+	self endon("gunDone");
 
-    currentWeapon = self getCurrentWeapon();
-    hideTagList = GetWeaponHideTags(currentWeapon);
+	currentWeapon = self getCurrentWeapon();
+	hideTagList = GetWeaponHideTags(currentWeapon);
 
-    self waittill("death");
-    
-    if ( getDvar("mvm_throwgun", "") == "1")
-    {
-        self.linke = undefined; // Disable holdgun
-        self.mwGunProp  = spawn("script_model", self.origin + (RandomInt(10),RandomInt(10),60));
-        self.mwGunProp.angles  = self.angles;
-        self.mwGunProp setModel((getWeaponModel(currentWeapon)) + GetCamoNameFromInt(self.loadoutPrimaryCamo) );
+	self waittill("death");
 
-        for (i = 0; i < hideTagList.size; i++)
-        {
-            self.mwGunProp HidePart(hideTagList[i], (getWeaponModel(currentWeapon)) + GetCamoNameFromInt(self.loadoutPrimaryCamo));
-        }
-        vec = anglestoforward(self.angles);
+	if ( getDvar("mvm_throwgun") == "1")
+	{
+		self.linke = undefined; // Disable holdgun
+		vec = anglestoforward(self.angles);
 
-        if ( isSubStr(currentWeapon, "ump") || isSubStr(currentWeapon, "mp5") )
-            end = (vec[0] * RandomIntRange( 50, 140 ), vec[1] * RandomIntRange( 300, 600), vec[2] * RandomIntRange( 200, 500 ));
-        else
-            end = (vec[0] * RandomIntRange( 4000, 6000 ), vec[1] * RandomIntRange( 3000, 5000), vec[2] * RandomIntRange( 12000, 25000 ));
+		self.gunprop  = spawn("script_model", self.origin + (RandomInt(10),RandomInt(10),60));
+		self.gunprop.angles  = self.angles;
+		self.gunprop setModel((getWeaponModel(currentWeapon)) + GetCamoNameFromInt(self.loadoutPrimaryCamo) );
 
-        self.mwGunProp PhysicsLaunchClient(self.mwGunProp.origin,end);
-        self.mwGunProp thread deleteWeaponAfterAWhile();
+		for (i = 0; i < hideTagList.size; i++)
+			self.gunprop HidePart(hideTagList[i], (getWeaponModel(currentWeapon)) + GetCamoNameFromInt(self.loadoutPrimaryCamo));
 
-        self notify("gunDone");
-    }
+		if ( isSubStr(currentWeapon, "ump") || isSubStr(currentWeapon, "mp5") )
+			end = (vec[0] * RandomIntRange( 50, 140 ), vec[1] * RandomIntRange( 300, 600), vec[2] * RandomIntRange( 200, 500 ));
+		else
+			end = (vec[0] * RandomIntRange( 4000, 6000 ), vec[1] * RandomIntRange( 3000, 5000), vec[2] * RandomIntRange( 12000, 25000 ));
+
+		self.gunprop PhysicsLaunchClient(self.gunprop.origin,end);
+		self.gunprop thread deleteWeaponAfterAWhile();
+
+		self notify("gunDone");
+	}
 }
 
 deleteWeaponAfterAWhile()
 {
-    wait 8;
-    self delete();
+	wait 8;
+	self delete();
 }
 
 WatchStingerUsage()

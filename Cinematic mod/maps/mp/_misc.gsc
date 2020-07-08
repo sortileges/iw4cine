@@ -1,20 +1,23 @@
-/**
- *	SASS' CINEMATIC MOD --- "Misc" file
- *	Version : #290
- *	
- *	GitHub  : https://github.com/sasseries/iw4-cine-mod
- *	Discord : sass#1997
+/*
+ *	SASS' CINEMATIC MOD - Misc file (#301)
  */
 
-#include maps\mp\_movie;
+#include maps\mp\gametypes\_gamelogic;
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
+#include maps\mp\_movie;
 
 misc()
 {
 	level thread MiscConnect();
-	thread maps\mp\gametypes\_gamelogic::matchStartTimer("waiting_for_players", 0);
+
+	// Common precache, do not remove !!!
+	PrecacheModel("defaultactor");
+	PrecacheModel("projectile_rpg7");
+	PrecacheModel("projectile_semtex_grenade_bombsquad");
+	PrecacheMPAnim("pb_stand_alert");
+	PrecacheMPAnim("pb_stand_death_chest_blowback");
 }
 
 MiscConnect()
@@ -22,27 +25,28 @@ MiscConnect()
 	for (;;)
 	{
 		level waittill("connected", player);
-		level.prematchPeriodEnd = 0;
 
-		// LOD and jump fatigue tweaks
-		setDvar("r_lodBiasRigid", "-8000");
-		setDvar("r_lodBiasSkinned", "-8000");
-		setDvar("jump_slowdownEnable", "0");
-		setDvar("ui_allow_classchange", "1");
+		// LOD tweaks
+		if (isSubStr(getDvar("version", "IW4x"))) {
+			setDvar("r_lodBiasRigid", "-8000");
+			setDvar("r_lodBiasSkinned", "-8000");
+		}
+		else {
+			setDvar("r_lodBiasRigid", "-1000");
+			setDvar("r_lodBiasSkinned", "-1000");
+		}
 
-		// UI tweaks
 		setDvar("cg_newcolors", "1");
-		setDvar("sv_hostname", "SASS ^3MVM ^7- ^2LOCAL SERVER");
+		setDvar("sv_hostname", "IW4Cine - Sass' Cinematic Mod - #301");
 		setDvar("g_TeamName_Allies", "allies");
 		setDvar("g_TeamName_Axis", "axis");
-		setDvar("con_gameMsgWindow0MsgTime", "3");
-		setDvar("con_gameMsgWindow0LineCount", "9");
-		setDvar("cg_weaponHintsCOD1Style", "0");
+		setDvar("jump_slowdownEnable", "0");
 
-		setObjectiveText(game["attackers"], "Sass' ^3Cinematic ^7Mod \n Version : ^3#290 \n ^7Custom file:" + level.patch);
-		setObjectiveText(game["defenders"], "Sass' ^3Cinematic ^7Mod \n Version : ^3#290 \n ^7Custom file:" + level.patch);
+		setObjectiveText(game["attackers"], "IW4cine - Sass' Cinematic Mod \n Version : #301");
+		setObjectiveText(game["defenders"], "IW4cine - Sass' Cinematic Mod \n Version : #301");
 		setObjectiveHintText("allies", " ");
 		setObjectiveHintText("axis", " ");
+		game["strings"]["change_class"] = " ";
 
 		player thread MiscSpawn();
 	}
@@ -65,19 +69,19 @@ MiscSpawn()
 		thread GivePlayerKillstreak();
 		thread GivePlayerWeapon();
 		thread MsgAbout();
-        thread MsgWelcome();
+		thread MsgWelcome();
 		thread WeaponChangeClass();
 		thread WeaponSecondaryCamo();
-        thread CreateClone();
-        thread ClearBodies();
-        thread LoadPos();
+		thread CreateClone();
+		thread ClearBodies();
+		thread LoadPos();
 		thread Noclip();
 
-        // Hidden
-        thread VerifyModel();
-        thread water();
-        thread dirt();
-        thread earfquake();
+		// Random stuff
+		thread VerifyModel();
+		thread water();
+		thread dirt();
+		thread earfquake();
 		thread thermal();
 		thread watermark();
 		thread discord();
@@ -87,8 +91,10 @@ MiscSpawn()
 
 SetPlayerScore()
 {
+	self endon("death");
 	self endon("disconnect");
-	setDvarIfUninitialized("mvm_score", "Change ^3XP");
+	
+	setDvarIfUninitialized("mvm_score", "Change score per kill");
 	self notifyOnPlayerCommand("mvm_score", "mvm_score");
 	for (;;)
 	{
@@ -99,8 +105,10 @@ SetPlayerScore()
 
 GivePlayerKillstreak()
 {
+	self endon("death");
 	self endon("disconnect");
-	setDvarIfUninitialized("mvm_killstreak", "Give ^3Killstreak");
+
+	setDvarIfUninitialized("mvm_killstreak", "Give yourself a killstreak");
 	self notifyOnPlayerCommand("mvm_killstreak", "mvm_killstreak");
 	for (;;)
 	{
@@ -111,19 +119,21 @@ GivePlayerKillstreak()
 
 GivePlayerWeapon()
 {
+	self endon("death");
 	self endon("disconnect");
-	setDvarIfUninitialized("mvm_give", "Give ^3Weapon");
+
+	setDvarIfUninitialized("mvm_give", "Give yourself a weapon");
 	self notifyOnPlayerCommand("mvm_give", "mvm_give");
 	for (;;)
 	{
 		self waittill("mvm_give");
 
-		argumentstring = getDvar("mvm_give", "Give ^3Weapon");
+		argumentstring = getDvar("mvm_give");
 		arguments = StrTok(argumentstring, " ,");
 
 		self takeweapon(self getCurrentWeapon());
-        self switchToWeapon(self getCurrentWeapon());
-        wait .05;
+		self switchToWeapon(self getCurrentWeapon());
+		wait .05;
 
 		if (isSubStr(arguments[0], "akimbo"))
 			self giveWeapon(arguments[0], GetCamoInt(arguments[1]), true);
@@ -136,8 +146,8 @@ GivePlayerWeapon()
 
 MsgAbout()
 {
-	self endon("disconnect");
 	self endon("death");
+	self endon("disconnect");
 
 	setDvarIfUninitialized("about", "About the mod...");
 	self notifyOnplayerCommand("about", "about");
@@ -145,33 +155,35 @@ MsgAbout()
 	{
 		self waittill("about");
 
-		self IPrintLnBold("^3Sass/Civil ^7MW2 Movie Mod");
+		self IPrintLnBold("Sass' MW2 Cinematic Mod");
 		wait 1.5;
-		self IPrintLnBold("^3Version ^7: #290");
+		self IPrintLnBold("Version : #301");
 		wait 1.5;
-		self IPrintLnBold("^3Custom ^7scripts : " + level.patch);
-		wait 1.5;
-		self IPrintLnBold("^3Thanks ^7for downloading !");
+		self IPrintLnBold("Thanks for downloading !");
 		self IPrintLn("^1Thanks to / Credits :");
-		self IPrintLn("- case, ozzie and jayy for their coolness");
-		self IPrintLn("- luckyy & CoDTVMM team for base help");
-		self IPrintLn("- Lasko for the menus (on old versions)");
-		self IPrintLn("- You and everybody who supported the project :D");
-		wait 1.4;
-		self IPrintLnBold("^3Discord server link ^7: discord.gg/wgRJDJJ");
+		self IPrintLn("- case, ozzie and ODJ for their coolness");
+		self IPrintLn("- luckyy, zura and the CoDTVMM team for base code");
+		self IPrintLn("- LASKO & simon for the menus");
+		self IPrintLn("- You and everybody who supported the project!");
+		wait 1.5;
+		self IPrintLnBold("Discord server link : discord.gg/wgRJDJJ");
 	}
 }
 
 MsgWelcome()
 {
+	self endon("death");
 	self endon("disconnect");
 	{
 		if (!isDefined(self.donefirst) && self.pers["isBot"] == false)
 		{
+			thread matchStartTimer("waiting_for_teams", 0);
+			thread matchStartTimer("match_starting_in", 0 );
+			level.prematchPeriodEnd = -1;
 			wait 6;
 			self thread teamPlayerCardSplash("callout_killcarrier", self, self.pers["team"]);
-			self IPrintLn("Welcome to ^3Sass' / Civil's ^7MW2 cinematic mod");
-			self IPrintLn("Type ^3/about ^7for more ^3infos");
+			self IPrintLn("Welcome to ^3Sass' MW2 cinematic mod");
+			self IPrintLn("Type ^3/about ^7for more infos");
 			self.donefirst = 1;
 		}
 	}
@@ -180,20 +192,21 @@ MsgWelcome()
 WeaponChangeClass()
 {
 	self endon("death");
-    self endon("disconnect");
+	self endon("disconnect");
 
 	oldclass = self.pers["class"];
-    for(;;)
-    {
-        if(self.pers["class"] != oldclass)
-        {
-            self maps\mp\gametypes\_class::giveloadout(self.pers["team"],self.pers["class"]);
-            oldclass = self.pers["class"];
-            self maps\mp\perks\_perks::givePerk("specialty_falldamage");
-		    self maps\mp\perks\_perks::givePerk("specialty_marathon");
-        }
-        wait 0.05;
-    }
+	for(;;)
+	{
+		if(self.pers["class"] != oldclass)
+		{
+			self maps\mp\gametypes\_class::giveloadout(self.pers["team"],self.pers["class"]);
+			oldclass = self.pers["class"];
+			self maps\mp\perks\_perks::givePerk("specialty_falldamage");
+			self maps\mp\perks\_perks::givePerk("specialty_marathon");
+			self thread WeaponSecondaryCamo();
+		}
+		wait .05;
+	}
 }
 
 WeaponSecondaryCamo()
@@ -213,46 +226,44 @@ CreateClone()
 {
 	self endon("disconnect");
 	self endon("death");
-	setDvarIfUninitialized("clone", "*none* ^8- ^3Spawns a clone of yourself");
+	setDvarIfUninitialized("clone", "Spawn a clone of yourself");
 	self notifyOnplayerCommand("clone", "clone");
 	for (;;)
 	{
 		self waittill("clone");
 
-        if ( getDvar("clone", "") == "1")
-        {
-		    self PrepareInHandModel();
-            wait .1;
-		    self ClonePlayer(1);
-        }
-        else 
-        {
-            self.weaptoattach delete();
-            self ClonePlayer(1);
-        }
-        setDvar("clone", "*none* ^8- ^3Spawns a clone of yourself");
+		if ( getDvar("clone") == "1") {
+			self PrepareInHandModel();
+			wait .1;
+			self ClonePlayer(1);
+		}
+		else {
+			self.weaptoattach delete();
+			self ClonePlayer(1);
+		}
+		setDvar("clone", "Spawn a clone of yourself");
 	}
 }
 
 ClearBodies()
 {
-    self endon("disconnect");
-    self endon("death");
-    setDvarIfUninitialized("clearbodies", "*none* ^8- ^3Clears all bodies");
-    self notifyOnplayerCommand("clearbodies", "clearbodies");
-    for (;;)
-    {
-        self waittill("clearbodies");
-        self iPrintLn("Clearing bodies...");
-        for (i = 0; i < 15; i++)
-        {
-            clone = self ClonePlayer(1);
-            clone delete();
-            wait .1;
-        }
-    }
-}
+	self endon("disconnect");
+	self endon("death");
+	setDvarIfUninitialized("clearbodies", "Clear all dead bodies");
+	self notifyOnplayerCommand("clearbodies", "clearbodies");
+	for (;;)
+	{
+		self waittill("clearbodies");
 
+		self iPrintLn("Cleaning up...");
+		for (i = 0; i < 15; i++)
+		{
+			clone = self ClonePlayer(1);
+			clone delete();
+			wait .1;
+		}
+	}
+}
 
 VerifyModel()
 {
@@ -266,64 +277,60 @@ VerifyModel()
 
 dirt()
 {
-    self endon("disconnect");
-    setDvarIfUninitialized("dirt", "test");
-    self notifyOnplayerCommand("dirt", "dirt");
+	self endon("disconnect");
+	setDvarIfUninitialized("test_dirt", "Test command");
+	self notifyOnplayerCommand("test_dirt", "test_dirt");
 	for (;;)
 	{
-		self waittill("dirt");
-        self thread maps\mp\gametypes\_shellshock::dirtEffect(self.origin);
-    }
+		self waittill("test_dirt");
+		self thread maps\mp\gametypes\_shellshock::dirtEffect(self.origin);
+	}
 }
 
 water()
 {
-    self endon("disconnect");
-    setDvarIfUninitialized("water", "test");
-    self notifyOnplayerCommand("water", "water");
+	self endon("disconnect");
+	setDvarIfUninitialized("test_water", "Test command");
+	self notifyOnplayerCommand("test_water", "test_water");
 	for (;;)
 	{
-		self waittill("water");
-        self setClientDvars("cg_waterSheeting_fadeDuration", 3);
-        self SetWaterSheeting(1,3);
-    }
+		self waittill("test_water");
+		self setClientDvars("cg_waterSheeting_fadeDuration", 3);
+		self SetWaterSheeting(1,3);
+	}
 }
 
 earfquake()
 {
-    self endon("disconnect");
-    setDvarIfUninitialized("shake", "test");
-    self notifyOnplayerCommand("shake", "shake");
+	self endon("disconnect");
+	setDvarIfUninitialized("test_shake", "Test command");
+	self notifyOnplayerCommand("test_shake", "test_shake");
 	for (;;)
 	{
-		self waittill("shake");
-        Earthquake(1,5,self.origin,1000);
-    }
+		self waittill("test_shake");
+		Earthquake(1,5,self.origin,1000);
+	}
 }
 
 thermal()
 {
-    self endon("disconnect");
-    setDvarIfUninitialized("thermal", "test");
-    self notifyOnplayerCommand("thermal", "thermal");
+	self endon("disconnect");
+	setDvarIfUninitialized("test_thermal", "Test command");
+	self notifyOnplayerCommand("test_thermal", "test_thermal");
 	for (;;)
 	{
-		self waittill("thermal");
+		self waittill("test_thermal");
 
-		if (!isDefined(self.thermalOn) || self.thermalOn == 0)
-		{
+		if (!isDefined(self.thermalOn) || self.thermalOn == 0) {
 			self visionSetThermalForPlayer( "thermal_mp", 1 );
 			self ThermalVisionOn();
-			self.thermalOn = true;
+			self.thermalOn = 1;
 		}
-		else if (self.thermalOn == 1)
-		{
+		else if (self.thermalOn == 1) {
 			self visionSetThermalForPlayer( "missilecam", 1 );
 			self.thermalOn = 2;
 		}
-		else if (self.thermalOn == 2)
-		{
-            self visionSetThermalForPlayer( "thermal_mp", 1 );
+		else if (self.thermalOn == 2) {
 			self ThermalVisionOff();
 			self.thermalOn = 0;
 		}
@@ -332,12 +339,12 @@ thermal()
 
 watermark()
 {
-    self endon("disconnect");
-    setDvarIfUninitialized("watermark", "test");
-    self notifyOnplayerCommand("watermark", "watermark");
+	self endon("disconnect");
+	setDvarIfUninitialized("test_watermark", "Test command");
+	self notifyOnplayerCommand("test_watermark", "test_watermark");
 
-	self waittill("watermark");
-	
+	self waittill("test_watermark");
+
 	watermark = newClientHudElem(self);
 	watermark.horzAlign ="right";
 	watermark.vertAlign ="top";
@@ -355,13 +362,12 @@ discord()
 {
 	self endon("disconnect");
 	self endon("death");
-
-	setDvarIfUninitialized("discord", "Discord server link");
+	setDvarIfUninitialized("discord", "Link : discord.gg/wgRJDJJ");
 	self notifyOnplayerCommand("discord", "discord");
 	for (;;)
 	{
 		self waittill("discord");
-		self IPrintLnBold("^3Discord link ^7: discord.gg/wgRJDJJ");
+		self IPrintLnBold("^3Discord link : ^7discord.gg/wgRJDJJ");
 	}
 }
 

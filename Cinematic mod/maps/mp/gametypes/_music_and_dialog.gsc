@@ -1,3 +1,10 @@
+/*
+ *	SASS' CINEMATIC MOD - "_music_and_dialog" file
+ *
+ *  This file contains original scripts
+ *  I do not take credit for any of the work made by IW
+ */
+
 #include common_scripts\utility;
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
