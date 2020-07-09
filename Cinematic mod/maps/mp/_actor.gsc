@@ -556,7 +556,7 @@ ActorSetPath()
 					level.actorpath["node"][f].angles = self.angles;
 
 					iPrintLn("[" + actor.name + "] : Node #" + arguments[1] + " saved ");
-					wait .5;
+					self thread DeleteActorPath();
 					self thread UpdateActorPath(actor);
 
 				}
@@ -870,7 +870,7 @@ PreparePath(actor)
 ActorDoWalk(actor, speed)
 {
 	dist = level.alldist;
-	level.multiplier = getDvarInt("sv_fps") / 100;
+	level.multiplier = getDvarInt("cam_fps") / 100;
 
 	for (j = 0; j <= dist * 10 * level.multiplier / speed; j++)
 	{
