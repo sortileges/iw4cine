@@ -13,6 +13,14 @@ actor()
 {
 	level thread OnPlayerConnect();
 	level thread PrepareGoProObject();
+	
+	level._effect[ "shot1" ] = loadfx( "muzzleflashes/ak47_flash_wv" );
+	level._effect[ "shot2" ] = loadfx( "muzzleflashes/heavy" );
+	level._effect[ "shotgun" ] = loadfx( "muzzleflashes/shotgunflash_view" );
+	level._effect[ "headshot" ] = loadfx( "impacts/flesh_hit_head_fatal_exit" );
+	level._effect[ "blood" ] = loadfx("impacts/flesh_hit_body_fatal_exit" );
+	level._effect[ "flash" ] = loadfx( "explosions/flashbang" );
+	
 	level.actorCount = 1;
 	setDvarIfUninitialized("ui_showActorNames", "1");
 }
