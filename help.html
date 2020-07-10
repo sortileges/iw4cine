@@ -1,0 +1,744 @@
+<!-- 
+	This is the ugliest html you'll see in a while
+	Feel free to give me sh*t for it
+	- Sass
+-->
+
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>IW4cine #301 - Documentation</title>
+		<link rel="icon" href="https://vignette.wikia.nocookie.net/callofduty/images/8/83/Prestige_9_emblem_MW2.png">
+		<meta name="description" content="All commands for 301">
+		<meta name="author" content="sass/sortileges">
+	</head>
+
+	<body style="font-family: 'Segoe UI', Helvetica, sans-serif;">
+
+		<nav class="navbar" align="center">
+			<a href="#intro">Intro</a>
+			<a href="#misc">Misc</a>
+			<a href="#bots">Bots</a>
+			<a href="#actors">Actors</a>
+			<a href="#mistake">SP</a> <!-- I wish this never existed sometimes-->
+			<a href="#camera">Camera</a>
+			<a href="#env">Environment</a>
+			<a href="#lists">Lists</a>
+		</nav>
+
+		<h1 align="center" style="font-family: 'Arial Black'" id="intro"><b>Sass' Cinematic mod - Documentation (#301)</b></h1>
+
+		<p align="center"></br>
+			<a href="https://discord.gg/wgRJDJJ" target="_blank"><img class="shield" src="https://img.shields.io/discord/617736623412740146?label=Discord&logo=Discord&style=flat-square"></a>
+			<a href="https://github.com/sortileges/iw4cine/releases" target="_blank"><img class="shield" src="https://img.shields.io/github/v/release/sortileges/iw4cine?label=Download&logo=GitHub&style=flat-square"></a>
+			<a href="https://twitter.com/sasseries" target="_blank"><img class="shield" src="https://img.shields.io/twitter/follow/sasseries?label=%40sasseries&logo=Twitter&style=flat-square"></a>
+		</p></br></br>
+
+		<div style="display: block; margin-left: 9%; margin-right: 9%">
+			<div class="woImage">
+				<p>This is the full list of the commands for the latest version of the  mod (#301). It will cover all the commands' usage with -sometimes- some technical explaination with it to help you understand them. The mod might require a bit of learning first, but becomes pretty easy once you get used to it.</p>
+				<p><b>THIS NOT A CINEMATIC GUIDE!!</b> Only the commands will be explained here, but not all the recording process. This list is just here to help you using and understanding the commands, but the way you want to use them is all up to you.</p></br>
+				<h3 align="center"><b>I highly encourage you to join the <a class=link href="https://discord.gg/wgRJDJJ" target="_blank">Discord server</a> if you haven't already !!</b></h3>
+			</div>
+			<h1 align="center" id="misc"><i>Misc & Useful commands</i></h1>
+			<div align="center">
+				<p><b>/noclip2  :</b>‌ Toggles "noclip" mode on and off</br>
+				<b>/clone  :</b>‌ Spawns a clone of yourself</br>
+				<b>/clearbodies  :</b>‌ Deletes all dead bodies</br>
+				<b>/actorback  :</b>‌ Resets all actors to previous state</br></br>
+				<b>/mvm_score SCORE  :</b>‌ Changes score per kill (default 5)</br>
+				<b>/mvm_killstreak NAME  :</b>‌ Grants you a killstreak (<a class="link" href="https://pastebin.com/raw/5YrHwNKz" target="_blank">see killstreaks list</a>)</br>
+				<b>/mvm_give WEAPON CAMO  :</b>‌ Gives weapon (<a class="link" href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">see weapons & camos list</a>)</br></br>
+				<b>/mvm_throwgun [1/0] :</b>‌ Toggles MW2019-style weapon gravity on death (experimental)</br>
+				<b>/ui_mw3popup [1/0] :</b>‌ Enables IW5-style screen popups on kill</br>
+				<b>/ui_showActorNames [1/0] :</b>‌ Hide or show names of actors when looking at them</br></br>
+				<b>/testClients_ commands  :</b>‌ Collection of commands for bots (shoot, crouch, move, etc...)</br>
+				<b>/test_ commands  :</b>‌ Collection of random commands, try them yourself</br>
+			</div></br></br>
+			<h1 align="center" id="bots"><i>Bots</i></h1>
+				<p align="center"><b>
+				Bots are what they are, no need to explain. They have no AI. Note that bot commands work on yourself aswell.
+			</b></p></br>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/aff3721978f5b14026244a4161e137b3.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SPAWNING A BOT :</h3>
+					 <code>/mvm_bot_spawn <i class=bgRed>Class</i> <i class=bgGreen>Team</i></code></br></br>
+					 ‍This command allows you to spawn... a bot. Who would have thought ?
+				</p>
+				<p>
+				 ‍• <i class=bgRed>Class</i> is one of the following : inter, mp5, m4, ak47, barrett, ump, deagle, ak74u</br>
+				 ‍• <i class=bgGreen>Team</i> is either "axis" or "allies"
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_spawn inter allies</br>
+					 ‍/mvm_bot_spawn ak47 axis
+				</p>
+			</div>
+			<div  class="withImage">
+				<img src="https://i.gyazo.com/1e07c94efccaee66e426de9b383b15ba.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MOVE A BOT TO YOUR CROSSHAIR:</h3>
+					 <code>/mvm_bot_setup <i class=bgRed>Name</i></code></br></br>
+					 ‍‍If you want to change the position of your bot, then this is the command you need.</br>
+					 ‍The bot will also respawn to its new position if it gets killed.
+				</p>
+				<p>
+					 ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 /mvm_bot_setup Green
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/eb821212e67a95528a0242a1c90c92d3.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MAKE THE BOT AIM AT YOU :</h3>
+					 <code>‍/mvm_bot_aim <i class=bgRed>Name</i></code></br></br>
+					 ‍‍This command will make the bot aim at its closest enemy once.</br>
+					 ‍‍If you need the bot to STARE at you continuously, please refer to the command below.
+				</p>
+				<p>
+					 ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_aim Green
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/19a4818a9b6d0cffe58b7489aa954959.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MAKE THE BOT STARE AT YOU :</h3>
+					 <code>‍/mvm_bot_stare <i class=bgRed>Name</i></code></br></br>
+					 ‍‍‍This command will make the bot stare its closest enemy continuously.</br>
+					 ‍‍Works with multiple bots at once. Typing the command again will make the specified bot stop.
+				</p>
+				<p>
+					 ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_stare Green
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/09656d4ee32ea00b91d9e3ffed75b26c.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE THE BOTS MODEL :</h3>
+					 <code>‍/mvm_bot_model <i class=bgRed>Name</i> <i class=bgGreen>MODEL</i> <i class=bgOrange>Team</i></code></br></br>
+					 ‍‍‍This command will change the bot's playermodel.</br>
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.</br>
+					  ‌ ‍• <i class=bgGreen>MODEL</i> is one of the following : ASSAULT, SHOTGUN, SMG, LMG, RIOT, SNIPER, GHILLIE</br>
+					  ‌ ‍• <i class=bgOrange>Team</i> is either "axis" or "allies"
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_model Green RIOT allies
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/ef461721e54138815875c54d75c1ef36.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE THE BOTS WEAPON :</h3>
+					 <code>‍/mvm_bot_weapon <i class=bgRed>Name</i> <i class=bgGreen>Weapon</i> <i class=bgOrange>(Camo)</i></code></br></br>
+					 ‍‍‍‍Use this to change the bot's weapon. You can only change it once per life. <i class=bgOrange>(Camo)</i> is optional</br>
+					 ‍If you did it wrong and want to change it again, you'll need kill the bot and redo the command.
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.</br>
+					  ‌ ‍• <i class=bgGreen>Weapon</i> is <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">one of the weaponfile names</a>.</br>
+					  ‌ ‍• <i class=bgOrange>(Camo)</i> is one of the following (optional) : arctic, desert, woodland, digital, urban, red, blue, fall
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_weapon Green m16_acog_mp red
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/feaf5d99225398f22cc9e8e566c46161.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>KILL THE BOTS WITH COMMANDS :</h3>
+					 <code>‍/mvm_bot_kill <i class=bgRed>Name</i> <i class=bgGreen>Type</i></code></br></br>
+					 ‍‍‍‍‍This commands allows you to kill a bot a certain way.</br>
+					 ‍This is useful especially when using binds for cinematics.
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.</br>
+					   ‌‍• <i class=bgGreen>Type</i> is one of the following : body, head, cash, shotgun
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_kill Green cash
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/aad7a4ffd163a02dc45aeffb150ede79.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MAKE THE BOTS HOLD THEIR GUN ON DEATH :</h3>
+					 <code>/mvm_bot_holdgun</code>‍</br></br>
+					 ‍‍‍‍‍‍When this is toggled on, bots to keep their weapons in their hands when dying.</br>
+					 ‍‍HOWEVER, the bots have to be killed with the mvm_bot_kill command for this to work.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_holdgun
+				</p>
+			</div>
+			<h1 align="center" id="actors"><i>Actors</i></h1>
+			<p align="center"><b>
+				Actors, unlike bots/players, are just models that you can spawn and use animations on. They're not replacing bots, both are good in their own way.<br>
+				They're usually used because they can play a very specific animation, aswell as Singleplayer ones <i>(c.f "SP Animations w/ Actors")</i><br>
+				<span class=warning>Keep in mind that actors can be a little difficult to learn, especially at the beginning!</span> But they can be worth the effort once you got the hang of it.
+			</b></p>
+			</br></br>
+
+			<div class="woImage">
+				<h3>_PRECACHE.GSC FILE :</h3>
+				<p>
+					<b><u>What is precache ? :</u></b></br>
+					In order to use actors, you will need to edit this file. This will tell the game which animations and models you're going to use.</br>
+					The game limits the amount of precache you can put. Trying to put too much precache can cause overflows.</br>
+					Knowing this, consider using the least precache as possible. Somewhere between 20-30 lines should be your max. </br></br>
+				</p>
+				<p>
+					<b><u>How does it work :</u></b></br>
+					Animations will always need to be precached, using `precacheMPAnim("NameOfTheAnimation");`</br>
+					Regular playermodels do not need precache; Only singleplayer ones do. <i class="fade">(c.f "SP Animations w/ Actors")</i></br>
+					Here are the list of every MP animation. You will need to precache them in order to use them.</br>
+					You can find more technical details in the _precache.gsc file itself.
+				</p> ‍‍‍‍‍‍
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/ceb2a29d8f9e353123c5c071e2851ad6.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SPAWN AN ACTOR :</h3>
+					 <code>‍/mvm_actor_spawn <i class=bgRed>Body</i> <i class=bgGreen>Head</i> <i class=bgOrange>(Anim)</i> </code></br></br>
+					 ‍‍‍‍‍‍This command with spawn an actor with provided models.</br>
+					 ‍‍‍<i class=bgOrange>(Anim)</i> is optional, and it will spawn your actor directly with a certain animation.
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Body</i> is one of the models from <a class=link href="https://pastebin.com/raw/TvVHBzzi" target="_blank">this list</a>. (Only Multiplayer ones)</br>
+					   ‍• <i class=bgGreen>Head</i> is one of the models from <a class=link href="https://pastebin.com/raw/TvVHBzzi" target="_blank">this list</a>. (Only Multiplayer ones)</a></br>
+					   ‍• <i class=bgOrange>(Anim)</i> is optional, you can find a list of <a class=link href="https://pastebin.com/raw/4aRLVtsr" target="_blank">all Multiplayer anims here</a>.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_spawn mp_body_airborne_assault_a head_airborne_a
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/731a232a4c4510ed8b3204e52cfb0d81.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE ACTOR'S MODEL :</h3>
+					 <code>‍/mvm_actor_model <i class=bgRed>Actor</i> <i class=bgGreen>Body</i> <i class=bgOrange>Head</i> </code></br></br>
+					 ‍‍‍‍‍‍If you don't like how your actor looks, you can change its models.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					  ‌ ‍‍• <i class=bgGreen>Body</i> is one of the models from <a class=link href="https://pastebin.com/raw/TvVHBzzi" target="_blank">this list</a>. (Only Multiplayer ones)</br>
+					   ‍• <i class=bgOrange>Head</i> is one of the models from <a class=link href="https://pastebin.com/raw/TvVHBzzi" target="_blank">this list</a>. (Only Multiplayer ones)</a></br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_model actor1 mp_body_us_army_lmg head_us_army_e</br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/0eec529b42889129d60e0295245a420e.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MOVE ACTOR TO YOU :</h3>
+					 <code>/mvm_actor_move <i class=bgRed>Actor</i> </code></br></br>
+					 ‍‍‍‍‍Moves the actor to your position.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_move actor1</br>
+				</p></br></br>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/bde5a0d95a5237dbc879b0ae0c88a740.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE ACTOR'S WEAPON :</h3>
+					 <code>‍/mvm_actor_weapon <i class=bgRed>Actor</i> <i class=bgGreen>Tag</i> <i class=bgOrange>Weapon</i> <i class=bgBlue>Camo</i> </code></br></br>
+					 ‍‍‍‍‍‍This will attach a weapon to an actor's tag. Works with normal models too.</br>	 ‍‍‍‍‍‍ ‍‍‍‍‍‍You can attach weapons/models to multiple tags.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Tag</i> is one of the tag from <a class=link href="https://pastebin.com/raw/K6kHALUE" target="_blank">this list</a>.</br>
+					   ‍• <i class=bgOrange>Weapon</i> is <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">one of the weaponfile names</a>.</br>
+					   ‍• <i class=bgBlue>Camo</i> is one of the following (optional) : arctic, desert, woodland, digital, urban, red, blue, fall
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_weapon actor1 j_gun tavor_gl_reflex_mp red</br>
+					 ‍/mvm_actor_weapon actor1 tag_stowed_back spas12_mp digital</br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/6084df197fcb8e97fea2b744016363ca.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE ACTOR'S ANIMATION :</h3>
+					 <code>‍/mvm_actor_anim <i class=bgRed>Actor</i> <i class=bgGreen>Anim</i></code></br></br>
+					 ‍‍‍‍‍‍You can change an actor's animation using this command.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Anim</i> is the name of the animation from <a class=link href="https://pastebin.com/raw/4aRLVtsr" target="_blank">this list</a>. (Only Multiplayer ones)</a></br>
+				</p>
+				<p> NOTE : Animations needs to be precached using the _precache.gsc file.</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_anim actor1 pb_sprint</br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/fb6439493325afea0d4d60c6e5ddabae.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE ACTOR'S DEATH ANIMATION :</h3>
+					 <code>‍/mvm_actor_death <i class=bgRed>Actor</i> <i class=bgGreen>Anim</i> </code></br></br>
+					 ‍‍‍‍‍‍This will change the animation the actor will play when it's killed.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Anim</i> is the name of the animation from <a class=link href="https://pastebin.com/raw/4aRLVtsr" target="_blank">this list</a> (Only Multiplayer ones)</a>.</br>
+				</p>
+				<p> NOTE : Animations needs to be precached using the _precache.gsc file.</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_death actor1 pb_stand_death_neckdeath_thrash</br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/725ef1578fbd591d4ecbc0e60b5c918a.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MAKE ACTOR WALK (SIMPLE) :</h3>
+					 <code>‍/mvm_actor_walk <i class=bgRed>Actor</i> <i class=bgGreen>Time</i> <i class=bgOrange>Direction</i> </code></br></br>
+					 ‍‍‍‍‍‍The actor will walk towards a certain direction, in a given time. This is the simple way to make actors walk.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Time</i> is the time in seconds to cover the premade distance.</br>
+					   ‍• <i class=bgOrange>Direction</i> is one of the following : forward, backward, left, right
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_walk actor1 3 forward
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/17d606a8c003276a059d6c7697f67025.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>MAKE ACTOR WALK (ADVANCED/EXPERIMENTAL) :</h3>
+					<code>‍/mvm_actor_path_save <i class=bgRed>Actor</i> <i class=bgGreen>Node</i> </code></br></br>
+					<code>‍/mvm_actor_path_del <i class=bgRed>Actor</i> <i class=bgGreen>Node</i> </code></br></br>
+					<code>/mvm_actor_path_walk <i class=bgRed>Actor</i> <i class=bgBlue>Time/Speed</i> </code></br></br>
+					 ‍‍‍‍‍‍Bezier-style path for actors. Not recommended for close-ups since it can look laggy on slower timescales.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Node</i> is node number from 1 to 13 (13 is max).</br>
+					   ‍• <i class=bgBlue>Time/Speed</i> : time to go from node 1 to 2 (if only 2 nodes) or the speed of the actor (if more than 2 nodes)
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_path_walk actor1 30
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/d9f4d45aa02c7c6b3cd1aa61cfcb2c94.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>PLAY FX ON ACTOR TAG :</h3>
+					 <code>‍/mvm_actor_fx <i class=bgRed>Actor</i> <i class=bgGreen>Tag</i> <i class=bgOrange>FX</i> </code></br></br>
+					 ‍‍‍‍‍‍Plays a FX from a list of preset effects. Normal effects (c.f mvm_env_fx) MIGHT work.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Tag</i> is one of the tag from <a class=link href="https://pastebin.com/raw/K6kHALUE" target="_blank">this list</a>.</br>
+					   ‍• <i class=bgOrange>FX</i> presets are : shot1, shot2, shotgun, headshot, blood, cash, flash. Normal FX names might work too.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_fx actor1 j_head cash
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/9cc7be07ee2daa64e69f0c12f420d9a7.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>ACTOR GOPRO CAM :</h3>
+					 <code>‍/mvm_actor_gopro <i class=bgRed>Actor/Action</i> <i class=bgGreen>Tag</i> <i class=bgOrange>X Y Z</i> <i class=bgBlue>R P Y</i> </code></br></br>
+					 ‍‍‍‍‍‍"GoPro" style camera for actors. Works only at far distances from subject.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor/Action</i> is the name of the actor OR either : on / off / delete.</br>
+					   ‍• <i class=bgGreen>Tag</i> is one of the tag from <a class=link href="https://pastebin.com/raw/K6kHALUE" target="_blank">this list</a>.</br>
+					   ‍• <i class=bgOrange>X Y Z</i> is the position of the camera (relative to the tag).</br>
+					   ‍• <i class=bgBlue>R P Y</i> are the angles of the camera (relative to the tag).
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_gopro actor1 j_head -10 30 130 100 95 120</br>
+					 ‍/mvm_actor_gopro on</br>
+					 ‍/cg_fov 25
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/ca2ccad724c8c38c85c825a0d9d78d72.png" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE ACTOR'S HEALTH :</h3>
+					 <code>‍/mvm_actor_health <i class=bgRed>Actor</i> <i class=bgGreen>Health</i> </code></br></br>
+					 ‍‍‍‍‍‍You can change the actor's health to your liking with this command.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>Health</i> is exactly what it is (default health is 120).
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_health actor1 1000</br>
+				</p></br></br>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/cea09841b9d4c59bf2053f32fc12d1b1.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>RENAME AN ACTOR :</h3>
+					 <code>‍/mvm_actor_rename <i class=bgRed>Actor</i> <i class=bgGreen>NewName</i> </code></br></br>
+					 ‍‍‍‍‍‍You can change the name of your actors. Can be convenient if you're using alot of them at once.</br>
+				</p>
+				<p>
+					  ‌ ‍‍• <i class=bgRed>Actor</i> is the name of the actor (actor1, actor2, etc...).</br>
+					   ‍• <i class=bgGreen>NewName</i> is the name you want to give to the actor.
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_actor_rename actor1 coolest</br>
+				</p>
+			</div>
+			<h1 align="center" id="mistake"><i>Singleplayer Animations w/ Actors</i></h1>
+			<p align="center" class="warningBlink"><b>I can't recommend this enough : Learn how to use actors until you're comfortable with them before trying SP animations. Seriously.</br>
+			You should absolutely experiment with 'normal' actors atleast a few times before you get into this, so you can understand how they work.</br>
+			At the end of the day I'm not your dad so do whatever you want. But don't give me s#*t because you have no idea of what you're doing.</br></br>
+			You've been warned</b></p>
+			</br></br></br>
+			<div class="woImage">
+				<h3>INTRODUCTION TO ZONEBUILDER :</h3>
+				<p>
+					<b><u>About ZoneBuilder :</u></b></br>
+					ZoneBuilder is essentially an assets compiler for MW2; It's a tool designed for the implementation of custom assets. </br>
+					But it is also capable to "repack" assets already existing in the game, which is the case of the animations/models from the Singleplayer campaign.
+				</p>
+				<p>
+					<b><u>Installing ZoneBuilder (React & IW4x) :</u></b></br>
+					- If you're using ReactIW4, you can download ZB <a class="link" href="https://github.com/RagdollPhysics/zonebuilder/releases/tag/2.0.101" target="_blank">here</a>. Simply extract the archive's content in your MW2 directory.</br>
+					- If you're using IW4x, ZB is already fully integrated in the client's .exe. To start it, start iw4x.exe with the "-zonebuilder" argument (<a class="link" href="https://i.gyazo.com/29427721d1a60e55101bc6485e4b282a.png" target="_blank">with a shortcut for example</a>). 
+				</p>
+				</br></br></br>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/df2de7f05f3626845a33c3e57a637227.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 1 : Starting ZB</h3>
+					<p>
+						<b>Use your basic brain and eyeballs functions to open ZoneBuilder.exe.</br>
+						If you didn't mess anything up, a console should appear like that --></b></br></br>
+						Now you need to have somewhat of an idea of the anims you want, but no need to ask me "hey dude where I can find that anim ?" because I'm not Wikipedia and I'm not inside your head.</br></br>
+						If you know the SP mission the anim you want is from, you can search for the file name in the <code>MW2/zone/english</code> folder and take a wild guess.</br></br>
+						If you don't know where to start, you can use <code><b>ending.ff</b></code> which is the Museum mission; it got a bit of everything. That's the file I'm going to use in this tutorial anyway.
+					</p>
+				</div>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/5c7df86aaf467347458ad11334588494.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 2 : Load a Fastfile</h3>
+					<p>
+						<b>For the next step, type in the fastfile you want to load like so : <code>loadzone NameOfFastFile</code></br>
+						Make sure you do NOT type the file extension !!</b></br></br>
+						- If you're using the legacy ZB tool (React), a message saying "Loaded!" will pop up if you've done this right.</br></br>
+						- If you're using IW4x, you won't see such a message, but the fastfile is loaded as soon as you enter the command. If you didn't get any error message or crash, it means it loaded successfully.
+					</p>
+				</div></br></br>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/c52733c693850d0d83689ad942d526ee.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 3 : Create a .csv file</h3>
+					<p>
+						<b>Next, go in your <code>MW2/zone_source</code> folder (create it if it doesn't exist already).</br>
+						You will need to create a .csv file inside that folder. For that , you can create a .txt file, and change the file extension to.csv</b></br></br>
+						This is the file where we will put the different assets we want to compile in our own custom Fastfile.</br></br>
+						<span class="warning" style="font-weight:bold;">Keep in mind that .csv files are very strict : During the next steps, DO NOT leave blank lines or comments. The file needs to be squeaky clean.</span>
+					</p>
+				</div></br></br>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/d5b113f1826f2c8d9ac87167e2a707bb.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 4 : Get models for the actors</h3>
+					<p>
+						<b>Singleplayer animations can only be played on Singleplayer models !!</br>
+						SP and MP models are using a different bones structure around the spine, which causes them to break if interchanged. So, if you want to use SP anims, you need SP models first.</b></br></br>
+						To get the list of the models, type <code>listassets xmodel</code> in the ZB console.</br></br></br>
+						- If you're using the legacy ZB tool (React), a file called <b>"assets.txt"</b> will be created, containing all the models</br></br>
+						- If you're using IW4x, go in your <code>userraw/log</code> folder, and open the latest <b>console_mp.log</b> file
+					</p>
+				</div></br></br>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/8ddcc0156db25e694066a122ed430f79.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 5 : Put the models in your .csv file</h3>
+					<p>
+						<b>Now, you need to add the models you want in your .csv file using this format : <code>xmodel,NameOfTheModel</code></br></br></b>
+						You need to put every model on a new line. Make sure to not put too much in the file either; A limit of 30-40 assets should be your limit *(in total, so that means WITH the animations we'll put in later)</br></br>
+						Here's what my example file looks like :</br></br>
+					</p>
+				</div></br></br>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/1a6bb1eac43cc675b7d4c34c45f8807d.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 6 : Repeat steps 4 & 5, but for anims this time</h3>
+					<p>
+						<b>This time, type<code>listassets xanim</code> in the ZB console. </br>Then reopen your assets.txt/console_log.log file, and put the animations you want in your .csv file</br></br></br></b>
+						Keep in mind that all the anims that start with "viewmodel_" are first person animations. Usually the animation's names are pretty explicit. Just don't be stupid and use viewmodel_ or vehicle/props animations...</br></br>
+						Here's what my example file looks like :</br></br>
+					</p>
+				</div>
+				<div class="withImage">
+					<img src="https://i.gyazo.com/439edc456bf615666b2dbe32b48d7a52.png" alt="screenshot" align="right" height="240px">
+					<h3>STEP 7 : Build your fastfile & create your precache</h3>
+					<p>
+						<b>Once you're happy with your .csv file, type <code>buildzone NameOfTheCsv</code> in the ZB console. </br>If you didn't get any error message or crash while doing so, congratulations, you've made it!</br></br></b>
+						Next step is to add the models and animations from the .csv to your precache, using <code>precacheModel("modelname");</code> and <code>precacheMPAnim("animname");</code>.</br></br>
+						Once you've done that, you shouldn't have any trouble using your new actors ingame, assuming you know how to use them already :)
+					</p>
+				</div>
+			</div>
+			<h1 align="center" id="camera"><i>Camera commands</i></h1>
+			<p align="center"><b>
+				Camera commands are now obosolete since the release of <a class="link" href="https://www.youtube.com/watch?v=lyW0d3_lk6Y" target="_blank">luckyy's IW4MVM tool</a>. However, they're still usable and well so they're part of this documentation anyway.</br></br></br>
+			</b></p>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/4eba265710f819a607623a6f16e4b4e4.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SAVE CAMERA NODE :</h3>
+					 <code>‍/mvm_cam_save <i class=bgRed>Node</i></code></br></br>
+					 ‍‍‍‍‍Save a camera node. Goes from 1 to 13 in bezier mode.</br>
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Node</i> is the node's number you want to save (1, 2 ,3 etc...)</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_cam_save 1 </br>
+					/mvm_cam_save 2 </br>
+					/mvm_cam_save 3
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/09403533af414ad9341412a9886e9f5f.png" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>DELETE CAMERA NODES :</h3>
+					 <code>‍/mvm_cam_delete <i class=bgRed>Node</i></code></br></br>
+					 ‍‍‍‍‍Will delete said camera node and all above.</br>For example, deleting node 3 will delete the node 4, 5 etc...
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Node</i> is the node's number you want to delete (1, 2 ,3 etc...)</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_cam_delete 3
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/61634b112faee4a522a2d44c35e76588.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>ROTATE YOUR VIEW :</h3>
+					 <code>‍/mvm_cam_rot <i class=bgRed>Angle</i></code></br></br>
+					 ‍‍‍‍‍Will add provided value to the current angle.</br>For example, doing 20 twice would be the same as doing 40.
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Angle</i> is the angle in degrees</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_cam_rot -45
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/49c135a2efc72aea3fc08aa91aeb90f8.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE CAMERA MODE :</h3>
+					 <code>‍/mvm_cam_mode <i class=bgRed>bezier/linear</i></code></br></br>
+					Chose between bezier or linear path between nodes.
+					</br></br></br></br></br></br></br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/cfe2d532d0e8a297cd05f58d8397db18.gif" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>START CAMERA PATH :</h3>
+					 <code>‍/mvm_cam_start <i class=bgRed>Value</i></code></br></br>
+					- bezier : Value is speed</br>
+					- linear : Value is time to do the whole path
+					</br></br></br></br></br></br></br>
+				</p>
+			</div>
+
+			<div class="withImage">
+				<img src="https://i.gyazo.com/b49e422961c308614b109d3f1b4f3221.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>GRENADE CAMERA :</h3>
+					 <code>‍/mvm_cam_nade</code></br></br>
+					Toggles grenade camera on and off.
+					</br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+				</p>
+			</div>
+			<h1 align="center" id="env"><i>Environment commands</i></h1></br></br>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/21f7338c8f60e1e4e38c7e034b3101d2.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SPAWN PROP :</h3>
+					 <code>‍/mvm_env_prop <i class=bgRed>Prop</i></code></br></br>
+					 ‍‍‍‍‍Will spawn a prop at your position</br>
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Prop</i> is the name of a model to spawn (<a class=link href="https://pastebin.com/raw/22jFNDic" target="_blank">list here</a>)</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_env_prop foliage_tree_oak_1_animated2
+					</br></br></br></br></br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/4a54ef9f60373c91c454c6956fb881f7.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SPAWN FX :</h3>
+					 <code>‍/mvm_env_fx <i class=bgRed>FX</i></code></br></br>
+					 ‍‍‍‍‍Spawns an effect where your corsshair is pointed at.</br>
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>FX</i> is the name of an FX runner (<a class=link href="https://pastebin.com/raw/6im8sbi5" target="_blank">common FX's here</a>)</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_env_fx misc/flare_ambient_green
+					</br></br></br></br></br>
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/da77cabe8ba588f1420f8eec879ff080.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>CHANGE MAP COLORS :</h3>
+					 <code>‍/mvm_env_colors <i class=bgRed>Vision</i></code></br></br>
+					 ‍‍‍‍‍Will change the color settings of the map (resets on death).</br>
+				</p>
+				<p>
+					  ‌ ‍• <i class=bgRed>Vision</i> is the name of a <a class=link href="https://github.com/FreeTheTech101/IW4-Dump-Files/tree/master/vision" target="_blank">.vision file</a></br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_env_colors sepia
+					</br></br></br></br></br>
+				</p>
+			</div>
+			<h1 align="center" id="lists"><i>Lists & Links</i></h1></br></br>
+			<div align="center">
+				<h3><a class=link href="https://pastebin.com/raw/TvVHBzzi" target="_blank">All MP head & body models</a></h3>
+				<h3><a class=link href="https://pastebin.com/raw/4aRLVtsr" target="_blank">All MP animations</a></h3>
+				<h3><a class=link href="https://pastebin.com/raw/K6kHALUE" target="_blank">All Tags</a></h3>
+				<h3><a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">All MP weapon names and camos</a></h3>
+				<h3><a class=link href="https://pastebin.com/raw/5YrHwNKz" target="_blank">All killstreaks</a></h3>
+				<h3><a class=link href="https://pastebin.com/raw/22jFNDic" target="_blank">All props (mostly)</a></h3>
+                <h3><a class=link href="https://pastebin.com/raw/6im8sbi5" target="_blank">All common FX's</a></h3>
+			</div>
+
+			<!--lol-->
+			</br></br></br></br></br></br></br></br></br>
+			<p align="center">sass#5455 - @sasseries</p>
+		</div>
+	</body>
+	<style>
+		html { 
+			scroll-behavior: smooth;
+		} 
+		body {
+			color: white;
+			background-color: #2b2d30;
+		}
+		h1 {
+			padding-top: 90px;
+			padding-bottom: 30px;
+		}
+		img:not(.shield) {
+			height: 300px;
+			width: 400px;
+		}
+		code {
+			background-color: #19191b;
+			border-style: solid;
+			border-width: 1px;
+			border-color: white;
+			padding: 5px 5px 5px 5px;
+		}
+		.woImage {
+			padding-bottom: 90px;
+			margin-right: 10%; 
+			margin-left: 10%;
+		}
+		.withImage {
+			padding-bottom: 90px;
+			margin-right: 2%; 
+			margin-left: 2%;
+		}
+		.warning{
+			color: black;
+			background-color: #974747;
+		}
+		.warningBlink{
+			color: black;
+			animation: blinkingText 0.5s infinite;
+		}
+		@keyframes blinkingText{
+			0%		{ background-color: #974747;}
+			50%		{ background-color: #b64444;}
+			100%		{ background-color: #974747;}
+		}
+		.bgRed{
+			background-color: #a05050;
+		}
+		.bgGreen{
+			background-color: #61885a;
+		}
+		.bgOrange{
+			background-color: #c2671c;
+		}
+		.bgBlue{
+			background-color: #5170a3;
+		}
+		.link{
+			color: #79a6ee;
+		}
+		.fade{
+			color: #8e8e8f;
+		}
+		.navbar {
+			background-color: #222225;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			padding: 13px 0 13px 0;
+		}
+		.navbar a {
+			
+			color: white;
+			padding: 13px 13px;
+			text-decoration: none;
+		}
+		.navbar a:hover {
+			color: #79a6ee;
+			background-color: #19191b;
+		}
+	</style>
+</html>
