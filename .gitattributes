@@ -1,2 +1,6 @@
-* linguist-vendored
-*.inc linguist-vendored=false
+*.gsc linguist-detectable=true
+*.inc linguist-detectable=true
+*.menu linguist-detectable=false
+*.md linguist-detectable=false
+*.html linguist-detectable=false
+*.txt linguist-detectable=false
