@@ -27,7 +27,7 @@ Have you found the hidden room on Highrise yet?
 The ^3/mvm_score ^7command supports decimal numbers
 If your game freezes after entering a command it means that the game killed the script because you typed something wrong. To fix that simply kill yourself ingame to restart the script.
 You can bind commands to a key with ^3/bind BUTTON_HERE COMMAND_HERE^7
-Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's (or you can also type 'self')
+Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's
 There are a bunch of semi-useless commands that starts with ^3/test_^7. Try them out if you're curious!
 Did you see that?
 You can join youself if you start multiple games at the same time. Type ^3/connect 127.0.0.1 ^7to join your local match
@@ -47,11 +47,11 @@ The ^3/mvm_throwgun [1/0] ^7command makes the bots throw their weapon MW2019-sty
 The ^3/mvm_mw3popup [1/0] ^7command toggles a MW3-style popup message when killing a bot
 You can hide or show the actor's names using ^3/ui_showActorNames [1/0]^7
 MSG_STUPID_TIP_NO48
-You had one change out of 54 to see this message. Lucky you
+You had one chance out of 54 to see this message. Lucky you
 Don't forget to join the Discord server! Link : https://discord.gg/wgRJDJJ
 All the commands that start with ^3/testClients_ ^7are related to the bots. That way you can make them move/shoot/crouch and more
 If you can see that it means you're using IW4x. I like you
-You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect however
+You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect
 Bots uing SMGs have a small chance to get akimbos
 Welcome to Sass' Cinematic mod!
 Did you join the discord server? Type ^3/discord ^7to display the link
@@ -82,7 +82,7 @@ Have you found the hidden room on Highrise yet?
 The ^3/mvm_score ^7command supports decimal numbers
 If your game freezes after entering a command it means that the game killed the script because you typed something wrong. To fix that simply kill yourself ingame to restart the script.
 You can bind commands to a key with ^3/bind BUTTON_HERE COMMAND_HERE^7
-Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's (or you can also type 'self')
+Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's
 There are a bunch of semi-useless commands that starts with ^3/test_^7. Try them out if you're curious!
 Did you see that?
 You can join youself if you start multiple games at the same time. Type ^3/connect 127.0.0.1 ^7to join your local match
@@ -102,9 +102,9 @@ The ^3/mvm_throwgun [1/0] ^7command makes the bots throw their weapon MW2019-sty
 The ^3/mvm_mw3popup [1/0] ^7command toggles a MW3-style popup message when killing a bot
 You can hide or show the actor's names using ^3/ui_showActorNames [1/0]^7
 MSG_STUPID_TIP_NO48
-You had one change out of 54 to see this message. Lucky you
+You had one chance out of 54 to see this message. Lucky you
 Don't forget to join the Discord server! Link : https://discord.gg/wgRJDJJ
 All the commands that start with ^3/testClients_ ^7are related to the bots. That way you can make them move/shoot/crouch and more
 If you can see that it means you're using IW4x. I like you
-You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect however
+You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect
 Bots uing SMGs have a small chance to get akimbos
