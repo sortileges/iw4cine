@@ -9,7 +9,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>IW4cine #301 - Documentation</title>
+		<title>IW4cine #304 - Documentation</title>
 		<link rel="icon" href="https://vignette.wikia.nocookie.net/callofduty/images/8/83/Prestige_9_emblem_MW2.png">
 		<meta name="description" content="All commands for 301">
 		<meta name="author" content="sass/sortileges">
@@ -28,7 +28,7 @@
 			<a href="#lists">Lists</a>
 		</nav>
 
-		<h1 align="center" style="font-family: 'Arial Black'" id="intro"><b>Sass' Cinematic mod - Documentation (#301)</b></h1>
+		<h1 align="center" style="font-family: 'Arial Black'" id="intro"><b>Sass' Cinematic mod - Documentation (#304)</b></h1>
 
 		<p align="center"></br>
 			<a href="https://discord.gg/wgRJDJJ" target="_blank"><img class="shield" src="https://img.shields.io/discord/617736623412740146?label=Discord&logo=Discord&style=flat-square"></a>
@@ -38,7 +38,7 @@
 
 		<div style="display: block; margin-left: 9%; margin-right: 9%">
 			<div class="woImage">
-				<p>This is the full list of the commands for the latest version of the  mod (#301). It will cover all the commands' usage with -sometimes- some technical explaination with it to help you understand them. The mod might require a bit of learning first, but becomes pretty easy once you get used to it.</p>
+				<p>This is the full list of the commands for the latest version of the  mod (#304). It will cover all the commands' usage with -sometimes- some technical explaination with it to help you understand them. The mod might require a bit of learning first, but becomes pretty easy once you get used to it.</p>
 				<p><b>THIS NOT A CINEMATIC GUIDE!!</b> Only the commands will be explained here, but not all the recording process. This list is just here to help you using and understanding the commands, but the way you want to use them is all up to you.</p></br>
 				<h3 align="center"><b>I highly encourage you to join the <a class=link href="https://discord.gg/wgRJDJJ" target="_blank">Discord server</a> if you haven't already !!</b></h3>
 			</div>
@@ -66,7 +66,9 @@
 				<p>
 					<h3>SPAWNING A BOT :</h3>
 					 <code>/mvm_bot_spawn <i class=bgRed>Class</i> <i class=bgGreen>Team</i></code></br></br>
-					 ‍This command allows you to spawn... a bot. Who would have thought ?
+					 ‍This command allows you to spawn... a bot. Who would have thought?</br> 
+					 ‍Their weapon will get random camos/attachment by default. Snipers won't get random attachments</br>
+					 ‍If you want your bots with stock weapons, set <code>/mvm_bot_customweapons</code> to 0
 				</p>
 				<p>
 				 ‍• <i class=bgRed>Class</i> is one of the following : inter, mp5, m4, ak47, barrett, ump, deagle, ak74u</br>
@@ -76,6 +78,27 @@
 					 ‍Image example : </br>
 					 ‍/mvm_bot_spawn inter allies</br>
 					 ‍/mvm_bot_spawn ak47 axis
+				</p>
+			</div>
+			<div class="withImage">
+				<img src="https://i.gyazo.com/de622bc129cb4cf2ea862ff6b12263f1.jpg" alt="screenshot" align="right" height="240px">
+				<p>
+					<h3>SPAWNING A BOT (ADVANCED):</h3>
+					 <code>/mvm_bot_spawn custom <i class=bgRed>Team</i> <i class=bgGreen>Primary</i> <i class=bgOrange>Secondary</i> <i class=bgBlue>PriCamo</i> <i class=bgPink>SecCamo</i></code></br></br>
+					 ‍With this method, you can spawn a bot with any weapons/camos you want.</br>
+					 ‍You can use any weapon as a Primary and Secondary.
+				</p>
+				<p>
+				 ‍• <i class=bgRed>Team</i> is either "axis" or "allies"</br>
+				 ‍• <i class=bgGreen>Primary</i> is one of the weapons from <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">this list</a>.</br>
+				 ‍• <i class=bgOrange>Secondary</i> is one of the weapons from <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">this list</a>.</br>
+				 ‍• <i class=bgBlue>PriCamo</i> is one of the camos from <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">this list</a>.</br>
+				 ‍• <i class=bgPink>SecCamo</i> is one of the camos from <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">this list</a>.</br>
+				</p>
+				<p>
+					 ‍Image example : </br>
+					 ‍/mvm_bot_spawn custom allies ak47_reflex_shotgun_mp stinger_mp red none</br>
+					 ‍/mvm_bot_spawn custom axis pp2000_akimbo_silencer_mp cheytac_mp woodland blue
 				</p>
 			</div>
 			<div  class="withImage">
@@ -141,24 +164,6 @@
 				<p>
 					 ‍Image example : </br>
 					 ‍/mvm_bot_model Green RIOT allies
-				</p>
-			</div>
-			<div class="withImage">
-				<img src="https://i.gyazo.com/ef461721e54138815875c54d75c1ef36.jpg" alt="screenshot" align="right" height="240px">
-				<p>
-					<h3>CHANGE THE BOTS WEAPON :</h3>
-					 <code>‍/mvm_bot_weapon <i class=bgRed>Name</i> <i class=bgGreen>Weapon</i> <i class=bgOrange>(Camo)</i></code></br></br>
-					 ‍‍‍‍Use this to change the bot's weapon. You can only change it once per life. <i class=bgOrange>(Camo)</i> is optional</br>
-					 ‍If you did it wrong and want to change it again, you'll need kill the bot and redo the command.
-				</p>
-				<p>
-					  ‌ ‍• <i class=bgRed>Name</i> is the name of the bot or a part of its name.</br>
-					  ‌ ‍• <i class=bgGreen>Weapon</i> is <a class=link href="https://pastebin.com/raw/ZFEs0iGX" target="_blank">one of the weaponfile names</a>.</br>
-					  ‌ ‍• <i class=bgOrange>(Camo)</i> is one of the following (optional) : arctic, desert, woodland, digital, urban, red, blue, fall
-				</p>
-				<p>
-					 ‍Image example : </br>
-					 ‍/mvm_bot_weapon Green m16_acog_mp red
 				</p>
 			</div>
 			<div class="withImage">
@@ -508,7 +513,7 @@
 					<p>
 						<b>Once you're happy with your .csv file, type <code>buildzone NameOfTheCsv</code> in the ZB console. </br>If you didn't get any error message or crash while doing so, congratulations, you've made it!</br></br></b>
 						Next step is to add the models and animations from the .csv to your precache, using <code>precacheModel("modelname");</code> and <code>precacheMPAnim("animname");</code>.</br></br>
-						Once you've done that, you shouldn't have any trouble using your new actors ingame, assuming you know how to use them already :)
+						Once you've done that, take the FastFile you created (you can find it in your "zone" folder), rename it to <code>mod.ff</code> and put it in your <code>mods/YourModName</code> folder. Voila!
 					</p>
 				</div>
 			</div>
@@ -714,6 +719,9 @@
 		}
 		.bgBlue{
 			background-color: #5170a3;
+		}
+		.bgPink{
+			background-color: #a3517a;
 		}
 		.link{
 			color: #79a6ee;
