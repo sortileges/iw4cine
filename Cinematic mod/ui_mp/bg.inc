@@ -1,4 +1,4 @@
-        itemDef
+		itemDef
 		{
 			rect 0 0 640 480 4 4
 			style 3
@@ -6,7 +6,7 @@
 			ownerdraw 0
 			ownerdrawFlag 0
 			borderSize 0
-			foreColor 0.1 0.1 0.1 1
+			foreColor 0.13 0.13 0.13 1
 			backColor 0 0 0 0
 			borderColor 0 0 0 0
 			outlineColor 0 0 0 0
@@ -23,9 +23,9 @@
 			feeder 0
 			text "(null)"
 			visible 1
-            exp material ("preview_" + dvarString (ui_mapname))
+			exp material ("preview_" + dvarString (ui_mapname))
 		}
-        itemDef
+		itemDef
 		{
 			rect 0 0 640 480 4 4
 			style 3
@@ -124,8 +124,8 @@
 			exp rect x ( ( 0 - 107 ) - ( ( float( milliseconds( ) % 60000 ) / 60000 ) * ( 854 ) )  )
 			visible 1
 		}
-#ifdef DO_THE_CHICKEN_WING
-#endif
+	#ifdef DO_THE_CHICKEN_WING
+	#endif
 		itemDef
 		{
 			rect 0 0 640 480 4 4

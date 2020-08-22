@@ -323,9 +323,9 @@
 			}
 			onFocus
 			{
-                play mouse_over;
+				play mouse_over;
 				setItemColor self backcolor 0 0 0 0.5;
-                setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarBool "ui_menuAButton" ( 1 );
 				setLocalVarString "ui_info_name" ( "Derail (MP_DERAIL)" );
 				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_DERAIL" );
 				setLocalVarString "ui_info_icon" ( "preview_mp_derail" );
@@ -362,7 +362,7 @@
 			{
 				play "mouse_over";
 				setItemColor self backcolor 0 0 0 0.5;
-                setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarBool "ui_menuAButton" ( 1 );
 				setLocalVarString "ui_info_name" ( "Estate (MP_ESTATE)" );
 				setLocalVarString "ui_info_desc" ( "MPUI_DESC_MAP_ESTATE" );
 				setLocalVarString "ui_info_icon" ( "preview_mp_estate" );

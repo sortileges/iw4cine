@@ -271,6 +271,10 @@
 	{ \
 		exec "devmap mp_frost"; \
 	} \
+    if (dvarstring(ui_mapname) == "mp_test") \
+	{ \
+		exec "devmap mp_test"; \
+	} \
 	if (dvarstring(ui_mapname) == "mp_bloc_sh") \
 	{ \
 		exec "devmap mp_bloc_sh"; \
@@ -310,6 +314,7 @@
 			execnow xblive_rankedmatch 0;
 			execnow xblive_privatematch 1;
 			exec "exec dvar_defaults.cfg";
+			exec "selectStringTableEntryInDvar mp/didyouknow.csv 0 didyouknow";
 		}
 		onESC
 		{
@@ -320,13 +325,11 @@
 		#define DO_THE_CHICKEN_WING_2
 		#include "ui_mp/bg.inc"
 
-
 #define CHOICE_Y(i) ( 28 + ( i * 20 ) )
 #define HR_ORIGIN(i) 0 ( CHOICE_Y(i) - 0.5 )
 #define CHOICE_ORIGIN(i) -64 CHOICE_Y(i)
 #define CHOICE_RECT(i) CHOICE_ORIGIN(i) 336 20 1 1
 #define HR_RECT(i) HR_ORIGIN(i) 216 1 1 1
-
 
 		itemDef
 		{
@@ -623,8 +626,6 @@
 			visible when(!dvarbool(cl_updateavailable))
 			text "UPDATE"
 		}
-
-
 		itemDef
 		{
 			rect -700 -200 190 20 3 3
@@ -700,7 +701,7 @@
 		}
 		itemDef
 		{
-			rect 313 -110 250 80 3 3
+			rect 313 -110 250 63 3 3
 			style 1
 			border 0
 			ownerdraw 0
@@ -747,14 +748,13 @@
 			textFont 8
 			feeder 1
 			visible 1
-			text "- Welcome to ^3Sass' MW2 Cinematic Mod \n - ^7Mod version : ^3#301 ^3 \n - Twitter : ^3@sasseries \n - Discord guild : ^3discord.gg/wgRJDJJ"
+			text "- Welcome to ^3Sass' MW2 Cinematic Mod \n - ^7Mod version : ^3#304 ^3 \n - Twitter : ^3@sasseries"
 			exp rect x ( 0 - 250 )
 		}
-
 		itemDef
 		{
-			name changelog
-			rect -250 -28 250 20 3 3
+			name discord
+			rect -250 -38 250 20 3 3
 			border 0
 			foreColor 1 1 1 1
 			backColor 0 0 0 0.2
@@ -767,7 +767,6 @@
 			textScale 0.3
 			textFont 8
 			visible 1
-			visible when(dvarstring( "shortversion" ) == "0.6.0")
 			text "JOIN DISCORD SERVER"
 			onFocus
 			{
@@ -786,10 +785,9 @@
 			action
 			{
 				play mouse_click;
-				OPEN_DISC_LINK;
+				open iwnet_login_popmenu;
 			}
 		}
-
 		itemDef
 		{
 			rect 0 0 208 70 3 1
@@ -1035,7 +1033,7 @@
 		}
 		itemDef
 		{
-			rect -764 -376.5 -190 1 10 10
+			rect -700 -340.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
@@ -1045,7 +1043,7 @@
 		}
 		itemDef
 		{
-			rect -764 -336.5 -190 1 10 10
+			rect -700 -300.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
@@ -1055,7 +1053,7 @@
 		}
 		itemDef
 		{
-			rect -764 -296.5 -190 1 10 10
+			rect -700 -260.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
@@ -1065,7 +1063,7 @@
 		}
 		itemDef
 		{
-			rect -764 -236.5 -190 1 10 10
+			rect -700 -200.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
@@ -1075,7 +1073,7 @@
 		}
 		itemDef
 		{
-			rect -764 -196.5 -190 1 10 10
+			rect -700 -160.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
@@ -1085,7 +1083,7 @@
 		}
 		itemDef
 		{
-			rect -764 -86.5 -190 1 10 10
+			rect -700 -50.5 -190 1 3 3
 			style 3
 			decoration
 			visible 1
