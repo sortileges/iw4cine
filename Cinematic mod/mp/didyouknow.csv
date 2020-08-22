@@ -1,0 +1,110 @@
+Welcome to Sass' Cinematic mod!
+Did you join the discord server? Type ^3/discord ^7to display the link
+Sometimes bots are better than actors
+Binding your commands to a button may come in handy
+Follow ^3@sasseries ^7on Twitter! 
+MSG_STUPID_TIP_NO6
+very load
+much loading
+Close EB makes vehicles explode on impact
+The ^3/clone ^7command can be pretty useful! You can use it for still cinematics and to create fakes soldiers easily
+^6<3 <3 <3
+Be really careful with the case sensitivity of the commands
+The ^3/clearbodies ^7command deletes all corpses at once. You should definitely bind this one!
+Make sure to read the ^3help.html ^7file if you're not sure how to use something
+Did you know : There are alot of mechanics that Infinity Ward scrapped in this game such as the Dolphin Dive
+Did you know : MW2 was alleged to have a mail and a loot system with different rarities
+Did you know : The Littlebird killstreak from MW3 was supposed to be in this game aswell
+Did you know : There are references to Modern Warfare 2 in Battlefield Bad Company II and FarCry 3 
+Did you know : Modern Warfare 2 originally wasn't going to be part of the Call of Duty franchise
+Did you know : The big magnet on Salvage was intended to attract rockets
+Did you know : The Wasteland map was in the original Call of Duty game. Its name was "Brecourt" which is also Wasteland's file name
+Did you know : There's a detonator and explosives in the long hallway on Skidrow; They were meant to be usable
+Did you know : Highrise's file contains scripts for usable rappel ropes and elevators
+Did you know : A tank was going to be in the game as a killstreak reward
+You can type ^3/clone 1 ^7if you want your clone to have a weapon
+Have you found the hidden room on Highrise yet?
+The ^3/mvm_score ^7command supports decimal numbers
+If your game freezes after entering a command it means that the game killed the script because you typed something wrong. To fix that simply kill yourself ingame to restart the script.
+You can bind commands to a key with ^3/bind BUTTON_HERE COMMAND_HERE^7
+Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's (or you can also type 'self')
+There are a bunch of semi-useless commands that starts with ^3/test_^7. Try them out if you're curious!
+Did you see that?
+You can join youself if you start multiple games at the same time. Type ^3/connect 127.0.0.1 ^7to join your local match
+You can change the gametype if you want. Type ^3/gametype TYPENAME ^7before starting the map
+Singleplayer animations can be used with the help of the Zonebuilder tool
+Actor's precache is important. Please check your precache...
+You can load any custom fastfile while ingame with the ^3/loadzone ^7command if you're using IW4x
+The Legacy and IW4x versions of Zonebuilder are using different fastfile 'formats'. You cannot interchange fastfiles from one client to the other
+If your actors are spawning in as a big red ^1Fx ^7it means that the game couldn't find the model you precached
+Singleplayer and Multiplayer body models have a slightly different bone structure. You cannot use MP anims on SP bodies and vice-versa
+You can spawn an actor directly with a certain animation. Just enter the animation name as a 3rd parameter of the ^3/mvm_actor_spawn ^7command
+Actors are only models with a hitbox attached to it. That means you can technically turn any model into a functioning actor
+You can use the ^3/scr_gameEnded 1 ^7command to get rid of all the HUD except for the score and the killfeed
+IW4x got the LOD dvars unlocked to further increase the details on far distances. This mod tweaks it automatically for you
+Only IW4x 0.6.0 have the IW4MVM tool integrated. The 0.6.0-xxxxxxxxxxxxxxx-dirty and 0.6.0 XInput do not
+The ^3/mvm_throwgun [1/0] ^7command makes the bots throw their weapon MW2019-style when killed. It is still experimental however
+The ^3/mvm_mw3popup [1/0] ^7command toggles a MW3-style popup message when killing a bot
+You can hide or show the actor's names using ^3/ui_showActorNames [1/0]^7
+MSG_STUPID_TIP_NO48
+You had one change out of 54 to see this message. Lucky you
+Don't forget to join the Discord server! Link : https://discord.gg/wgRJDJJ
+All the commands that start with ^3/testClients_ ^7are related to the bots. That way you can make them move/shoot/crouch and more
+If you can see that it means you're using IW4x. I like you
+You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect however
+Bots uing SMGs have a small chance to get akimbos
+Welcome to Sass' Cinematic mod!
+Did you join the discord server? Type ^3/discord ^7to display the link
+Sometimes bots are better than actors
+Binding your commands to a button may come in handy
+Follow ^3@sasseries ^7on Twitter! 
+MSG_STUPID_TIP_NO6
+very load
+much loading
+Close EB makes vehicles explode on impact
+The ^3/clone ^7command can be pretty useful! You can use it for still cinematics and to create fakes soldiers easily
+^6<3 <3 <3
+Be really careful with the case sensitivity of the commands
+The ^3/clearbodies ^7command deletes all corpses at once. You should definitely bind this one!
+Make sure to read the ^3help.html ^7file if you're not sure how to use something
+Did you know : There are alot of mechanics that Infinity Ward scrapped in this game such as the Dolphin Dive
+Did you know : MW2 was alleged to have a mail and a loot system with different rarities
+Did you know : The Littlebird killstreak from MW3 was supposed to be in this game aswell
+Did you know : There are references to Modern Warfare 2 in Battlefield Bad Company II and FarCry 3 
+Did you know : Modern Warfare 2 originally wasn't going to be part of the Call of Duty franchise
+Did you know : The big magnet on Salvage was intended to attract rockets
+Did you know : The Wasteland map was in the original Call of Duty game. Its name was "Brecourt" which is also Wasteland's file name
+Did you know : There's a detonator and explosives in the long hallway on Skidrow; They were meant to be usable
+Did you know : Highrise's file contains scripts for usable rappel ropes and elevators
+Did you know : A tank was going to be in the game as a killstreak reward
+You can type ^3/clone 1 ^7if you want your clone to have a weapon
+Have you found the hidden room on Highrise yet?
+The ^3/mvm_score ^7command supports decimal numbers
+If your game freezes after entering a command it means that the game killed the script because you typed something wrong. To fix that simply kill yourself ingame to restart the script.
+You can bind commands to a key with ^3/bind BUTTON_HERE COMMAND_HERE^7
+Most ^3'/mvm_bot_' ^7commands also work on yourself. Just type your name instead of the bot's (or you can also type 'self')
+There are a bunch of semi-useless commands that starts with ^3/test_^7. Try them out if you're curious!
+Did you see that?
+You can join youself if you start multiple games at the same time. Type ^3/connect 127.0.0.1 ^7to join your local match
+You can change the gametype if you want. Type ^3/gametype TYPENAME ^7before starting the map
+Singleplayer animations can be used with the help of the Zonebuilder tool
+Actor's precache is important. Please check your precache...
+You can load any custom fastfile while ingame with the ^3/loadzone ^7command if you're using IW4x
+The Legacy and IW4x versions of Zonebuilder are using different fastfile 'formats'. You cannot interchange fastfiles from one client to the other
+If your actors are spawning in as a big red ^1Fx ^7it means that the game couldn't find the model you precached
+Singleplayer and Multiplayer body models have a slightly different bone structure. You cannot use MP anims on SP bodies and vice-versa
+You can spawn an actor directly with a certain animation. Just enter the animation name as a 3rd parameter of the ^3/mvm_actor_spawn ^7command
+Actors are only models with a hitbox attached to it. That means you can technically turn any model into a functioning actor
+You can use the ^3/scr_gameEnded 1 ^7command to get rid of all the HUD except for the score and the killfeed
+IW4x got the LOD dvars unlocked to further increase the details on far distances. This mod tweaks it automatically for you
+Only IW4x 0.6.0 have the IW4MVM tool integrated. The 0.6.0-xxxxxxxxxxxxxxx-dirty and 0.6.0 XInput do not
+The ^3/mvm_throwgun [1/0] ^7command makes the bots throw their weapon MW2019-style when killed. It is still experimental however
+The ^3/mvm_mw3popup [1/0] ^7command toggles a MW3-style popup message when killing a bot
+You can hide or show the actor's names using ^3/ui_showActorNames [1/0]^7
+MSG_STUPID_TIP_NO48
+You had one change out of 54 to see this message. Lucky you
+Don't forget to join the Discord server! Link : https://discord.gg/wgRJDJJ
+All the commands that start with ^3/testClients_ ^7are related to the bots. That way you can make them move/shoot/crouch and more
+If you can see that it means you're using IW4x. I like you
+You can remove the big red ^1Fx^7's with the ^3r_noVoid ^7command. You will have to map_restart for it to take effect however
+Bots uing SMGs have a small chance to get akimbos

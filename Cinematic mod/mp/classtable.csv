@@ -1,5 +1,5 @@
 loadoutName,CLASS1,CLASS2,CLASS3,CLASS4,CLASS5,CLASS6,CLASS7,CLASS8,CLASS9,CLASS10,CLASS_DEFAULT
-loadoutPrimary,deserteagle,ump45,ak47,barrett,riotshield,m4,mp5k,ak74u,cheytac,m16,deserteagle
+loadoutPrimary,cheytac,barrett,ak47,m4,ump45,mp5k,riotshield,uzi,aug,deserteagle,deserteagle
 loadoutPrimaryAttachment,none,none,none,none,none,none,none,none,none,none,none
 loadoutPrimaryAttachment2,none,none,none,none,none,none,none,none,none,none,none
 loadoutPrimaryCamo,none,none,none,none,none,none,none,none,none,none,none
