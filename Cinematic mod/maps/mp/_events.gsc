@@ -11,56 +11,54 @@
 
 init()
 {
-	maps\mp\gametypes\_rank::registerScoreInfo( "headshot", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "kill", 5 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "execution", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "avenger", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "defender", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "posthumous", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "revenge", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "double", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "triple", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "multi", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "buzzkill", 0 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "headshot", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "execution", 100 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "avenger", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "defender", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "posthumous", 25 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "revenge", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "double", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "triple", 75 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "multi", 100 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "buzzkill", 100 );
 	maps\mp\gametypes\_rank::registerScoreInfo( "firstblood", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "comeback", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "longshot", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "assistedsuicide", 0 );
-	maps\mp\gametypes\_rank::registerScoreInfo( "knifethrow", 0 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "comeback", 100 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "longshot", 50 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "assistedsuicide", 100 );
+	maps\mp\gametypes\_rank::registerScoreInfo( "knifethrow", 100 );
 
-	registerAdrenalineInfo( "damage", 0 );
-	registerAdrenalineInfo( "damaged", 0 );
-	registerAdrenalineInfo( "kill", 5);
-	registerAdrenalineInfo( "killed", 0 );
+	registerAdrenalineInfo( "damage", 10 );
+	registerAdrenalineInfo( "damaged", 20 );
+	registerAdrenalineInfo( "kill", 100 );
+	registerAdrenalineInfo( "killed", 20 );
 	
-	registerAdrenalineInfo( "headshot", 5 );
-	registerAdrenalineInfo( "melee", 5 );
-	registerAdrenalineInfo( "backstab", 5 );
-	registerAdrenalineInfo( "longshot", 5 );
-	registerAdrenalineInfo( "assistedsuicide", 0);
-	registerAdrenalineInfo( "defender", 0 );
-	registerAdrenalineInfo( "avenger", 0);
-	registerAdrenalineInfo( "execution", 5 );
-	registerAdrenalineInfo( "comeback", 0 );
-	registerAdrenalineInfo( "revenge", 0 );
-	registerAdrenalineInfo( "buzzkill", 0 );	
-	registerAdrenalineInfo( "double", 0 );	
-	registerAdrenalineInfo( "triple", 0 );	
-	registerAdrenalineInfo( "multi", 0 );
-	registerAdrenalineInfo( "assist", 2 );
+	registerAdrenalineInfo( "headshot", 20 );
+	registerAdrenalineInfo( "melee", 10 );
+	registerAdrenalineInfo( "backstab", 20 );
+	registerAdrenalineInfo( "longshot", 10 );
+	registerAdrenalineInfo( "assistedsuicide", 10);
+	registerAdrenalineInfo( "defender", 10 );
+	registerAdrenalineInfo( "avenger", 10 );
+	registerAdrenalineInfo( "execution", 10 );
+	registerAdrenalineInfo( "comeback", 50 );
+	registerAdrenalineInfo( "revenge", 20 );
+	registerAdrenalineInfo( "buzzkill", 20 );	
+	registerAdrenalineInfo( "double", 10 );	
+	registerAdrenalineInfo( "triple", 20 );	
+	registerAdrenalineInfo( "multi", 30 );
+	registerAdrenalineInfo( "assist", 20 );
 
-	registerAdrenalineInfo( "3streak", 0 );
-	registerAdrenalineInfo( "5streak", 0 );
-	registerAdrenalineInfo( "7streak", 0 );
-	registerAdrenalineInfo( "10streak", 0 );
-	registerAdrenalineInfo( "regen", 0 );
+	registerAdrenalineInfo( "3streak", 30 );
+	registerAdrenalineInfo( "5streak", 30 );
+	registerAdrenalineInfo( "7streak", 30 );
+	registerAdrenalineInfo( "10streak", 30 );
+	registerAdrenalineInfo( "regen", 30 );
 
 	precacheShader( "crosshair_red" );
-
 	setDvarIfUninitialized( "ui_mw3popup", 0 );
-	
-	level.numKills = 0;
 
+	level._effect["money"] = loadfx ("props/cash_player_drop");
+	level.numKills = 0;
 	level thread onPlayerConnect();	
 }
 
@@ -79,8 +77,8 @@ onPlayerConnect()
 		
 		player.recentKillCount = 0;
 		player.lastKillTime = 0;
-		player.damagedPlayers = [];	
-		
+		player.damagedPlayers = [];
+
 		player.hud_EventPopup = player createEventPopup();
 		
 		player.adrenaline = 0;
@@ -93,8 +91,8 @@ onPlayerConnect()
 
 damagedPlayer( victim, damage, weapon )
 {
-
-
+//	self giveAdrenaline( "damage" );
+//	victim giveAdrenaline( "damaged" );
 }
 
 
@@ -112,7 +110,7 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 
 	level.numKills++;
 
-	
+	// a player is either damaged, or killed; never both
 	self.damagedPlayers[victimGuid] = undefined;
 	
 	self giveAdrenaline( "kill" );
@@ -123,8 +121,6 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 		if ( weapon == "none" )
 			return false;
 
-		self thread EventPopup( "Enemy Killed", (1,1,0.5), 0 );
-		
 
 		if ( isDefined( self.pers["copyCatLoadout"] ) && isDefined( self.pers["copyCatLoadout"]["owner"] ) )
 		{
@@ -134,14 +130,24 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 		
 		if ( victim.attackers.size == 1 )
 		{
-			
+			/#
+			if ( !isDefined( victim.attackers[self.guid] ) )
+			{
+				println("Weapon: "+ weapon );
+				println("Attacker GUID:" + self.guid );
+				
+				foreach ( key,value in victim.attackers )
+					println( "Victim Attacker list GUID: " + key );
+			}
+			#/
 			assertEx( isDefined( victim.attackers[self.guid] ), "See console log for details" );
 			
 			weaponClass = getWeaponClass( weapon );
 						
-			if ( getTime() == victim.attackerData[self.guid].firstTimeDamaged && meansOfDeath != "MOD_MELEE" && (  weaponClass == "weapon_sniper" ) )
+			if ( getTime() == victim.attackerData[self.guid].firstTimeDamaged && meansOfDeath != "MOD_MELEE" && ( /*weaponClass == "weapon_shotgun" ||*/ weaponClass == "weapon_sniper" ) )
 			{
 				self.modifiers["oneshotkill"] = true;
+				self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "one_shot_kill" );
 				self thread EventPopup( "One Shot Kill", (1,1,0.5), 0 );
 			}
 		}
@@ -160,14 +166,14 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 			self firstBlood( killId );
 			self thread EventPopup( "First Blood", (1,1,0.5), 0 );
 		}
-			
+
 		if ( self.pers["cur_death_streak"] > 3 )
 		{
 			self comeBack( killId );
 			self thread EventPopup( "Comeback", (1,1,0.5), 0 );
 		}
-		
-		if ( weapon == "throwingknife_mp" ) //lol
+
+		if ( weapon == "throwingknife_mp" )
 		{
 			self thread EventPopup( "Bullseye", (1,1,0.5), 0 );
 		}
@@ -185,7 +191,6 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 				self thread EventPopup( "Headshot", (1,1,0.5), 0 );
 			}
 		}
-		
 			
 		if ( isDefined(self.wasti) && self.wasti && getTime() - self.spawnTime <= 5000 )
 			self.modifiers["jackintheboxkill"] = true;
@@ -202,7 +207,7 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 			if ( victim.lastkilledplayer != self )
 			{
 				self avengedPlayer( killId );
-				self thread EventPopup( "Avenger", (1,1,0.5), 0 );				
+				self thread EventPopup( "Avenger", (1,1,0.5), 0 );
 			}
 		}
 	
@@ -228,10 +233,14 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 			self thread longshot( killId );
 			self thread EventPopup( "Longshot", (1,1,0.5), 0 );
 		}
-		
+	
+		//if ( isAlive( self ) && self.health < 20 && isDefined( self.attackers ) && self.attackers.size == 1 && self.attackers[0] == victim )
+		//	victim thread consolation( killId );
 	
 		if ( isDefined( victim.killstreaks[ victim.pers["cur_kill_streak"] + 1 ] ) )
 		{
+			self thread EventPopup( "Buzzkill", (1,1,0.5), 0 );
+			self buzzKill( killId, victim );
 		}
 			
 		self thread checkMatchDataKills( killId, victim, weapon, meansOfDeath);
@@ -249,7 +258,7 @@ killedPlayer( killId, victim, weapon, meansOfDeath )
 
 	self.killedPlayers[victimGuid]++;
 	
-	
+	//this sets player stat for routine customer award
 	if ( self.killedPlayers[victimGuid] > self.greatestUniquePlayerKills )
 		self setPlayerStat( "killedsameplayer", self.killedPlayers[victimGuid] );
 	
@@ -271,8 +280,8 @@ checkMatchDataKills( killId, victim, weapon, meansOfDeath )
 	{
 		self.lastKilledBy = undefined;
 		self revenge( killId );
-
-		
+		self thread EventPopup( "Payback", (1,1,0.5), 0 );
+		playFx( level._effect["money"], victim getTagOrigin( "j_spine4" ) );
 	}
 
 	if ( victim.iDFlags & level.iDFLAGS_PENETRATION )
@@ -323,7 +332,7 @@ checkMatchDataKills( killId, victim, weapon, meansOfDeath )
 	}
 }
 
-
+// Need to make sure these only apply to kills of an enemy, not friendlies or yourself
 checkMatchDataWeaponKills( victim, weapon, meansOfDeath, weaponType )
 {
 	attacker = self;
@@ -391,12 +400,12 @@ checkMatchDataWeaponKills( victim, weapon, meansOfDeath, weaponType )
 	}
 }
 
-
+// Need to make sure these only apply to kills of an enemy, not friendlies or yourself
 checkMatchDataEquipmentKills( victim, weapon, meansOfDeath )
 {	
 	attacker = self;
 	
-	
+	// equipment kills
 	switch( weapon )
 	{
 		case "frag_grenade_mp":
@@ -419,6 +428,7 @@ checkMatchDataEquipmentKills( victim, weapon, meansOfDeath )
 			break;
 		case "throwingknife_mp":
 			attacker incPlayerStat( "throwingknifekills", 1 );
+			self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "knifethrow", maps\mp\gametypes\_rank::getScoreInfoValue( "knifethrow" ) );
 			isEquipment = true;
 			break;
 		default:
@@ -450,42 +460,80 @@ camperCheck()
 
 consolation( killId )
 {
+	/*
+	value = int( maps\mp\gametypes\_rank::getScoreInfoValue( "kill" ) * 0.25 );
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "consolation", value );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "consolation", value );
+	*/
 }
 
 
 longshot( killId )
 {
 	self.modifiers["longshot"] = true;
+	
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "longshot", maps\mp\gametypes\_rank::getScoreInfoValue( "longshot" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "longshot" );
+	self thread giveAdrenaline( "longshot" );
 	self incPlayerStat( "longshots", 1 );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "longshot" );
 }
 
 
 execution( killId )
 {
 	self.modifiers["execution"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "execution", maps\mp\gametypes\_rank::getScoreInfoValue( "execution" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "execution" );
+	self thread giveAdrenaline( "execution" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "execution" );
 }
 
 
 headShot( killId )
 {
 	self.modifiers["headshot"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "headshot", maps\mp\gametypes\_rank::getScoreInfoValue( "headshot" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "headshot" );
+	self thread giveAdrenaline( "headshot" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "headshot" );
 }
 
 
 avengedPlayer( killId )
 {
 	self.modifiers["avenger"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "avenger", maps\mp\gametypes\_rank::getScoreInfoValue( "avenger" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "avenger" );
+	self thread giveAdrenaline( "avenger" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "avenger" );
+	
 	self incPlayerStat( "avengekills", 1 );
 }
 
 assistedSuicide( killId )
 {
 	self.modifiers["assistedsuicide"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "assistedsuicide", maps\mp\gametypes\_rank::getScoreInfoValue( "assistedsuicide" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "assistedsuicide" );
+	self thread giveAdrenaline( "assistedsuicide" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "assistedsuicide" );
 }
 
 defendedPlayer( killId )
 {
 	self.modifiers["defender"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "defender", maps\mp\gametypes\_rank::getScoreInfoValue( "defender" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "defender" );
+	self thread giveAdrenaline( "defender" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "defender" );
+	
 	self incPlayerStat( "rescues", 1 );
 }
 
@@ -493,24 +541,60 @@ defendedPlayer( killId )
 postDeathKill( killId )
 {
 	self.modifiers["posthumous"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "posthumous", maps\mp\gametypes\_rank::getScoreInfoValue( "posthumous" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "posthumous" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "posthumous" );
 }
 
 
 backStab( killId )
 {
+	self iPrintLnBold( "backstab" );
 }
 
 
 revenge( killId )
 {
 	self.modifiers["revenge"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "revenge", maps\mp\gametypes\_rank::getScoreInfoValue( "revenge" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "revenge" );
+	self thread giveAdrenaline( "revenge" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "revenge" );
+	
 	self incPlayerStat( "revengekills", 1 );
 }
 
 
 multiKill( killId, killCount )
 {
+	assert( killCount > 1 );
+	
+	if ( killCount == 2 )
+	{
+		self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "doublekill", maps\mp\gametypes\_rank::getScoreInfoValue( "double" ) );
+		self thread giveAdrenaline( "double" );
+	}
+	else if ( killCount == 3 )
+	{
+		self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "triplekill", maps\mp\gametypes\_rank::getScoreInfoValue( "triple" ) );
+		self thread giveAdrenaline( "triple" );
+		thread teamPlayerCardSplash( "callout_3xkill", self );
+	}
+	else
+	{
+		self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "multikill", maps\mp\gametypes\_rank::getScoreInfoValue( "multi" ) );
+		self thread giveAdrenaline( "multi" );
+		thread teamPlayerCardSplash( "callout_3xpluskill", self );
+	}
+	
+	self thread maps\mp\_matchdata::logMultiKill( killId, killCount );
+	
+	// update player multikill record
 	self setPlayerStatIfGreater( "multikill", killCount );
+	
+	// update player multikill count
 	self incPlayerStat( "mostmultikills", 1 );
 }
 
@@ -518,6 +602,12 @@ multiKill( killId, killCount )
 firstBlood( killId )
 {
 	self.modifiers["firstblood"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "firstblood", maps\mp\gametypes\_rank::getScoreInfoValue( "firstblood" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "firstblood" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "firstblood" );
+
+	thread teamPlayerCardSplash( "callout_firstblood", self );
 }
 
 
@@ -529,12 +619,23 @@ winningShot( killId )
 buzzKill( killId, victim )
 {
 	self.modifiers["buzzkill"] =  victim.pers["cur_kill_streak"];
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "buzzkill", maps\mp\gametypes\_rank::getScoreInfoValue( "buzzkill" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "buzzkill" );
+	self thread giveAdrenaline( "buzzkill" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "buzzkill" );
 }
 
 
 comeBack( killId )
 {
 	self.modifiers["comeback"] = true;
+
+	self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "comeback", maps\mp\gametypes\_rank::getScoreInfoValue( "comeback" ) );
+	self thread maps\mp\gametypes\_rank::giveRankXP( "comeback" );
+	self thread giveAdrenaline( "comeback" );
+	self thread maps\mp\_matchdata::logKillEvent( killId, "comeback" );
+
 	self incPlayerStat( "comebacks", 1 );
 }
 
@@ -603,6 +704,7 @@ monitorCrateJacking()
 			self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "hijacker", 100 );
 			self thread maps\mp\gametypes\_rank::giveRankXP( "hijacker", 100 );
 			if ( isDefined( owner ) )
+				owner maps\mp\gametypes\_hud_message::playerCardSplashNotify( "hijacked_sentry", self );
 			self notify( "process", "ch_hijacker" );
 		}
 		else if( crateType == "mega" || crateType == "emergency_airdrop" )
@@ -613,6 +715,7 @@ monitorCrateJacking()
 			self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "hijacker", 100 );
 			self thread maps\mp\gametypes\_rank::giveRankXP( "hijacker", 100 );
 			if ( isDefined( owner ) )
+				owner maps\mp\gametypes\_hud_message::playerCardSplashNotify( "hijacked_emergency_airdrop", self );
 			self notify( "process", "ch_newjack" );
 		}
 		else
@@ -620,6 +723,7 @@ monitorCrateJacking()
 			self thread maps\mp\gametypes\_hud_message::SplashNotifyDelayed( "hijacker", 100 );
 			self thread maps\mp\gametypes\_rank::giveRankXP( "hijacker", 100 );
 			if ( isDefined( owner ) )
+				owner maps\mp\gametypes\_hud_message::playerCardSplashNotify( "hijacked_airdrop", self );
 			self notify( "process", "ch_hijacker" );
 		}		
 	}
@@ -679,7 +783,7 @@ EventPopup( event, hudColor, glowAlpha )
 	self.hud_EventPopup.glowColor = hudColor;
 	self.hud_EventPopup.glowAlpha = glowAlpha;
 
-	if(getDvarInt("ui_mw3popup") == 1)
+	if( getDvarInt("ui_mw3popup") == 1 )
 	{
 		self.hud_EventPopup setText(event);
 		self.hud_EventPopup.alpha = 0.85;

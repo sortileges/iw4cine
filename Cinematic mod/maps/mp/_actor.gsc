@@ -1,11 +1,12 @@
 /*
- *	SASS' CINEMATIC MOD - Actors file (#301)
+ *	SASS' CINEMATIC MOD - Actors file (#304)
  */
 
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
 #include maps\mp\_movie;
+#include maps\mp\_misc;
 #include _precache;
 
 
@@ -332,24 +333,32 @@ ActorEquip()
 				if (isDefined(actor.equ[arguments[1]]))
 					actor.equ[arguments[1]] delete();
 
+				if (!(maps\mp\gametypes\_class::isValidWeapon(arguments[2]))) {
+					self thread ActorEquip();
+					return self iPrintLn( "[^1ERROR^7] ^8" + arguments[2] + " ^7isn't a valid weapon");
+				}
+
+				weaponModel = checkIfWeirdWeapon(getweaponmodel(arguments[2]) , arguments[3]);
+				weaponCamo = checkIfCamoAvailable(arguments[2] , arguments[3]);
+
 				actor.equ[arguments[1]] = spawn("script_model", actor GetTagOrigin(arguments[1]));
 				actor.equ[arguments[1]] linkTo(actor, arguments[1], (0, 0, 0), (0, 0, 0));
 
 				if (isSubStr(arguments[2], "_mp")) {
-					actor.equ[arguments[1]] setModel((getWeaponModel(arguments[2])) + GetCamoName(arguments[3]));
+					actor.equ[arguments[1]] setModel( weaponModel + weaponCamo);
 					for (i = 0; i < actorWeaponHideTagList.size; i++) {
-						actor.equ[arguments[1]] HidePart(actorWeaponHideTagList[i], (getWeaponModel(arguments[2])) + GetCamoName(arguments[3]));
+						actor.equ[arguments[1]] HidePart(actorWeaponHideTagList[i], weaponModel + weaponCamo);
 					}
+					self iPrintLn("[" + actor.name + "] : ^8" + weaponModel + weaponCamo + " ^7attached to ^8" + arguments[1] );
 				}
-				else if (arguments[2] != "delete")
+				else if (arguments[2] != "delete") {
 					actor.equ[arguments[1]] setModel(arguments[2]);
-
-				self iPrintLn("[" + actor.name + "] : ^8" + arguments[2] + " ^7attached to ^8" + arguments[1] );
+					self iPrintLn("[" + actor.name + "] : ^8" + arguments[2] + " ^7attached to ^8" + arguments[1] );
+				}
 			}
 		}
 	}
 }
-
 
 ActorNormWalk()
 {
@@ -538,7 +547,7 @@ ActorSetPath()
 		arguments = StrTok(argumentstring, " ,");
 
 		if (int(arguments[1]) > 13)
-			iPrintLn("^1[ERROR] ^7: Can only save node #1 to #13");
+			iPrintLn("[^1ERROR^7] : Can only save node #1 to #13");
 		else
 		{
 			foreach(actor in level.actor)
@@ -614,7 +623,7 @@ ActorDeletePath()
 					self iPrintLn("[" + actor.name + "] : Deleted node #" + f + " and above");
 				}
 
-				else self IPrintLn("^1Looks like you typed something wrong");
+				else self IPrintLn("[^3WARNING^7] : Looks like you did something weird");
 			}
 		}
 		wait .1;
@@ -750,7 +759,7 @@ ActorRename()
 				actor.name = arguments[1];
 				actor.hitbox.name = arguments[1];
 			}
-			else self iPrintLn("^1[ERROR] ^7: Couldn't find actor named '" + arguments[0] + "'");
+			else self iPrintLn("[^1ERROR^7] : Couldn't find actor named '" + arguments[0] + "'");
 		}
 	}
 }
@@ -784,7 +793,7 @@ ActorHandleDamage(crate, actor)
 
 	wpnName = StrTok(level.actorAttacker getCurrentWeapon(), "_"); // Won't work with equipment kills but oh well
 	level.actorAttacker iPrintLn( "^8" + level.actorAttacker.name + " ^7[" + wpnName[0] + "] ^9" + actor.name);
-	level.actorAttacker maps\mp\gametypes\_rank::scorePopup(level.scoreInfo["kill"]["value"], 0);
+	level.actorAttacker maps\mp\gametypes\_rank::scorePopup( ( level.scoreInfo["kill"]["value"] ) , 0);
 
 }
 

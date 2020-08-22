@@ -13,6 +13,7 @@
 
 init()
 {
+
 	level.scoreInfo = [];
 	level.xpScale = getDvarInt( "scr_xpscale" );
 	
@@ -23,6 +24,7 @@ init()
 	level.xpScale = max( level.xpScale, 0 );
 
 	level.rankTable = [];
+	level.scoreInfo["kill"]["value"] = 100;
 
 	precacheShader("white");
 
@@ -36,16 +38,16 @@ init()
 
 	if ( level.teamBased )
 	{
-		registerScoreInfo( "kill", 5 );
-		registerScoreInfo( "headshot", 5 );
-		registerScoreInfo( "assist", 2 );
+		registerScoreInfo( "kill", 100 );
+		registerScoreInfo( "headshot", 50 );
+		registerScoreInfo( "assist", 20 );
 		registerScoreInfo( "suicide", 0 );
 		registerScoreInfo( "teamkill", 0 );
 	}
 	else
 	{
-		registerScoreInfo( "kill", 5 );
-		registerScoreInfo( "headshot", 5 );
+		registerScoreInfo( "kill", 50 );
+		registerScoreInfo( "headshot", 25 );
 		registerScoreInfo( "assist", 0 );
 		registerScoreInfo( "suicide", 0 );
 		registerScoreInfo( "teamkill", 0 );
@@ -336,9 +338,6 @@ giveRankXP( type, value )
 	
 	lootType = "none";
 	
-	if ( !self rankingEnabled() )
-		return;
-	
 	if ( level.teamBased && (!level.teamCount["allies"] || !level.teamCount["axis"]) )
 		return;
 	else if ( !level.teamBased && (level.teamCount["allies"] + level.teamCount["axis"] < 2) )
@@ -409,19 +408,14 @@ giveRankXP( type, value )
 	// Set the XP stat after any unlocks, so that if the final stat set gets lost the unlocks won't be gone for good.
 	self syncXPStat();
 
-	if ( !level.hardcoreMode )
+	if ( type == "teamkill" )
+		self thread scorePopup( 0 - getScoreInfoValue( "kill" ), 0, (1,0,0), 0 );
+	else
 	{
-		if ( type == "teamkill" )
-		{
-			self thread scorePopup( 0 - getScoreInfoValue( "kill" ), 0, (1,0,0), 0 );
-		}
-		else
-		{
-			color = (1,1,0.5);
-			if ( gotRestXP )
-				color = (1,.65,0);
-			self thread scorePopup( value, momentumBonus, color, 0 );
-		}
+		color = (1,1,0.5);
+		if ( gotRestXP )
+			color = (1,.65,0);
+		self thread scorePopup( value, momentumBonus, color, 0 );
 	}
 
 	switch( type )
@@ -522,7 +516,7 @@ updateRankAnnounceHUD()
 
 endGameUpdate()
 {
-	player = self;			
+	player = self;
 }
 
 
@@ -554,7 +548,7 @@ scorePopup( amount, bonus, hudColor, glowAlpha )
 
 	self.hud_scorePopup setValue(self.xpUpdateTotal);
 	self.hud_scorePopup.alpha = 0.85;
-	self.hud_scorePopup thread maps\mp\gametypes\_hud::fontPulse( 3.5 );
+	self.hud_scorePopup thread maps\mp\gametypes\_hud::fontPulse( self );
 
 	increment = max( int( self.bonusUpdateTotal / 20 ), 1 );
 		
@@ -575,7 +569,7 @@ scorePopup( amount, bonus, hudColor, glowAlpha )
 		wait ( 2.5 );
 	}
 
-	self.hud_scorePopup fadeOverTime(0.75);
+	self.hud_scorePopup fadeOverTime( 0.75 );
 	self.hud_scorePopup.alpha = 0;
 	
 	self.xpUpdateTotal = 0;		
@@ -658,13 +652,7 @@ getRankXP()
 }
 
 incRankXP( amount )
-{
-	if ( !self rankingEnabled() )
-		return;
-
-	if ( isDefined( self.isCheater ) )
-		return;
-	
+{	
 	xp = self getRankXP();
 	newXp = (xp + amount);
 	

@@ -1,5 +1,5 @@
 /*
- *	SASS' CINEMATIC MOD - Main file (#301)
+ *	SASS' CINEMATIC MOD - Main file (#304)
  */
 
 #include maps\mp\gametypes\_hud_message;
@@ -33,8 +33,6 @@ MovieSpawn()
 	{
 		self waittill("spawned_player");
 
-		self.newBotWeapon = undefined;
-
 		// Grenade cam reset
 		setDvar("camera_thirdperson", "0");
 		self show();
@@ -46,7 +44,6 @@ MovieSpawn()
 
 		// Bots
 		thread BotSpawn();
-		thread BotWeapon();
 		thread BotSetup();
 		thread BotStare();
 		thread BotAim();
@@ -132,7 +129,7 @@ BotSpawn()
 		newTestClient = addTestClient();
 		newTestClient.pers["isBot"] = true;
 		newTestClient.isStaring = false;
-		newTestClient thread RandomLevel();
+		newTestClient thread BotsLevel();
 		newTestClient thread BotDoSpawn(self);
 	}
 }
@@ -145,32 +142,48 @@ BotDoSpawn(owner)
 	arguments = StrTok(argumentstring, " ,");
 
 	while (!isdefined(self.pers["team"])) wait .05;
+	self.isUsingCustomLoadout = false;
 
-	self notify("menuresponse", game["menu_team"], arguments[1]);
+	// Picking team
+	if ( ( arguments[1] == "allies" || arguments[1] == "axis" ) && isDefined(arguments[1]) )
+		self notify("menuresponse", game["menu_team"], arguments[1]);
+	else 
+	{
+		kick(self getEntityNumber());
+		owner iPrintLn("[^1ERROR^7] Team name needs to be either ^8allies ^7or ^8axis^7!");
+		return;
+	}
 	wait .1;
 
-	if (arguments[0] == "custom")
+	// Picking class
+	if (arguments[0] == "custom") {
+		self buildCustomLoadout(argumentstring);
 		self notify("menuresponse", "changeclass", "class" + 9);
-	else if (arguments[0] == "inter")
+	}
+	else if (arguments[0] == "aug")
 		self notify("menuresponse", "changeclass", "class" + 8);
-	else if (arguments[0] == "ak74u")
+	else if (arguments[0] == "uzi")
 		self notify("menuresponse", "changeclass", "class" + 7);
-	else if (arguments[0] == "mp5")
-		self notify("menuresponse", "changeclass", "class" + 6);
-	else if (arguments[0] == "m4")
-		self notify("menuresponse", "changeclass", "class" + 5);
 	else if (arguments[0] == "riot")
+		self notify("menuresponse", "changeclass", "class" + 6);
+	else if (arguments[0] == "mp5")
+		self notify("menuresponse", "changeclass", "class" + 5);
+	else if (arguments[0] == "ump")
 		self notify("menuresponse", "changeclass", "class" + 4);
-	else if (arguments[0] == "barrett")
+	else if (arguments[0] == "m4")
 		self notify("menuresponse", "changeclass", "class" + 3);
 	else if (arguments[0] == "ak47")
 		self notify("menuresponse", "changeclass", "class" + 2);
-	else if (arguments[0] == "ump")
+	else if (arguments[0] == "barrett")
 		self notify("menuresponse", "changeclass", "class" + 1);
+	else if (arguments[0] == "inter" || arguments[0] == "cheytac")
+		self notify("menuresponse", "changeclass", "class" + 0);
 	else if (arguments[0] == "deagle")
-		self notify("menuresponse", "changeclass", "class" + 0);
-	else
-		self notify("menuresponse", "changeclass", "class" + 0);
+		self notify("menuresponse", "changeclass", "class" + 10);
+	else {
+		self notify("menuresponse", "changeclass", "class" + RandomIntRange(0,9));
+		owner iPrintLn("[^3WARNING^7] ^8'"+ arguments[0] +"' ^7isn't a valid class. Random class given." );
+	}
 
 	self waittill("spawned_player");
 
@@ -178,6 +191,18 @@ BotDoSpawn(owner)
 	self setPlayerAngles(owner.angles + (0, 180, 0));
 	self thread SaveSpawn();
 
+}
+
+buildCustomLoadout( listString )
+{
+	loadoutList = StrTok(listString, " ,");
+	self.isUsingCustomLoadout = true;
+	self.customPrimary = loadoutList[2];
+	self.customSecondary = loadoutList[3];
+	self.customPrimCamo = loadoutList[4];
+	self.customSecondCamo = loadoutList[5];
+	// self.customEquipment = loadoutList[6];
+	// ^ Will probably do the equipment one day when I'll stop being lazy
 }
 
 BotSetup()
@@ -198,51 +223,6 @@ BotSetup()
 			}
 		}
 	}
-}
-
-BotWeapon()
-{
-	self endon("death");
-	self endon("disconnect");
-	setDvarIfUninitialized("mvm_bot_weapon", "Give weapon to bot - ^9[name weapon camo]");
-	self notifyOnPlayerCommand("mvm_bot_weapon", "mvm_bot_weapon");
-	for (;;)
-	{
-		self waittill("mvm_bot_weapon");
-		argumentstring = getDvar("mvm_bot_weapon");
-		arguments = StrTok(argumentstring, " ,");
-
-		weaponHideTagList = GetWeaponHideTags(arguments[1]);
-		foreach(player in level.players)
-		{
-			if (player.pers["isBot"] == true)
-			{
-				if (isSubStr(player.name, arguments[0]))
-				{
-					if (isDefined(player.newBotWeapon))
-						player.newBotWeapon Delete();
-					player takeWeapon(player GetCurrentWeapon());
-					
-					player.newBotWeapon = spawn("script_model", player GetTagOrigin("j_gun"));
-					player.newBotWeapon linkTo(player, "j_gun", (0, 0, 0), (0, 0, 0));
-					player.newBotWeapon setModel((getWeaponModel(arguments[1])) + GetCamoName(arguments[2]));
-					for (i = 0; i < weaponHideTagList.size; i++)
-					{
-						player.newBotWeapon HidePart(weaponHideTagList[i], (getWeaponModel(arguments[1])) + GetCamoName(arguments[2]));
-					}
-					if (!isDefined(self.linke)) player thread DeleteWeapOnDeath();
-				}
-			}
-		}
-	}
-}
-
-DeleteWeapOnDeath(owner)
-{
-	self waittill("death");
-	wait 5;
-	self.newBotWeapon Unlink();
-	self.newBotWeapon delete();
 }
 
 BotAim()
@@ -471,7 +451,7 @@ BotKill()
 		{
 			if (isSubStr(player.name, arguments[0]))
 			{
-				if (isDefined(self.linke) && !isDefined(self.newBotWeapon))
+				if (isDefined(self.linke))
 				{
 					player PrepareInHandModel();
 					player takeweapon(player getCurrentWeapon());
@@ -697,28 +677,25 @@ SaveSpawn()
 	self.spawn_angles = self getPlayerAngles();
 }
 
-RandomLevel()
+BotsLevel()
 {
-	self setPlayerData("prestige", RandomIntRange(1,10));
-	self setPlayerData("experience", RandomIntRange(0,999999));
+	self setPlayerData("prestige", RandomInt(11));
+	self setPlayerData("experience", 2400000);
 }
 
 PrepareInHandModel()
 {
-	if (!isDefined(self.newBotWeapon))
-	{
-		currentWeapon = self getCurrentWeapon();
+	currentWeapon = self getCurrentWeapon();
 
-		if (isDefined(self.weaptoattach))
-			self.weaptoattach delete();
+	if (isDefined(self.weaptoattach))
+		self.weaptoattach delete();
 
-		self.weaptoattach = getWeaponModel(currentWeapon, self.loadoutPrimaryCamo);
-		self attach(self.weaptoattach, "j_gun", true);
-		hideTagList = GetWeaponHideTags(currentWeapon);
+	self.weaptoattach = getWeaponModel(currentWeapon, self.loadoutPrimaryCamo);
+	self attach(self.weaptoattach, "j_gun", true);
+	hideTagList = GetWeaponHideTags(currentWeapon);
 
-		for (i = 0; i < hideTagList.size; i++)
-			self HidePart(hideTagList[i], self.weaptoattach);
+	for (i = 0; i < hideTagList.size; i++)
+		self HidePart(hideTagList[i], self.weaptoattach);
 
-		return self.weaptoattach;
-	}
+	self.weaptoattach thread maps\mp\gametypes\_weapons::deleteWeaponAfterAWhile();
 }

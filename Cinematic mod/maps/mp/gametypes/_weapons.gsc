@@ -489,7 +489,7 @@ PhysGunFall()
 
 deleteWeaponAfterAWhile()
 {
-	wait 8;
+	wait 6;
 	self delete();
 }
 
@@ -685,7 +685,7 @@ dropWeaponForDeath( attacker )
 		#/
 		return;
 	}
-	if ( getDvar("mvm_throwgun", "") != "1")
+	if ( getDvar("mvm_throwgun") != "1")
     {
         if ( weapon != "riotshield_mp" )
         {
@@ -797,7 +797,7 @@ deletePickupAfterAWhile()
 {
 	self endon("death");
 	
-	wait 60;
+	wait 5;
 
 	if ( !isDefined( self ) )
 		return;
@@ -844,6 +844,7 @@ watchPickup()
 		player.tookWeaponFrom[ droppedWeaponName ] = undefined;
 	}
 	droppedItem thread watchPickup();
+	droppedItem thread deletePickupAfterAWhile();
 	
 	// take owner information from self and put it onto player
 	if ( isdefined( self.ownersattacker ) && self.ownersattacker == player )
