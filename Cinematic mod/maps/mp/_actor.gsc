@@ -333,7 +333,7 @@ ActorEquip()
 				if (isDefined(actor.equ[arguments[1]]))
 					actor.equ[arguments[1]] delete();
 
-				if (!(maps\mp\gametypes\_class::isValidWeapon(arguments[2]))) {
+				if ( isSubStr(arguments[2], "_mp") && !(maps\mp\gametypes\_class::isValidWeapon(arguments[2])) ) {
 					self thread ActorEquip();
 					return self iPrintLn( "[^1ERROR^7] ^8" + arguments[2] + " ^7isn't a valid weapon");
 				}
