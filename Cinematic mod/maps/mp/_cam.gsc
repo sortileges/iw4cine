@@ -327,7 +327,7 @@ CameraStart()
 
 		//Noclip thread needs to be restarted. Odd
 		self notify("killnoclip");
-		thread maps\mp\_misc::noclip();
+		thread maps\mp\_misc::FakeNoclip();
 	}
 }
 

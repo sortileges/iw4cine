@@ -76,7 +76,7 @@ MiscSpawn()
 		thread CreateClone();
 		thread ClearBodies();
 		thread LoadPos();
-		thread Noclip();
+		thread FakeNoclip();
 
 		// Random useless stuff
 		thread VerifyModel();
@@ -470,7 +470,7 @@ discord()
 	}
 }
 
-Noclip()
+FakeNoclip()
 {
 	self endon("disconnect");
 	self endon("death");
