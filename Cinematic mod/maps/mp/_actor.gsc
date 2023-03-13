@@ -52,6 +52,7 @@ OnPlayerSpawn()
 		self thread ActorNormWalk();
 		self thread ActorNormWalkAutoStop();
 		self thread ActorNormAnim();
+		self thread ActorDeathFX();
 		self thread ActorDeathAnim();
 		self thread ActorTeleport();
 		self thread ActorBack();
@@ -296,6 +297,29 @@ ActorPlayFX()
 		if(isDefined(actor))
 		{
 			playFxOnTag( level._effect[arguments[2]], actor, arguments[1] );
+		}
+	}
+}
+
+ActorDeathFX()
+{
+	self endon("death");
+	self endon("disconnect");
+
+	setDvarIfUninitialized("mvm_actor_death_fx", "Play FX on tag - ^9[actor tag effect]");
+	self notifyOnPlayerCommand("mvm_actor_death_fx", "mvm_actor_death_fx");
+
+	for (;;)
+	{
+		self waittill("mvm_actor_death_fx");
+
+		argumentstring = getDvar("mvm_actor_death_fx");
+		arguments = StrTok(argumentstring, " ,");
+		actor = GetActor(arguments[0]);
+		if(isDefined(actor))
+		{
+			actor.death_fx_bone = arguments[1];
+			actor.death_fx = arguments[2];
 		}
 	}
 }
@@ -843,7 +867,14 @@ ActorHandleDamage(crate, actor)
 	actor scriptModelPlayAnim(actor.deathanim);
 	actor.head scriptModelPlayAnim(actor.deathanim);
 	actor PlaySound( "generic_death_american_" + RandomIntRange(1, 8) );
-	playFx(level._effect["blood"], actor getTagOrigin("j_spine4"));
+	if(isDefined(actor.death_fx_bone) && isDefined(actor.death_fx))
+	{
+		playFx(level._effect[actor.death_fx], actor getTagOrigin(actor.death_fx_bone));
+	}
+	else
+	{
+		playFx(level._effect["blood"], actor getTagOrigin("j_spine4"));
+	}
 
 	wpnName = StrTok(level.actorAttacker getCurrentWeapon(), "_"); // Won't work with equipment kills but oh well
 	level.actorAttacker iPrintLn( "^8" + level.actorAttacker.name + " ^7[" + wpnName[0] + "] ^9" + actor.name);
