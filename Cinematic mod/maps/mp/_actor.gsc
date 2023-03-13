@@ -50,6 +50,7 @@ OnPlayerSpawn()
 		self thread ActorEquip();
 		self thread ActorPlayFX();
 		self thread ActorNormWalk();
+		self thread ActorNormWalkAutoStop();
 		self thread ActorNormAnim();
 		self thread ActorDeathAnim();
 		self thread ActorTeleport();
@@ -408,13 +409,38 @@ ActorNormWalk()
 					vec = anglestoright(actor.angles);
 					target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
 				}
-
+				
 				actor MoveTo(actor.origin + target, time, 0, 0);
 
 			}
 		}
 	}
 }
+
+ActorNormWalkAutoStop()
+{
+	self endon("death");
+	self endon("disconnect");
+	setDvarIfUninitialized("mvm_actor_walk_autostop", "Toggle stopping actor movement on death");
+
+	self notifyOnPlayerCommand("mvm_actor_walk_autostop", "mvm_actor_walk_autostop");
+	for (;;)
+	{
+		self waittill("mvm_actor_walk_autostop");
+
+		if (!isDefined(level.walk_autostop) || level.walk_autostop == false)
+		{
+			self iPrintLn("mvm_actor_walk_autostop - ^2ON");
+			level.walk_autostop = true;
+		}
+		else if (level.walk_autostop == true)
+		{
+			self iPrintLn("mvm_actor_walk_autostop - ^1OFF");
+			level.walk_autostop = false;
+		}
+	}
+}
+
 
 ActorTeleport()
 {
@@ -785,6 +811,11 @@ ActorHandleDamage(crate, actor)
 		if (isDefined(attacker) && isPlayer(attacker) && attacker != self.owner)
 			self.health -= amount;
 	}
+	if(isDefined(level.walk_autostop) && level.walk_autostop == true)
+	{
+		actor MoveTo(actor.origin, 0.1, 0, 0);
+	}
+
 	actor.hitbox.isDead = true;
 	actor scriptModelPlayAnim(actor.deathanim);
 	actor.head scriptModelPlayAnim(actor.deathanim);
@@ -795,6 +826,7 @@ ActorHandleDamage(crate, actor)
 	level.actorAttacker iPrintLn( "^8" + level.actorAttacker.name + " ^7[" + wpnName[0] + "] ^9" + actor.name);
 	level.actorAttacker maps\mp\gametypes\_rank::scorePopup( ( level.scoreInfo["kill"]["value"] ) , 0);
 
+	
 }
 
 PrepareGoProObject()
