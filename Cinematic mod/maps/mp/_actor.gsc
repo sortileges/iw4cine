@@ -98,8 +98,8 @@ ActorSpawn()
 		level.actor[level.actorCount] scriptModelPlayAnim(spawnAnim);
 		level.actor[level.actorCount].name = "actor" + level.actorCount;
 
-		level.actor[level.actorCount].oldorg = 0;
-		level.actor[level.actorCount].oldang = 0;
+		level.actor[level.actorCount].oldorg = level.actor[level.actorCount].origin;
+		level.actor[level.actorCount].oldang = level.actor[level.actorCount].angles;
 		level.actor[level.actorCount].ismoving = 0;
 
 		level.actor[level.actorCount].head = spawn("script_model", level.actor[level.actorCount] getTagOrigin("j_spine4"));
@@ -158,6 +158,7 @@ GetActor(argument)
 		}
 	}
 	self iPrintLn("[^1ERROR^7] : Couldn't find actor '" + argument + "'");
+	return undefined;
 }
 
 ActorModel()
@@ -394,8 +395,6 @@ ActorNormWalk()
 		if(isDefined(actor))
 		{
 			time = int(arguments[1]);
-			actor.oldorg = actor.origin;
-			actor.oldang = actor.angles;
 			target = [];
 			if (arguments[2] == "forward")
 			{
