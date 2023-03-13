@@ -431,6 +431,26 @@ ActorNormWalk()
 				vec = anglesToUp(actor.angles);
 				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
 			}
+			else if (arguments[2] == "forwardup")
+			{
+				vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
+				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+			}
+			else if (arguments[2] == "forwarddown")
+			{
+				vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
+				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+			}
+			else if (arguments[2] == "backwardup")
+			{
+				vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
+				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+			}
+			else if (arguments[2] == "backwarddown")
+			{
+				vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
+				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+			}
 			actor MoveTo(actor.origin + target, time, 0, 0);
 		}
 	}
