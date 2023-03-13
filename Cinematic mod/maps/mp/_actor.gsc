@@ -54,6 +54,7 @@ OnPlayerSpawn()
 		self thread ActorNormAnim();
 		self thread ActorDeathAnim();
 		self thread ActorTeleport();
+		self thread ActorTeleportLooking();
 		self thread ActorBack();
 		self thread ActorSetPath();
 		self thread ActorDoPath();
@@ -462,6 +463,36 @@ ActorTeleport()
 				actor RotateTo(self.angles, 0.1, 0, 0);
 				actor.oldorg = self.origin;
 				actor.oldang = self.angles;
+			}
+		}
+	}
+}
+
+ActorTeleportLooking()
+{
+	self endon("death");
+	self endon("disconnect");
+
+	setDvarIfUninitialized("mvm_actor_move_look", "Teleport the actor you're looking at");
+	self notifyOnPlayerCommand("mvm_actor_move_look", "mvm_actor_move_look");
+
+	for(;;)
+	{
+		self waittill("mvm_actor_move_look");
+		vec = anglestoforward(self getPlayerAngles());
+		entity = BulletTrace( self getTagOrigin("tag_eye"), self getTagOrigin("tag_eye") + (vec[0] * 500, vec[1] * 500, vec[2] * 500), 0, self )[ "entity" ];
+		// ^ same from ActorShowNames()
+		if(isDefined(entity.model))
+		{
+			foreach(actor in level.actor)
+			{
+				if (actor.name == entity.name)
+				{
+					actor MoveTo(self.origin, 0.1, 0, 0);
+					actor RotateTo(self.angles, 0.1, 0, 0);
+					actor.oldorg = self.origin;
+					actor.oldang = self.angles;
+				}
 			}
 		}
 	}
