@@ -100,7 +100,6 @@ ActorSpawn()
 
 		level.actor[level.actorCount].oldorg = level.actor[level.actorCount].origin;
 		level.actor[level.actorCount].oldang = level.actor[level.actorCount].angles;
-		level.actor[level.actorCount].ismoving = 0;
 
 		level.actor[level.actorCount].head = spawn("script_model", level.actor[level.actorCount] getTagOrigin("j_spine4"));
 		level.actor[level.actorCount].head setModel(arguments[1]);
@@ -157,7 +156,6 @@ GetActor(argument)
 			return actor;
 		}
 	}
-	self iPrintLn("[^1ERROR^7] : Couldn't find actor '" + argument + "'");
 	return undefined;
 }
 
@@ -241,6 +239,13 @@ ActorDelete()
 			actor Delete();
 			actor.head Delete();
 			actor.hitbox Delete();
+			foreach (wep in actor.equ)
+			{
+				if(isDefined(wep))
+				{
+					wep Delete();
+				}
+			}
 			actor.equ Delete();
 			self iPrintLn("[" + actor.name + "] : Deleted!");
 		}
@@ -414,6 +419,16 @@ ActorNormWalk()
 			else if (arguments[2] == "left")
 			{
 				vec = anglestoright(actor.angles);
+				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+			}
+			else if (arguments[2] == "up")
+			{
+				vec = anglesToUp(actor.angles);
+				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+			}
+			else if (arguments[2] == "down")
+			{
+				vec = anglesToUp(actor.angles);
 				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
 			}
 			actor MoveTo(actor.origin + target, time, 0, 0);
