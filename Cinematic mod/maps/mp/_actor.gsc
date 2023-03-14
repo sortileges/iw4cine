@@ -142,6 +142,10 @@ ActorSpawn()
 
 GetActor(argument)
 {
+	if (argument == "all")
+	{
+		return level.actor;
+	}
 	foreach(actor in level.actor)
 	{
 		if(argument == "look")
@@ -150,12 +154,16 @@ GetActor(argument)
 			entity = BulletTrace( self getTagOrigin("tag_eye"), self getTagOrigin("tag_eye") + (vec[0] * 500, vec[1] * 500, vec[2] * 500), 0, self )[ "entity" ];
 			if(isDefined(entity.model) && entity.name == actor.name)
 			{
-				return actor;
+				ret = [];
+				ret[0] = actor;
+				return ret;
 			}
 		}
 		else if (argument == actor.name)
 		{
-			return actor;
+			ret = [];
+			ret[0] = actor;
+			return ret;
 		}
 	}
 	return undefined;
@@ -175,24 +183,27 @@ ActorModel()
 
 		argumentstring = getDvar("mvm_actor_model");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			if (arguments[1] == "head")
+			foreach (actor in actors)
 			{
-				actor.head setModel(arguments[2]);
-			}
-			else if (arguments[1] == "body")
-			{
-				actor setModel(arguments[2]);
-			}
-			else 
-			{
-				actor setModel(arguments[1]);
-				actor.head setModel(arguments[2]);
-			}		
+				if (arguments[1] == "head")
+				{
+					actor.head setModel(arguments[2]);
+				}
+				else if (arguments[1] == "body")
+				{
+					actor setModel(arguments[2]);
+				}
+				else 
+				{
+					actor setModel(arguments[1]);
+					actor.head setModel(arguments[2]);
+				}		
 
-			self iPrintLn("[" + actor.name + "] : Updated model(s)");
+				self iPrintLn("[" + actor.name + "] : Updated model(s)");
+			}
 		}
 	}
 }
@@ -212,12 +223,15 @@ ActorHP()
 
 		argumentstring = getDvar("mvm_actor_health");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			actor.hitbox.savedhealth = int(arguments[1]);
-			actor.hitbox.health = actor.hitbox.savedhealth;
-			self iPrintLn("[" + actor.name + "] : Health set to ^8" + actor.hitbox.savedhealth );
+			foreach (actor in actors)
+			{
+				actor.hitbox.savedhealth = int(arguments[1]);
+				actor.hitbox.health = actor.hitbox.savedhealth;
+				self iPrintLn("[" + actor.name + "] : Health set to ^8" + actor.hitbox.savedhealth );
+			}
 		}
 	}
 }
@@ -235,21 +249,24 @@ ActorDelete()
 	for (;;)
 	{
 		self waittill("mvm_actor_delete");
-		actor = GetActor(getDvar("mvm_actor_delete"));
-		if(isDefined(actor))
+		actors = GetActor(getDvar("mvm_actor_delete"));
+		if(isDefined(actors))
 		{
-			actor Delete();
-			actor.head Delete();
-			actor.hitbox Delete();
-			foreach (wep in actor.equ)
+			foreach (actor in actors)
 			{
-				if(isDefined(wep))
+				actor Delete();
+				actor.head Delete();
+				actor.hitbox Delete();
+				foreach (wep in actor.equ)
 				{
-					wep Delete();
+					if(isDefined(wep))
+					{
+						wep Delete();
+					}
 				}
+				actor.equ Delete();
+				self iPrintLn("[" + actor.name + "] : Deleted!");
 			}
-			actor.equ Delete();
-			self iPrintLn("[" + actor.name + "] : Deleted!");
 		}
 	}
 }
@@ -268,13 +285,16 @@ ActorNormAnim()
 
 		argumentstring = getDvar("mvm_actor_anim");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			actor scriptModelPlayAnim(arguments[1]);
-			actor.head scriptModelPlayAnim(arguments[1]);
-			actor.assignedanim = arguments[1];
-			self iPrintLn("[" + actor.name + "] : Base anim set to ^8" + actor.assignedanim );
+			foreach (actor in actors)
+			{
+				actor scriptModelPlayAnim(arguments[1]);
+				actor.head scriptModelPlayAnim(arguments[1]);
+				actor.assignedanim = arguments[1];
+				self iPrintLn("[" + actor.name + "] : Base anim set to ^8" + actor.assignedanim );
+			}
 		}
 	}
 }
@@ -294,10 +314,13 @@ ActorPlayFX()
 
 		argumentstring = getDvar("mvm_actor_fx");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			playFxOnTag( level._effect[arguments[2]], actor, arguments[1] );
+			foreach (actor in actors)
+			{
+				playFxOnTag( level._effect[arguments[2]], actor, arguments[1] );
+			}
 		}
 	}
 }
@@ -316,11 +339,14 @@ ActorDeathFX()
 
 		argumentstring = getDvar("mvm_actor_death_fx");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			actor.death_fx_bone = arguments[1];
-			actor.death_fx = arguments[2];
+			foreach (actor in actors)
+			{
+				actor.death_fx_bone = arguments[1];
+				actor.death_fx = arguments[2];
+			}
 		}
 	}
 }
@@ -341,11 +367,14 @@ ActorDeathAnim()
 
 		argumentstring = getDvar("mvm_actor_death");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			actor.deathanim = arguments[1];
-			self iPrintLn("[" + actor.name + "] : Death anim set to ^8" + actor.deathanim );
+			foreach (actor in actors)
+			{
+				actor.deathanim = arguments[1];
+				self iPrintLn("[" + actor.name + "] : Death anim set to ^8" + actor.deathanim );
+			}
 		}
 	}
 }
@@ -364,43 +393,46 @@ ActorEquip()
 
 		argumentstring = getDvar("mvm_actor_weapon");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			equ_angles = actor getTagAngles(arguments[1]);
-			equ_origin = actor getTagOrigin(arguments[1]);
-			actorWeaponHideTagList = GetWeaponHideTags(arguments[2]);
-
-			if (isDefined(actor.equ[arguments[1]]))
+			foreach (actor in actors)
 			{
-				actor.equ[arguments[1]] delete();
-			}
-				
+				equ_angles = actor getTagAngles(arguments[1]);
+				equ_origin = actor getTagOrigin(arguments[1]);
+				actorWeaponHideTagList = GetWeaponHideTags(arguments[2]);
 
-			if ( isSubStr(arguments[2], "_mp") && !(maps\mp\gametypes\_class::isValidWeapon(arguments[2])) ) 
-			{
-				self thread ActorEquip();
-				return self iPrintLn( "[^1ERROR^7] ^8" + arguments[2] + " ^7isn't a valid weapon");
-			}
-
-			weaponModel = checkIfWeirdWeapon(getweaponmodel(arguments[2]) , arguments[3]);
-			weaponCamo = checkIfCamoAvailable(arguments[2] , arguments[3]);
-
-			actor.equ[arguments[1]] = spawn("script_model", actor GetTagOrigin(arguments[1]));
-			actor.equ[arguments[1]] linkTo(actor, arguments[1], (0, 0, 0), (0, 0, 0));
-
-			if (isSubStr(arguments[2], "_mp")) 
-			{
-				actor.equ[arguments[1]] setModel( weaponModel + weaponCamo);
-				for (i = 0; i < actorWeaponHideTagList.size; i++) {
-					actor.equ[arguments[1]] HidePart(actorWeaponHideTagList[i], weaponModel + weaponCamo);
+				if (isDefined(actor.equ[arguments[1]]))
+				{
+					actor.equ[arguments[1]] delete();
 				}
-				self iPrintLn("[" + actor.name + "] : ^8" + weaponModel + weaponCamo + " ^7attached to ^8" + arguments[1] );
-			}
-			else if (arguments[2] != "delete") 
-			{
-				actor.equ[arguments[1]] setModel(arguments[2]);
-				self iPrintLn("[" + actor.name + "] : ^8" + arguments[2] + " ^7attached to ^8" + arguments[1] );
+					
+
+				if ( isSubStr(arguments[2], "_mp") && !(maps\mp\gametypes\_class::isValidWeapon(arguments[2])) ) 
+				{
+					self thread ActorEquip();
+					return self iPrintLn( "[^1ERROR^7] ^8" + arguments[2] + " ^7isn't a valid weapon");
+				}
+
+				weaponModel = checkIfWeirdWeapon(getweaponmodel(arguments[2]) , arguments[3]);
+				weaponCamo = checkIfCamoAvailable(arguments[2] , arguments[3]);
+
+				actor.equ[arguments[1]] = spawn("script_model", actor GetTagOrigin(arguments[1]));
+				actor.equ[arguments[1]] linkTo(actor, arguments[1], (0, 0, 0), (0, 0, 0));
+
+				if (isSubStr(arguments[2], "_mp")) 
+				{
+					actor.equ[arguments[1]] setModel( weaponModel + weaponCamo);
+					for (i = 0; i < actorWeaponHideTagList.size; i++) {
+						actor.equ[arguments[1]] HidePart(actorWeaponHideTagList[i], weaponModel + weaponCamo);
+					}
+					self iPrintLn("[" + actor.name + "] : ^8" + weaponModel + weaponCamo + " ^7attached to ^8" + arguments[1] );
+				}
+				else if (arguments[2] != "delete") 
+				{
+					actor.equ[arguments[1]] setModel(arguments[2]);
+					self iPrintLn("[" + actor.name + "] : ^8" + arguments[2] + " ^7attached to ^8" + arguments[1] );
+				}
 			}
 		}
 	}
@@ -416,19 +448,21 @@ ActorNormWalkActorBack()
 	for (;;)
 	{
 		self waittill("mvm_actor_walk_actorback");
-		actor = GetActor(getDvar("mvm_actor_walk_actorback"));
-
-		if(isDefined(actor))
+		actors = GetActor(getDvar("mvm_actor_walk_actorback"));
+		if(isDefined(actors))
 		{
-			if (!isDefined(actor.walk_actorback) || actor.walk_actorback == false)
+			foreach (actor in actors)
 			{
-				self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^2ON");
-				actor.walk_actorback = true;
-			}
-			else if (actor.walk_actorback == true)
-			{
-				self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^1OFF");
-				actor.walk_actorback = false;
+				if (!isDefined(actor.walk_actorback) || actor.walk_actorback == false)
+				{
+					self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^2ON");
+					actor.walk_actorback = true;
+				}
+				else if (actor.walk_actorback == true)
+				{
+					self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^1OFF");
+					actor.walk_actorback = false;
+				}
 			}
 		}
 	}
@@ -449,12 +483,15 @@ ActorNormWalk()
 
 		argumentstring = getDvar("mvm_actor_walk");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			actor.walk_speed = int(arguments[1]);
-			actor.walk_direction = arguments[2];
-			MakeActorNormWalk(actor);
+			foreach (actor in actors)
+			{
+				actor.walk_speed = int(arguments[1]);
+				actor.walk_direction = arguments[2];
+				MakeActorNormWalk(actor);
+			}
 		}
 	}
 }
@@ -527,18 +564,21 @@ ActorNormWalkAutoStop()
 	for (;;)
 	{
 		self waittill("mvm_actor_walk_autostop");
-		actor = GetActor(getDvar("mvm_actor_walk_actorback"));
-		if(isDefined(actor))
+		actors = GetActor(getDvar("mvm_actor_walk_actorback"));
+		if(isDefined(actors))
 		{
-			if (!isDefined(actor.walk_autostop) || actor.walk_autostop == false)
+			foreach (actor in actors)
 			{
-				self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^2ON");
-				actor.walk_autostop = true;
-			}
-			else if ( actor.walk_autostop == true)
-			{
-				self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^1OFF");
-				actor.walk_autostop = false;
+				if (!isDefined(actor.walk_autostop) || actor.walk_autostop == false)
+				{
+					self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^2ON");
+					actor.walk_autostop = true;
+				}
+				else if ( actor.walk_autostop == true)
+				{
+					self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^1OFF");
+					actor.walk_autostop = false;
+				}
 			}
 		}
 		
@@ -557,13 +597,16 @@ ActorTeleport()
 	for (;;)
 	{
 		self waittill("mvm_actor_move");
-		actor = GetActor(getDvar("mvm_actor_move"));
-		if(isDefined(actor))
+		actors = GetActor(getDvar("mvm_actor_move"));
+		if(isDefined(actors))
 		{
-			actor MoveTo(self.origin, 0.1, 0, 0);
-			actor RotateTo(self.angles, 0.1, 0, 0);
-			actor.oldorg = self.origin;
-			actor.oldang = self.angles;
+			foreach (actor in actors)
+			{
+				actor MoveTo(self.origin, 0.1, 0, 0);
+				actor RotateTo(self.angles, 0.1, 0, 0);
+				actor.oldorg = self.origin;
+				actor.oldang = self.angles;
+			}
 		}
 	}
 }
@@ -643,19 +686,22 @@ ActorGoPro()
 		}
 		else
 		{
-			actor = GetActor(arguments[0]);
-			if(isDefined(actor))
+			actors = GetActor(arguments[0]);
+			if(isDefined(actors))
 			{
-				if (level.gopro.linked == 1)
+				foreach (actor in actors)
 				{
-					level.gopro unlink();
-					level.gopro.linked = 0;
+					if (level.gopro.linked == 1)
+					{
+						level.gopro unlink();
+						level.gopro.linked = 0;
+					}
+					level.gopro.origin = actor GetTagOrigin(arguments[1]);
+					level.gopro.angles = actor GetTagAngles(arguments[1]);
+					wait 0.05;
+					level.gopro linkTo(actor, arguments[1], (int(arguments[2]), int(arguments[3]), int(arguments[4])), (int(arguments[5]), int(arguments[6]), int(arguments[7])));
+					level.gopro.linked = 1;
 				}
-				level.gopro.origin = actor GetTagOrigin(arguments[1]);
-				level.gopro.angles = actor GetTagAngles(arguments[1]);
-				wait 0.05;
-				level.gopro linkTo(actor, arguments[1], (int(arguments[2]), int(arguments[3]), int(arguments[4])), (int(arguments[5]), int(arguments[6]), int(arguments[7])));
-				level.gopro.linked = 1;
 			}
 		}
 	}
@@ -683,22 +729,25 @@ ActorSetPath()
 		}
 		else
 		{
-			actor = GetActor(arguments[0]);
-			if(isDefined(actor))
+			actors = GetActor(arguments[0]);
+			if(isDefined(actors))
 			{
-				f = int(arguments[1]);
-				actor.nodeorg[f] = self.origin;
-				actor.nodeang[f] = self.angles;
-				if (actor.nodecount <= f) actor.nodecount = f;
+				foreach (actor in actors)
+				{
+					f = int(arguments[1]);
+					actor.nodeorg[f] = self.origin;
+					actor.nodeang[f] = self.angles;
+					if (actor.nodecount <= f) actor.nodecount = f;
 
 
-				if (isDefined(level.actorpath["node"][f])) level.actorpath["node"][f] delete();
-				level.actorpath["node"][f] = spawn("script_model", self.origin);
-				level.actorpath["node"][f].angles = self.angles;
+					if (isDefined(level.actorpath["node"][f])) level.actorpath["node"][f] delete();
+					level.actorpath["node"][f] = spawn("script_model", self.origin);
+					level.actorpath["node"][f].angles = self.angles;
 
-				iPrintLn("[" + actor.name + "] : Node #" + arguments[1] + " saved ");
-				self thread DeleteActorPath();
-				self thread UpdateActorPath(actor);
+					iPrintLn("[" + actor.name + "] : Node #" + arguments[1] + " saved ");
+					self thread DeleteActorPath();
+					self thread UpdateActorPath(actor);
+				}
 			}
 		}
 	}
@@ -718,38 +767,41 @@ ActorDeletePath()
 
 		argumentstring = getDvar("mvm_actor_path_del");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			d = arguments[1];
-			f = int(arguments[1]);
-
-			self DeleteActorPath();
-
-			if (actor.nodecount == 0)
-				self IPrintLn("[" + actor.name + "] : Nothing to delete");
-			else if (d == "all" || f == 1)
+			foreach (actor in actors)
 			{
-				for (i = 0; i <= actor.nodecount; i++)
+				d = arguments[1];
+				f = int(arguments[1]);
+
+				self DeleteActorPath();
+
+				if (actor.nodecount == 0)
+					self IPrintLn("[" + actor.name + "] : Nothing to delete");
+				else if (d == "all" || f == 1)
 				{
+					for (i = 0; i <= actor.nodecount; i++)
+					{
+							actor.nodeorg[i] = undefined;
+							actor.nodeang[i] = undefined;
+					}
+					self iPrintLn("[" + actor.name + "] : All nodes deleted!");
+					actor.nodecount = 0;
+				}
+				else if (f > 0)
+				{
+					for (i = f; i <= actor.nodecount; i++)
+					{
 						actor.nodeorg[i] = undefined;
 						actor.nodeang[i] = undefined;
+					}
+					actor.nodecount = f - 1;
+					self UpdateActorPath(actor);
+					self iPrintLn("[" + actor.name + "] : Deleted node #" + f + " and above");
 				}
-				self iPrintLn("[" + actor.name + "] : All nodes deleted!");
-				actor.nodecount = 0;
+				else self IPrintLn("[^3WARNING^7] : Looks like you did something weird");
 			}
-			else if (f > 0)
-			{
-				for (i = f; i <= actor.nodecount; i++)
-				{
-					actor.nodeorg[i] = undefined;
-					actor.nodeang[i] = undefined;
-				}
-				actor.nodecount = f - 1;
-				self UpdateActorPath(actor);
-				self iPrintLn("[" + actor.name + "] : Deleted node #" + f + " and above");
-			}
-			else self IPrintLn("[^3WARNING^7] : Looks like you did something weird");
 		}
 		wait .1;
 	}
@@ -826,35 +878,38 @@ ActorDoPath()
 
 		argumentstring = getDvar("mvm_actor_path_walk");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor))
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
 		{
-			if (actor.nodecount == 2)
+			foreach (actor in actors)
 			{
-				actor SetOrigin(self.actororgstart);
-				actor SetPlayerAngles(self.actorangstart);
-				wait .1;
-				HideActorPath();
-				actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
-				actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
-				wait 2;
-				actor MoveTo(actor.nodeorg[2], stringToFloat(arguments[1]), 0, 0);
-				actor RotateTo(actor.nodeang[2], stringToFloat(arguments[1]), 0, 0);
-				wait stringToFloat(arguments[1]);
-				ShowActorPath();
-			}
-			else
-			{
-				actor SetOrigin(self.actororgstart);
-				actor SetPlayerAngles(self.actorangstart);
-				wait .1;
-				HideActorPath();
-				actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
-				actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
-				actor PreparePath(actor);
-				wait 2;
-				actor ActorDoWalk(actor, int(arguments[1]));
-				ShowActorPath();
+				if (actor.nodecount == 2)
+				{
+					actor SetOrigin(self.actororgstart);
+					actor SetPlayerAngles(self.actorangstart);
+					wait .1;
+					HideActorPath();
+					actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
+					actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
+					wait 2;
+					actor MoveTo(actor.nodeorg[2], stringToFloat(arguments[1]), 0, 0);
+					actor RotateTo(actor.nodeang[2], stringToFloat(arguments[1]), 0, 0);
+					wait stringToFloat(arguments[1]);
+					ShowActorPath();
+				}
+				else
+				{
+					actor SetOrigin(self.actororgstart);
+					actor SetPlayerAngles(self.actorangstart);
+					wait .1;
+					HideActorPath();
+					actor MoveTo(actor.nodeorg[1], 0.1, 0, 0);
+					actor RotateTo(actor.nodeang[1], 0.1, 0, 0);
+					actor PreparePath(actor);
+					wait 2;
+					actor ActorDoWalk(actor, int(arguments[1]));
+					ShowActorPath();
+				}
 			}
 		}
 	}
@@ -873,12 +928,15 @@ ActorRename()
 
 		argumentstring = getDvar("mvm_actor_rename");
 		arguments = StrTok(argumentstring, " ,");
-		actor = GetActor(arguments[0]);
-		if(isDefined(actor) && arguments[1] != "look") // make sure it's not possible to name an actor "look"
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors) && arguments[1] != "look") // make sure it's not possible to name an actor "look"
 		{
-			self iPrintLn("[" + actor.name + "] : Renamed to '" + arguments[1] + "'");
-			actor.name = arguments[1];
-			actor.hitbox.name = arguments[1];
+			foreach (actor in actors)
+			{
+				self iPrintLn("[" + actor.name + "] : Renamed to '" + arguments[1] + "'");
+				actor.name = arguments[1];
+				actor.hitbox.name = arguments[1];
+			}
 		}
 	}
 }
@@ -953,10 +1011,13 @@ ActorShowNames()
 	
 	for(;;)
 	{
-		actor = GetActor("look");
-		if( isDefined(actor) && getDvar("ui_showActorNames") == "1")
+		actors = GetActor("look");
+		if( isDefined(actors) && getDvar("ui_showActorNames") == "1")
 		{
-			level.actorNameDisplay setText(actor.name);
+			foreach (actor in actors)
+			{
+				level.actorNameDisplay setText(actor.name);
+			}
 		}
 		else level.actorNameDisplay setText(" ");
 		wait .1;
