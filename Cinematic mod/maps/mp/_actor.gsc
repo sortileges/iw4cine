@@ -50,6 +50,7 @@ OnPlayerSpawn()
 		self thread ActorEquip();
 		self thread ActorPlayFX();
 		self thread ActorNormWalk();
+		self thread ActorNormWalkActorBack();
 		self thread ActorNormWalkAutoStop();
 		self thread ActorNormAnim();
 		self thread ActorDeathFX();
@@ -405,6 +406,34 @@ ActorEquip()
 	}
 }
 
+ActorNormWalkActorBack()
+{
+	self endon("death");
+	self endon("disconnect");
+	setDvarIfUninitialized("mvm_actor_walk_actorback", "Toggle walk on actorback - ^9[actor]");
+	self notifyOnPlayerCommand("mvm_actor_walk_actorback", "mvm_actor_walk_actorback");
+
+	for (;;)
+	{
+		self waittill("mvm_actor_walk_actorback");
+		actor = GetActor(getDvar("mvm_actor_walk_actorback"));
+
+		if(isDefined(actor))
+		{
+			if (!isDefined(actor.walk_actorback) || actor.walk_actorback == false)
+			{
+				self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^2ON");
+				actor.walk_actorback = true;
+			}
+			else if (actor.walk_actorback == true)
+			{
+				self iPrintLn("mvm_actor_walk_actorback - " + actor.name + " - ^1OFF");
+				actor.walk_actorback = false;
+			}
+		}
+	}
+}
+
 ActorNormWalk()
 {
 	self endon("death");
@@ -423,84 +452,96 @@ ActorNormWalk()
 		actor = GetActor(arguments[0]);
 		if(isDefined(actor))
 		{
-			time = int(arguments[1]);
-			target = [];
-			if (arguments[2] == "forward")
-			{
-				vec = anglestoforward(actor.angles);
-				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
-			}
-			else if (arguments[2] == "backward")
-			{
-				vec = anglestoforward(actor.angles);
-				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
-			}
-			else if (arguments[2] == "right")
-			{
-				vec = anglestoright(actor.angles);
-				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
-			}
-			else if (arguments[2] == "left")
-			{
-				vec = anglestoright(actor.angles);
-				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
-			}
-			else if (arguments[2] == "up")
-			{
-				vec = anglesToUp(actor.angles);
-				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
-			}
-			else if (arguments[2] == "down")
-			{
-				vec = anglesToUp(actor.angles);
-				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
-			}
-			else if (arguments[2] == "forwardup")
-			{
-				vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
-				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
-			}
-			else if (arguments[2] == "forwarddown")
-			{
-				vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
-				target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
-			}
-			else if (arguments[2] == "backwardup")
-			{
-				vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
-				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
-			}
-			else if (arguments[2] == "backwarddown")
-			{
-				vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
-				target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
-			}
-			actor MoveTo(actor.origin + target, time, 0, 0);
+			actor.walk_speed = int(arguments[1]);
+			actor.walk_direction = arguments[2];
+			MakeActorNormWalk(actor);
 		}
 	}
+}
+
+MakeActorNormWalk(actor)
+{
+	if(!isDefined(actor.walk_speed) || !isDefined(actor.walk_direction)) return;
+	time = actor.walk_speed;
+	target = [];
+	if (actor.walk_direction == "forward")
+	{
+		vec = anglestoforward(actor.angles);
+		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+	}
+	else if (actor.walk_direction == "backward")
+	{
+		vec = anglestoforward(actor.angles);
+		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	}
+	else if (actor.walk_direction == "right")
+	{
+		vec = anglestoright(actor.angles);
+		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+	}
+	else if (actor.walk_direction == "left")
+	{
+		vec = anglestoright(actor.angles);
+		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	}
+	else if (actor.walk_direction == "up")
+	{
+		vec = anglesToUp(actor.angles);
+		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+	}
+	else if (actor.walk_direction == "down")
+	{
+		vec = anglesToUp(actor.angles);
+		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	}
+	else if (actor.walk_direction == "forwardup")
+	{
+		vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
+		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+	}
+	else if (actor.walk_direction == "forwarddown")
+	{
+		vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
+		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+	}
+	else if (actor.walk_direction == "backwardup")
+	{
+	vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
+	target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	}
+	else if (actor.walk_direction == "backwarddown")
+	{
+		vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
+		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	}
+	actor MoveTo(actor.origin + target, time, 0, 0);
 }
 
 ActorNormWalkAutoStop()
 {
 	self endon("death");
 	self endon("disconnect");
-	setDvarIfUninitialized("mvm_actor_walk_autostop", "Toggle stopping actor movement on death");
+	setDvarIfUninitialized("mvm_actor_walk_autostop", "Toggle stop actor on death - ^9[actor]");
 
 	self notifyOnPlayerCommand("mvm_actor_walk_autostop", "mvm_actor_walk_autostop");
 	for (;;)
 	{
 		self waittill("mvm_actor_walk_autostop");
-
-		if (!isDefined(level.walk_autostop) || level.walk_autostop == false)
+		actor = GetActor(getDvar("mvm_actor_walk_actorback"));
+		if(isDefined(actor))
 		{
-			self iPrintLn("mvm_actor_walk_autostop - ^2ON");
-			level.walk_autostop = true;
+			if (!isDefined(actor.walk_autostop) || actor.walk_autostop == false)
+			{
+				self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^2ON");
+				actor.walk_autostop = true;
+			}
+			else if ( actor.walk_autostop == true)
+			{
+				self iPrintLn("mvm_actor_walk_autostop - " + actor.name + " - ^1OFF");
+				actor.walk_autostop = false;
+			}
 		}
-		else if (level.walk_autostop == true)
-		{
-			self iPrintLn("mvm_actor_walk_autostop - ^1OFF");
-			level.walk_autostop = false;
-		}
+		
 	}
 }
 
@@ -545,6 +586,11 @@ ActorBack()
 			actor.hitbox.health = actor.hitbox.savedhealth;
 			actor MoveTo(actor.oldorg, 0.1, 0, 0);
 			actor RotateTo(actor.oldang, 0.1, 0, 0);
+			if(isDefined(actor.walk_actorback) && actor.walk_actorback == true && isDefined(actor.walk_speed) && isDefined(actor.walk_direction))
+			{
+				wait 0.2;
+				MakeActorNormWalk(actor);
+			}
 			actor scriptModelPlayAnim(actor.assignedanim);
 			actor.head scriptModelPlayAnim(actor.assignedanim);
 
@@ -858,7 +904,7 @@ ActorHandleDamage(crate, actor)
 		if (isDefined(attacker) && isPlayer(attacker) && attacker != self.owner)
 			self.health -= amount;
 	}
-	if(isDefined(level.walk_autostop) && level.walk_autostop == true)
+	if(isDefined(actor.walk_autostop) && actor.walk_autostop == true)
 	{
 		actor MoveTo(actor.origin, 0.1, 0, 0);
 	}
