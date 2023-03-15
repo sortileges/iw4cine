@@ -630,11 +630,6 @@ ActorBack()
 			actor.hitbox.health = actor.hitbox.savedhealth;
 			actor MoveTo(actor.oldorg, 0.1, 0, 0);
 			actor RotateTo(actor.oldang, 0.1, 0, 0);
-			if(isDefined(actor.walk_actorback) && actor.walk_actorback == true && isDefined(actor.walk_speed) && isDefined(actor.walk_direction))
-			{
-				wait 0.2;
-				MakeActorNormWalk(actor);
-			}
 			actor scriptModelPlayAnim(actor.assignedanim);
 			actor.head scriptModelPlayAnim(actor.assignedanim);
 
@@ -642,6 +637,14 @@ ActorBack()
 			{
 				actor.hitbox.isDead = false;
 				actor.hitbox thread ActorHandleDamage(actor.hitbox, actor);
+			}
+		}
+		wait 0.2;
+		foreach(actor in level.actor)
+		{
+			if(isDefined(actor.walk_actorback) && actor.walk_actorback == true && isDefined(actor.walk_speed) && isDefined(actor.walk_direction))
+			{
+				MakeActorNormWalk(actor);
 			}
 		}
 		self iPrintLn("All actors reset!");
