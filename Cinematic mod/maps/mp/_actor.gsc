@@ -66,6 +66,7 @@ OnPlayerSpawn()
 		self thread ActorDeletePath();
 		self thread ActorGoPro();
 		self thread ActorRename();
+		self thread ActorFollow();
 		
 		if (self.pers["isBot"] == false) {
 			self thread ActorShowNames();
@@ -495,6 +496,53 @@ ActorNormWalkActorBack()
 				}
 			}
 		}
+	}
+}
+
+ActorFollow()
+{
+	self endon("death");
+	self endon("disconnect");
+	self endon("done");
+
+	setDvarIfUninitialized("mvm_actor_follow", "Follow the player - ^9[actor time]");
+	self notifyOnPlayerCommand("mvm_actor_follow", "mvm_actor_follow");
+
+	for (;;)
+	{
+		self waittill("mvm_actor_follow");
+		argumentstring = getDvar("mvm_actor_follow");
+		arguments = StrTok(argumentstring, " ,");
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
+		{
+			foreach (actor in actors)
+			{
+				if (!isDefined(actor.follow) || actor.follow == false)
+				{
+					self iPrintLn("mvm_actor_follow - " + actor.name + " - ^2ON");
+					actor thread ActorFollowFunc(self, float(arguments[1]));
+					actor.follow = true;
+				}
+				else if (actor.follow == true)
+				{
+					self iPrintLn("mvm_actor_follow - " + actor.name + " - ^1OFF");
+					actor notify("stopfollow");
+					actor.follow = false;
+				}
+			}
+		}
+	}
+}
+
+ActorFollowFunc(player, time)
+{
+	self endon("disconnect");
+	self endon("stopfollow");
+	for (;;)
+	{
+		wait 0.2;
+		self moveTo(player.origin, time, 0, 0);
 	}
 }
 
