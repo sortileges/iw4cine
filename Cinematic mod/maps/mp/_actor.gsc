@@ -21,6 +21,9 @@ actor()
 	level._effect[ "headshot" ] = loadfx( "impacts/flesh_hit_head_fatal_exit" );
 	level._effect[ "blood" ] = loadfx("impacts/flesh_hit_body_fatal_exit" );
 	level._effect[ "flash" ] = loadfx( "explosions/flashbang" );
+	level._effect["explosion1"] = loadfx("explosions/oxygen_tank_explosion");
+	level._effect["explosion2"] = loadfx("explosions/grenadeexp_mud");
+	level._effect["explosion3"] = loadfx("explosions/grenadeexp_concrete_1");
 	
 	level.actorCount = 1;
 	setDvarIfUninitialized("ui_showActorNames", "1");
@@ -55,6 +58,7 @@ OnPlayerSpawn()
 		self thread ActorNormAnim();
 		self thread ActorDeathFX();
 		self thread ActorDeathAnim();
+		self thread ActorActorbackFX();
 		self thread ActorTeleport();
 		self thread ActorBack();
 		self thread ActorSetPath();
@@ -325,19 +329,45 @@ ActorPlayFX()
 	}
 }
 
+ActorActorbackFX()
+{
+	self endon("death");
+	self endon("disconnect");
+
+	setDvarIfUninitialized("mvm_actor_fx_actorback", "Play FX on tag - ^9[actor tag effect]");
+	self notifyOnPlayerCommand("mvm_actor_fx_actorback", "mvm_actor_fx_actorback");
+
+	for (;;)
+	{
+		self waittill("mvm_actor_fx_actorback");
+
+		argumentstring = getDvar("mvm_actor_fx_actorback");
+		arguments = StrTok(argumentstring, " ,");
+		actors = GetActor(arguments[0]);
+		if(isDefined(actors))
+		{
+			foreach (actor in actors)
+			{
+				actor.actorback_fx_bone = arguments[1];
+				actor.actorback_fx = arguments[2];
+			}
+		}
+	}
+}
+
 ActorDeathFX()
 {
 	self endon("death");
 	self endon("disconnect");
 
-	setDvarIfUninitialized("mvm_actor_death_fx", "Play FX on tag - ^9[actor tag effect]");
-	self notifyOnPlayerCommand("mvm_actor_death_fx", "mvm_actor_death_fx");
+	setDvarIfUninitialized("mvm_actor_fx_death", "Play FX on tag - ^9[actor tag effect]");
+	self notifyOnPlayerCommand("mvm_actor_fx_death", "mvm_actor_fx_death");
 
 	for (;;)
 	{
-		self waittill("mvm_actor_death_fx");
+		self waittill("mvm_actor_fx_death");
 
-		argumentstring = getDvar("mvm_actor_death_fx");
+		argumentstring = getDvar("mvm_actor_fx_death");
 		arguments = StrTok(argumentstring, " ,");
 		actors = GetActor(arguments[0]);
 		if(isDefined(actors))
@@ -633,13 +663,18 @@ ActorBack()
 			actor scriptModelPlayAnim(actor.assignedanim);
 			actor.head scriptModelPlayAnim(actor.assignedanim);
 
+			if(isDefined(actor.actorback_fx_bone) && isDefined(actor.actorback_fx))
+			{
+				playFx(level._effect[actor.actorback_fx], actor getTagOrigin(actor.actorback_fx_bone));
+			}
+
 			if (actor.hitbox.isDead == true)
 			{
 				actor.hitbox.isDead = false;
 				actor.hitbox thread ActorHandleDamage(actor.hitbox, actor);
 			}
 		}
-		wait 0.2;
+		wait 0.11;
 		foreach(actor in level.actor)
 		{
 			if(isDefined(actor.walk_actorback) && actor.walk_actorback == true && isDefined(actor.walk_speed) && isDefined(actor.walk_direction))
