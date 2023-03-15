@@ -488,7 +488,7 @@ ActorNormWalk()
 		{
 			foreach (actor in actors)
 			{
-				actor.walk_speed = int(arguments[1]);
+				actor.walk_speed = float(arguments[1]);
 				actor.walk_direction = arguments[2];
 				MakeActorNormWalk(actor);
 			}
@@ -499,57 +499,58 @@ ActorNormWalk()
 MakeActorNormWalk(actor)
 {
 	if(!isDefined(actor.walk_speed) || !isDefined(actor.walk_direction)) return;
-	time = actor.walk_speed;
+	time = actor.walk_speed * 100;
 	target = [];
+	distance = 600 * 100;
 	if (actor.walk_direction == "forward")
 	{
 		vec = anglestoforward(actor.angles);
-		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+		target = (vec[0] * distance, vec[1] * distance, vec[2] * distance);
 	}
 	else if (actor.walk_direction == "backward")
 	{
 		vec = anglestoforward(actor.angles);
-		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+		target = (vec[0] * (distance * -1), vec[1] * (distance * -1), vec[2] * (distance * -1));
 	}
 	else if (actor.walk_direction == "right")
 	{
 		vec = anglestoright(actor.angles);
-		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+		target = (vec[0] * distance, vec[1] * distance, vec[2] * distance);
 	}
 	else if (actor.walk_direction == "left")
 	{
 		vec = anglestoright(actor.angles);
-		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+		target = (vec[0] * (distance * -1), vec[1] * (distance * -1), vec[2] * (distance * -1));
 	}
 	else if (actor.walk_direction == "up")
 	{
 		vec = anglesToUp(actor.angles);
-		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+		target = (vec[0] * distance, vec[1] * distance, vec[2] * distance);
 	}
 	else if (actor.walk_direction == "down")
 	{
 		vec = anglesToUp(actor.angles);
-		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+		target = (vec[0] * (distance * -1), vec[1] * (distance * -1), vec[2] * (distance * -1));
 	}
 	else if (actor.walk_direction == "forwardup")
 	{
 		vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
-		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+		target = (vec[0] * distance, vec[1] * distance, vec[2] * distance);
 	}
 	else if (actor.walk_direction == "forwarddown")
 	{
 		vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
-		target = (vec[0] * 600, vec[1] * 600, vec[2] * 600);
+		target = (vec[0] * distance, vec[1] * distance, vec[2] * distance);
 	}
 	else if (actor.walk_direction == "backwardup")
 	{
 	vec = (anglestoforward(actor.angles) - anglesToUp(actor.angles));
-	target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+	target = (vec[0] * (distance * -1), vec[1] * (distance * -1), vec[2] * (distance * -1));
 	}
 	else if (actor.walk_direction == "backwarddown")
 	{
 		vec = (anglestoforward(actor.angles) + anglesToUp(actor.angles));
-		target = (vec[0] * -600, vec[1] * -600, vec[2] * -600);
+		target = (vec[0] * (distance * -1), vec[1] * (distance * -1), vec[2] * (distance * -1));
 	}
 	actor MoveTo(actor.origin + target, time, 0, 0);
 }
