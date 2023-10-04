@@ -163,9 +163,6 @@ track_damage()
         killer = attacker;
         killer thread maps\mp\gametypes\_damagefeedback::updateDamageFeedback("standard");
 
-        pront( self["fx"]["hurt"] );
-        pront( self["fx"]["hurt"].where );
-
         if ( isDefined(killer) && isPlayer(killer) )
             self["hitbox"].health -= amount;
 
@@ -333,8 +330,6 @@ efx( args )
                 actor["fx"][when].efx = level._effect[fx];
                 actor["fx"][when].where = tag;
                 pront( "[" + actor["name"] + "] * FX -> " + level.COMMAND_COLOR + fx + " to " + tag);
-                pront( "tag" );
-                pront( actor["fx"][when].where );
             }
         }
     }
