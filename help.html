@@ -29,6 +29,10 @@
 			<a href="#lists">Lists</a>
 		</nav>
 
+		<nav class="warningbar warningBlink" align="center">
+			<a>I'm an outdated file, but almost everything here works still. Don't be surprised if something doesn't work! I'll be up to speed eventually</a>
+		</nav>
+
 		<h1 align="center" style="font-family: 'Arial Black'" id="intro"><b>Sass' Cinematic mod - Documentation (#304)</b></h1>
 
 		<p align="center"></br>
@@ -739,13 +743,22 @@
 			text-align: center;
 			padding: 13px 0 13px 0;
 		}
-		.navbar a {
+		.warningbar {
+			background-color: #222225;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			padding: 13px 0 13px 0;
+		}
+		.navbar a, .warningbar a{
 			
 			color: white;
 			padding: 13px 13px;
 			text-decoration: none;
 		}
-		.navbar a:hover {
+		.navbar a:hover, .warningbar a:hover {
 			color: #79a6ee;
 			background-color: #19191b;
 		}
