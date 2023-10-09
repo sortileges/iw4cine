@@ -1,0 +1,639 @@
+{
+	menuDef
+	{
+		name "main_text"
+		rect 0 0 640 480 0 0
+		style 1
+		forecolor 1 1 1 1
+		focuscolor 1 1 1 1
+		fullscreen 1
+		fadeCycle 1
+		fadeClamp 1
+		fadeAmount 0.1
+		soundLoop "music_mainmenu_mp"
+		execKeyInt 167
+		{
+			open "popup_summary";
+			play "mouse_click";
+		}
+		onOpen
+		{
+			if ( dvarbool( "ui_opensummary" ) )
+			{
+				setLocalVarInt "ui_autoopened" ( 1 );
+				open "popup_summary";
+				setdvar "ui_opensummary" 0;
+			}
+			
+            /*if ( dvarInt("con_errormessagetime") != 9)
+			{
+				open "cdkey_menu";
+			}*/
+			focusfirst;
+		}
+		onEsc
+		{
+			open quit_popmenu;
+		}
+        #include "ui_mp/iw4cine.h"
+		itemDef
+		{
+			rect 0 -199 216 122 1 3
+			decoration
+			visible 1
+			style 3
+			forecolor 1 1 1 1
+			textscale 0.55
+			exp material ( "preview_" + dvarstring( "ui_mapname" ) )
+		}
+		itemDef
+		{
+			rect 0 -199 216 20 1 3
+			decoration
+			autowrapped
+			visible 1
+			style 1
+			forecolor 1 1 1 1
+			backcolor 0 0 0 0.5
+			background "white"
+			textfont 3
+			textalign 6
+			textalignx -4
+			textscale 0.375
+			exp text ( getmapname( ) )
+		}
+		itemDef
+		{
+			rect 0 -97 216 20 1 3
+			decoration
+			autowrapped
+			visible 1
+			style 1
+			forecolor 1 1 1 0.65
+			backcolor 0 0 0 0.5
+			background "white"
+			textfont 3
+			textalign 6
+			textalignx -4
+			textscale 0.375
+			exp text ( gametypename( ) )
+		}
+		itemDef
+		{
+			name "startmatch"
+			rect -64 28 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_START_GAME_CAPS"
+			action
+			{
+				play "mouse_click";
+				exec "selectStringTableEntryInDvar mp/didyouknow.csv 0 didyouknow";
+				SETUP_ACTION_STARTDEV;
+			}
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_hint_text" ( "@MENU_DESC_START_MATCH" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			name "setupmatch"
+			rect -64 48 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_GAME_SETUP_CAPS"
+			action
+			{
+				play "mouse_click";
+				open "popup_gamesetup";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+			    setLocalVarString "ui_hint_text" ( "@MPUI_DESC_GAME_SETUP" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			name "private_lobby_cac"
+			rect -64 68 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_CREATE_A_CLASS_CAPS"
+			disabled when ( !isitemunlocked( "cac" ) )
+			action
+			{
+				play "mouse_click";
+				open "cac_popup";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				if ( isitemunlocked( "cac" ) )
+				{
+					setLocalVarString "ui_hint_text" ( "@MPUI_DESC_CREATE_A_CLASS" );
+				}
+				else
+				{
+					if ( tablelookup( "mp/unlockTable.csv" , 0 , "cac" , 2 ) == 9999 )
+					{
+						setLocalVarString "ui_hint_text" ( "@PERKS_UNLOCKED_AT_NONE" );
+					}
+					else
+					{
+						if ( tablelookup( "mp/unlockTable.csv" , 0 , "cac" , 3 ) != "" )
+						{
+							setLocalVarString "ui_hint_text" ( "@PERKS_UNLOCKED_BY_CHALLENGE" );
+						}
+						else
+						{
+							setLocalVarString "ui_hint_text" ( "@" + tablelookup( "mp/rankTable.csv" , 0 , tablelookup( "mp/unlockTable.csv" , 0 , "cac" , 2 ) , 17 ) );
+						}
+					}
+					exec "set ui_hint_text THIS MENU SHOULD BE UPDATED TO USE setLocalVarString ui_hint_text;";
+				}
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			name "private_lobby_playercard"
+			rect -64 88 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_PLAYERCARD_CAPS"
+			disabled when ( !isitemunlocked( "playercard" ) )
+			action
+			{
+				play "mouse_click";
+				open "popup_callsign";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				if ( isitemunlocked( "playercard" ) )
+				{
+					setLocalVarString "ui_hint_text" ( "@MPUI_DESC_PLAYERCARD" );
+				}
+				else
+				{
+					setLocalVarString "ui_hint_text" ( "@MPUI_DESC_PLAYERCARD_LOCKED" );
+				}
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			name "private_lobby_barracks"
+			rect -64 108 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_BARRACKS_CAPS"
+			action
+			{
+				play "mouse_click";
+				open "menu_online_barracks";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+				setLocalVarString "ui_hint_text" ( "@MPUI_DESC_BARRACKS" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+        itemDef
+		{
+			name "setupmatch"
+			rect -64 128 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MENU_OPTIONS_UPPER_CASE"
+			action
+			{
+				play "mouse_click";
+				open "pc_options_video";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+			    setLocalVarString "ui_hint_text" ( "@MPUI_DESC_OPTIONS" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+        itemDef
+		{
+			name "setupmatch"
+			rect -64 148 336 20 1 1
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "MODS"
+			action
+			{
+				play "mouse_click";
+				open "mods_menu";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+			    setLocalVarString "ui_hint_text" ( "@MPUI_DESC_MODS" );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect 0 0 0 0 0 0
+			decoration
+			visible 1
+			forecolor 1 1 1 1
+			textscale 0.55
+			visible when ( 1 )
+			execKeyInt 29
+			{
+				focusfirst;
+			}
+			execKeyInt 21
+			{
+				focusfirst;
+			}
+		}
+		itemDef
+		{
+			rect 0 168 212 36 1 1
+			decoration
+            autowrapped
+			visible 1
+			forecolor 1 1 1 0.65
+			type 21
+			textfont 3
+			textalign 6
+			textscale 0.375
+			visible when ( 1 )
+			exp text ( localvarstring( "ui_hint_text" ) )
+		}
+        itemDef
+		{
+			rect -272 28 272 20 3 1
+			visible 1
+			group "mw2_button"
+			style 3
+			forecolor 0 0 0 0.25
+			background "playercard_short_bg"
+			type 1
+			onFocus
+			{
+				setLocalVarBool "ui_menuAButton" ( 1 );
+				setLocalVarFloat "ui_popupYPos" ( getfocuseditemy( ) );
+			}
+			leaveFocus
+			{
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+        itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( tablelookup( "mp/rankIconTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , ( getplayercardinfo( 5 , 1 , 0 ) + 1 ) )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 248 ) + 164  )
+			exp rect y ( ( -20 ) + 48  )
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 9
+			textAlignX 20
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( tablelookup( "mp/rankTable.csv" , 0 , getplayercardinfo( 4 , 1 , 0 ) , 14 )  )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( - 248 ) + 164  )
+			exp rect y ( ( -20 ) + 48  )
+		}
+		itemDef
+		{
+			rect 0 0 20 20 3 1
+			style 0
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 0 0 0 0
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.375
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text dvarString( "name" )
+			visible when ( 1 && ( getplayercardinfo( 0 , 1 , 0 ) != 0 ) && ( getplayercardinfo( 4 , 1 , 0 ) >= 0 )  )
+			exp rect x ( ( -400 ) + 164  )
+			exp rect y ( ( -1 ) + 48  )
+		}
+        itemDef
+		{
+			rect -235 65 20 20 3 1
+			style 0
+			foreColor 1 0.8 0.3 0.75
+			decoration 
+			type 0
+			textAlign 0
+			textScale 0.34
+			textStyle 0
+			textFont 3
+			feeder 0
+			visible 1
+			exp text ( "Welcome to IW4cine (#400)" )
+		}
+        itemDef
+		{
+			rect 0 0 16 16 3 1
+			style 1
+			border 0
+			ownerdraw 0
+			ownerdrawFlag 0
+			borderSize 0
+			foreColor 1 1 1 1
+			backColor 1 1 1 1
+			borderColor 0 0 0 0
+			outlineColor 0 0 0 0
+			decoration 
+			type 0
+			align 0
+			textAlign 0
+			textAlignX 0
+			textAlignY 0
+			textScale 0.55
+			textStyle 0
+			textFont 0
+			feeder 0
+			visible 1
+			exp material ( "searching_for_player" )
+			exp rect x ( ( - 248 ) + 166  )
+			exp rect y ( ( -20 ) + 69 )
+		}
+		itemDef
+		{
+			rect -128 -17 1280 18 1 3
+			decoration
+			style 3
+			forecolor 0 0 0 0.25
+			background "white"
+			textscale 0.55
+		}
+		itemDef
+		{
+			rect -64 -40 336 20 1 3
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@MPUI_GAME_SUMMARY"
+			action
+			{
+				play "mouse_click";
+				play "mouse_click";
+				open "popup_summary";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+		itemDef
+		{
+			rect -64 -20 336 20 1 3
+			visible 1
+			group "mw2_button"
+			style 1
+			forecolor 1 1 1 1
+			disablecolor 0.6 0.55 0.55 1
+			background "menu_button_selection_bar"
+			type 1
+			textfont 3
+			textalign 6
+			textalignx -60
+			textscale 0.375
+			text "@PLATFORM_QUIT"
+			action
+			{
+				play "mouse_click";
+				open "quit_popmenu";
+			}
+			onFocus
+			{
+				play "mouse_over";
+				if ( dvarstring( "gameMode" ) != "mp" )
+				{
+					setItemColor "mw2_button" backcolor 0 0 0 0;
+				}
+				setItemColor self backcolor 0 0 0 1;
+				setLocalVarBool "ui_menuAButton" ( 1 );
+			}
+			leaveFocus
+			{
+				setItemColor self backcolor 0 0 0 "0.0";
+				setLocalVarString "ui_hint_text" ( "@NULL_EMPTY" );
+				setLocalVarBool "ui_menuAButton" ( 0 );
+			}
+		}
+	}
+}
