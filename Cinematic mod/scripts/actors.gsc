@@ -6,18 +6,17 @@
 #include precache;
 #include scripts\utils;
 #include scripts\misc;
+#include maps\mp\_utility;
+#include maps\mp\gametypes\_class;
 
 add( args )
 {
     base_body = defaultcase( isDefined( args[0] ), args[0], "defaultactor" );
     base_head = defaultcase( isDefined( args[1] ), args[1], "tag_origin" );
     base_anim = defaultcase( isDefined( args[2] ), args[2], "pb_stand_remotecontroller" );
-    base_death= defaultcase( isDefined( args[3] ), args[3], "pb_stand_death_chest_blowback" );
-
-    level.actorCount++;
+    base_dead = defaultcase( isDefined( args[3] ), args[3], "pb_stand_death_chest_blowback" );
 
     newactor = [];
-    newactor["name"] = level.ACTOR_NAME_PREFIX + level.actorCount;
 
     newactor["body"] = spawn( "script_model", at_crosshair( self ) );
     newactor["body"].angles = self.angles + ( 0, 180, 0 );
@@ -34,19 +33,18 @@ add( args )
     newactor["head"] linkTo( newactor["body"], "j_spine4") ;
     newactor["head"] scriptModelPlayAnim( base_anim );
 
-    
     newactor["hitbox"] = spawn( "script_model", newactor["body"].origin + ( 0, 0, 40 ) );
     newactor["hitbox"] setModel( "com_plasticcase_enemy" );
     newactor["hitbox"] Solid();
     newactor["hitbox"].angles = (90, 0, 0);
     newactor["hitbox"] hide();
-    newactor["hitbox"].name = level.ACTOR_NAME_PREFIX + level.actorCount;
+    newactor["hitbox"].name = level.ACTOR_NAME_PREFIX + (level.actors.size + 1);
     newactor["hitbox"] setCanDamage(1);
     newactor["hitbox"].health = 120;
     newactor["hitbox"].maxhealth = 120;
-    newactor["hitbox"] linkto( newactor );
+    newactor["hitbox"] linkTo( newactor["body"], "j_spine4") ;
 
-    newactor["anim_death"] = base_death;
+    newactor["anim_death"] = base_dead;
     newactor["anim_base"] = base_anim;
 
     newactor["fx"]["hurt"]              = [];
@@ -59,10 +57,11 @@ add( args )
     newactor["fx"]["actorback"].efx     = undefined;
     newactor["fx"]["actorback"].where   = undefined;
 
-    newactor["attached"] = [];
+    newactor["name"] = level.ACTOR_NAME_PREFIX + ( level.actors.size + 1 );
+    newactor["idx"] = level.actors.size;
 
     newactor thread track_damage();
-    level.actors[level.actorCount] = newactor;
+    level.actors[level.actors.size] = newactor;
 
     pront( "[" + newactor["name"] + "] * " + level.COMMAND_COLOR + "Spawned");
 
@@ -93,13 +92,13 @@ prepare_gopro()
     level.gopro.linked = 0;
     level.gopro enableLinkTo();
 
-    waittillframeend;
+    skipframe();
     level.gopro.object = spawn( "script_model", ( 9999, 9999, 9999 ) );
     level.gopro.object setModel( "projectile_rpg7" );
     level.gopro.object.origin = level.gopro.origin;
     level.gopro.object.angles = ( level.gopro.angles - ( 15, 0, 0 ) );
 
-    waittillframeend;
+    skipframe();
     level.gopro.object linkTo( level.gopro, "tag_origin" );
 }
 
@@ -114,21 +113,18 @@ gopro( args )
     pitch   = args[6];
     yaw     = args[7];
 
-    if ( action == "delete" )
-    {
+    if ( action == "delete" ) {
         level.gopro unlink();
         level.gopro.linked = 0;
         level.gopro MoveTo( ( 49999, 49999, 49999 ), .1 );
     }
-    else if ( action == "on" )
-    {
+    else if ( action == "on" ) {
         self CameraLinkTo( level.gopro, "tag_origin" );
         setDvar( "cg_drawGun", 0 );
         self allowSpectateTeam( "freelook", true );
         self.sessionstate = "spectator";
     }
-    else if ( action == "off" )
-    {
+    else if ( action == "off" ) {
         self CameraUnlink();
         setDvar( "cg_drawGun", 1 );
         self allowSpectateTeam( "freelook", false );
@@ -175,8 +171,9 @@ track_damage()
     self["body"] playSound( "generic_death_american_" + randomIntRange( 1, 8 ) );
     self["body"] play_efx( "death" );
 
-    if(level.ACTOR_SHOW_KILLFEED)
-        obituary(killer, killer, killer getCurrentWeapon(), "MOD_RIFLE_BULLET"); // Figure this out later
+    // obituary requires an actual (test)client so emojis it is lmao
+    if( level.ACTOR_SHOW_KILLFEED )
+        pront( "^8" + killer.name + " :" + fake_killfeed_icon( getBaseWeaponName( killer getCurrentWeapon() ) ) + "+hb: ^9" + self["name"] );
 
     killer maps\mp\gametypes\_rank::scorePopup( ( level.scoreInfo["kill"]["value"] ) , 0 );
 }
@@ -185,8 +182,8 @@ back()
 {
     foreach( actor in level.actors )
     {
-        actor["body"] MoveTo( actor["savedo"], 0.1, 0, 0 );
-        actor["body"] RotateTo( actor["saveda"], 0.1, 0, 0 );
+        actor["body"] MoveTo( actor["savedo"], 0 );
+        actor["body"] RotateTo( actor["saveda"], 0 );
         actor["body"] scriptModelPlayAnim( actor["anim_base"] );
         actor["head"] scriptModelPlayAnim( actor["anim_base"] );
 
@@ -206,8 +203,8 @@ move( args )
     foreach( actor in level.actors )
     {
         if ( select_ents( actor, name, self ) ) {
-            actor["body"] MoveTo( self.origin, 0.1 );
-            actor["body"] RotateTo( self.angles, 0.1 );
+            actor["body"] MoveTo( self.origin, 0.4, 0.2, 0.2 );
+            actor["body"] RotateTo( self.angles, 0.4, 0.2, 0.2 );
         }
     }
 }
@@ -274,38 +271,49 @@ hp( args )
     }
 }
 
-eqipment( args )
+// I'm losing my mind; that new "tag" field doesn't want to stick, which means it doesn't --
+// -- delete the previous object. I have to do it by using their index, directly in level.actors
+// I'm probably having a brain fart tbh
+equip( args )
 {
     name =  args[0];
     tag =   args[1];
     model = args[2];
     camo =  args[3];
 
+    if ( !isdefined( camo ) || !isValidCamo( camo ) ) 
+        camo = 0;
+
     foreach( actor in level.actors )
     {
         if ( select_ents( actor, name, self ) ) 
         {
-            if ( isDefined( actor["attached"][tag] ) )
-                actor["attached"][tag] delete();
-
-            actor["attached"][tag] = spawn( "script_model", actor GetTagOrigin( tag ) );
-            actor["attached"][tag] linkTo ( actor, tag, (0, 0, 0), (0, 0, 0) );
-
-            if ( isSubStr( model, "_mp" ) ) // Can't think of a xmodel that has _mp in its name so it SHOULD be a weapon
+            if ( !isDefined( level.actors[actor["idx"]][tag] ) )
             {
+                level.actors[actor["idx"]][tag] = spawn( "script_model", actor["body"] GetTagOrigin( tag ) );
+                level.actors[actor["idx"]][tag] linkTo( actor["body"], tag, (0, 0, 0), (0, 0, 0) );
+            }
+            else level.actors[actor["idx"]][tag] setModel( "tag_origin" );
+
+            if ( isSubStr( model, "_mp" ) && model != "delete" )
+            {
+                if ( !isValidPrimary( getBaseWeaponName( model ) ) && !isValidSecondary( getBaseWeaponName( model ) )  )
+                    model = "ak47_mp";
+
                 hidetags = GetWeaponHideTags( model );
                 replica = getWeaponModel( model, camo_int( camo ) );
 
-                actor["attached"][tag] setModel( replica );
+                level.actors[actor["idx"]][tag] setModel( replica );
                 for (i = 0; i < hidetags.size; i++) 
-                    actor["attached"][tag] HidePart( hidetags[i],  replica );
+                    level.actors[actor["idx"]][tag] HidePart( hidetags[i],  replica );
 
                 pront( "[" + actor["name"] + "] * Attached -> " + level.COMMAND_COLOR + replica + " to " + tag );
             }
             else if ( model != "delete" ) {
-                actor["attached"][tag] setModel( model );
+                level.actors[actor["idx"]][tag] setModel( model );
                 pront( "[" + actor["name"] + "] * Attached -> " + level.COMMAND_COLOR + model + " to " + tag );
             }
+            pront( level.actors[actor["idx"]][tag].model );
         }
     }
 }
@@ -321,10 +329,9 @@ efx( args )
         if ( select_ents( actor, name, self ) ) {
 
             if ( true_or_undef( when ) || when == "now" ) {
-                playFx( level._effect[fx], actor["body"] GetTagOrigin(tag));
-                playFx( level._effect[fx], actor["head"] GetTagOrigin(tag));
+                playFx( level._effect[fx], actor["body"] GetTagOrigin(tag) );
+                playFx( level._effect[fx], actor["head"] GetTagOrigin(tag) );
             }
-
             else 
             {
                 actor["fx"][when].efx = level._effect[fx];
@@ -339,4 +346,24 @@ play_efx( when )
 {
     if( isdefined( self["fx"][when].efx ) )
         playFx( level._effect[self["fx"][when].efx], self["body"] GetTagOrigin( self["fx"][when].where ) );
+}
+
+
+
+// Plan for this is to make a .menu file to display the actor's name, and probably other stuff
+// Finish later
+names()
+{
+    if( !level.ACTOR_SHOW_NAMES ) return;
+    setDvarIfUninitialized( "temp_uiname", "" );
+
+	for(;;)
+	{
+		vec = anglesToForward( self getPlayerAngles() );
+		entity = BulletTrace( self getTagOrigin("tag_eye"), self getTagOrigin("tag_eye") + (vec[0] * 500, vec[1] * 500, vec[2] * 500), 0, self )[ "entity" ];
+        if( entity.model == "com_plasticcase_enemy" )
+             self setClientDvar( "temp_uiname", entity.name );
+        else self setClientDvar( "temp_uiname", "" );
+		wait .1;
+	}
 }

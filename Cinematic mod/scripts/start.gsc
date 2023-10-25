@@ -3,17 +3,14 @@
  *		Entry point
  */
 
-#include scripts\utils;
-
 init()
 {
-    level.actorCount = 0;
-
     defaults::load_defaults();
     precache::common_precache();
     precache::custom_precache();
     precache::fx_precache();
 
+    level.actors = [];
     level thread waitForHost();
 }
 
@@ -32,6 +29,7 @@ waitForHost()
     scripts\actors::prepare_gopro();
 
     player thread scripts\misc::welcome();
+    player thread scripts\ui::await();
     player thread onPlayerSpawned();
 }
 
@@ -41,6 +39,7 @@ onPlayerSpawned()
     self endon("disconnect");
 
     self scripts\player::playerRegenAmmo();
+    self thread scripts\actors::names();
     self thread scripts\misc::class_swap();
 
     for(;;)

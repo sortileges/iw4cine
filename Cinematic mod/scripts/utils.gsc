@@ -63,6 +63,21 @@ get_offhand_name( item )
     }
 }
 
+// Gotta test all weapons and add them if needed
+fake_killfeed_icon( weapon )
+{
+    switch ( weapon )
+    {
+        case "cheytac":
+            return "intervention";
+        case "m4":
+            return "m4a1";
+        case "masada":
+            return "acr";
+        default:
+            return weapon;
+    }
+}
 
 // The mod used to use premade "weapon names" for bots spawns (ew), but now it's using actual weapon names
 // Let's handle the old ones still, because I can already hear people losing their god damned mind after all this time
@@ -156,8 +171,7 @@ match_tweaks()
     if(level.MATCH_UNLIMITED_TIME)
         setDvar( "scr_" + level.gameType + "_timelimit", 0 );
 
-    if(level.MATCH_UNLIMITED_SCORE)
-    {
+    if(level.MATCH_UNLIMITED_SCORE) {
         setDvar( "scr_" + level.gameType + "_scorelimit", 0 );
         setDvar( "scr_" + level.gameType + "_winlimit", 0 );
     }
@@ -246,10 +260,18 @@ load_spawn()
 
 select_ents( ent, name, player )
 {
-    if ( isSubStr( ent.name, name ) || isSubStr( ent["name"], name )                || 
-         ( name == "look" && scripts\misc::inside_fov( player, ent["hitbox"], 15 ) )|| 
-         ( name == "look" && scripts\misc::inside_fov( player, ent, 15 ) )          || 
+    if ( isSubStr( ent.name, name ) || isSubStr( ent["name"], name )  || 
+       ( name == "look" && inside_fov( player, ent["hitbox"], 10 ) )  || 
+       ( name == "look" && inside_fov( player, ent, 10 ) )            || 
          name == "all" ) 
         return true;
     return false;
+}
+
+inside_fov( player, target, fov )
+{
+    normal = vectorNormalize( target.origin - player getEye() );
+    forward = anglesToForward( player getPlayerAngles() );
+    dot = vectorDot( forward, normal );
+    return dot >= cos( fov );
 }

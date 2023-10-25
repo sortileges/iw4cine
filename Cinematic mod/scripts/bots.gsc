@@ -33,11 +33,8 @@ spawnme( owner, weapon, team, camo )
 {
     while ( !isdefined( self.pers["team"] ) ) skipframe();
 
-    if ( !isdefined( camo ) || !isValidCamo( camo ) )
-        camo = 0;
-
     weapon = legacy_classnames( weapon );
-    if( !isValidPrimary( StrTok( weapon, "_" )[0] ) && !isValidSecondary( StrTok( weapon, "_" )[0] ) )
+    if( !isValidPrimary( getBaseWeaponName( weapon ) ) && !isValidSecondary( getBaseWeaponName( weapon ) ) )
             weapon = "ak47_mp";
 
     if ( ( team == "allies" || team == "axis" ) && isdefined( team ) )
@@ -48,6 +45,9 @@ spawnme( owner, weapon, team, camo )
         self notify( "menuresponse", game["menu_team"], level.otherTeam[level.players[0].team] );
         camo = team;
     }
+
+    if ( !isdefined( camo ) || !isValidCamo( camo ) )
+        camo = 0;
 
     skipframe();
 
@@ -61,12 +61,12 @@ spawnme( owner, weapon, team, camo )
     self setPlayerAngles( owner.angles + ( 0, 180, 0 ) );
 
     self save_spawn();
-    self thread create_spawn_thread( scripts\utils::load_spawn, undefined );
-    self thread create_spawn_thread( scripts\misc::reset_models, undefined );
+    self thread create_spawn_thread( scripts\utils::load_spawn );
+    self thread create_spawn_thread( scripts\misc::reset_models );
     self scripts\player::playerRegenAmmo();
 
-    if(level.BOT_AUTOCLEAR)
-        self thread create_spawn_thread( scripts\misc::clear_bodies, undefined );
+    if(level.BOT_SPAWNCLEAR)
+        self thread create_spawn_thread( scripts\misc::clear_bodies );
 }
 
 move( args )
@@ -104,7 +104,7 @@ stare( args )
         {
             player.pers["isStaring"] ^= 1;
             if ( player.pers["isStaring"] ) player thread doaim();
-            else                            player notify( "stopaim" );
+            else player notify( "stopaim" );
         }
     }
 }
@@ -146,8 +146,7 @@ doaim()
             if ( ( player == self ) || ( level.teamBased && self.pers["team"] == player.pers["team"] ) || ( !isAlive( player) ) )
                 continue;
 
-            if ( isDefined( target ) )
-            {
+            if ( isDefined( target ) ) {
                 if ( closer ( self getTagOrigin( "j_head" ), player getTagOrigin( "j_head" ), target getTagOrigin( "j_head" ) ) )
                     target = player;
             }
@@ -155,9 +154,7 @@ doaim()
         }
 
         if ( isDefined( target ) )
-        {
             self setPlayerAngles( VectorToAngles( ( target getTagOrigin( "j_head" ) ) - ( self getTagOrigin( "j_head" ) ) ) );
-        }
     }
 }
 
@@ -200,13 +197,13 @@ create_loadout( weapon, camo )
 attach_weapons( loadout )
 {
     wait .1; // take the wait from misc\reset_models() into account
-    if ( level.BOT_WEAPHOLD || !self is_bot())
+    if ( level.BOT_WEAPHOLD && self is_bot() )
     {
         self.replica = getWeaponModel( loadout.primary, camo_int(loadout.camo) );
-        self attach(self.replica, "tag_weapon_right", true);
+        self attach( self.replica, "tag_weapon_right", true );
 
         hidetags = GetWeaponHideTags( loadout.primary );
-        for (i = 0; i < hidetags.size; i++)
+        for ( i = 0; i < hidetags.size; i++ )
             self HidePart( hidetags[i], self.replica );
     }
 }

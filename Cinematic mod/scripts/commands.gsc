@@ -21,8 +21,8 @@ registerCommands()
 
     self thread createCommand( "spawn_model",   "Spawn model at your position",         " <model_name>",                            scripts\misc::spawn_model );
     self thread createCommand( "spawn_fx",      "Spawn FX at your xhair",               " <fx_name>",                               scripts\misc::spawn_fx );
-    self thread createCommand( "vision",        "Change vision, reset on death",        " <vision>",                                scripts\misc::visione );
-    self thread createCommand( "fog",           "Change ambient fog",                   " <start> <half> <r> <g> <b> <a> <time>",   scripts\misc::fogc );
+    self thread createCommand( "vision",        "Change vision, reset on death",        " <vision>",                                scripts\misc::change_vision );
+    self thread createCommand( "fog",           "Change ambient fog",                   " <start> <half> <r> <g> <b> <a> <time>",   scripts\misc::change_fog );
 
     // Bots
     self thread createCommand( "bot_spawn",     "Add a bot",                            " <weapon_mp> <axis/allies> <camo_name>",   scripts\bots::add );
@@ -43,9 +43,9 @@ registerCommands()
     self thread createCommand( "actor_move",    "Move actor to xhair",                  " <actor_name>",                                            scripts\actors::move );
     self thread createCommand( "actor_health",  "Set actor's health",                   " <actor_name>",                                            scripts\actors::hp );
     self thread createCommand( "actor_model",   "Change actor's head and body",         " <actor_name> <body_model> <head_model>",                  scripts\actors::model );
-    self thread createCommand( "actor_weapon",  "Attach weapon or model to tag",        " <actor_name> <tag_name> <weapon_mp/model/delete> <camo>", scripts\actors::eqipment );
+    self thread createCommand( "actor_weapon",  "Attach weapon or model to tag",        " <actor_name> <tag_name> <weapon_mp/model/delete> <camo>", scripts\actors::equip );
     self thread createCommand( "actor_gopro",   "Fixed camera on actor tag",            " <actor_name> <tag_name> <x> <y> <z> <yaw> <pitch> <roll>",scripts\actors::gopro );
-    self thread createCommand( "actor_fx",      "Play FX on tag or action",             " <actor_name> <fx_name> <tag_name> <when>",                scripts\actors::efx );
+    self thread createCommand( "actor_fx",      "Play FX on tag or action",             " <actor_name> <tag_name> <fx_name> <when>",                scripts\actors::efx );
     // redo actor_follow
     // redo actor_walk
     // redo actor_name and look func

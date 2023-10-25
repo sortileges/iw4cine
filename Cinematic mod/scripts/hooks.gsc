@@ -16,13 +16,15 @@ init()
     replaceFunc( maps\mp\gametypes\_weapons::dropWeaponForDeath,        ::_weapons_dropWeaponForDeath);
     replaceFunc( maps\mp\gametypes\_rank::scorePopup,                   ::_rank_scorePopup);
     replaceFunc( maps\mp\gametypes\_music_and_dialog::init,             ::_music_and_dialog_init);
+    replaceFunc( maps\mp\gametypes\_damage::delayStartRagdoll,          ::_damage_delayStartRagdoll);
+    replaceFunc( maps\mp\gametypes\_damage::handleNormalDeath,          ::_damage_handleNormalDeath);
+    replaceFunc( maps\mp\gametypes\_hud_message::actionNotify,          ::_hud_message_actionNotify);
 }
 
 // _weapons.gsc - Makes dropped weapons disappear after 5 seconds instead of 60
 _weapons_deletePickupAfterAWhile()
 {
     self endon("death");
-
     wait 5;
 
     if ( !isDefined( self ) )
@@ -41,7 +43,6 @@ _weapons_watchPickup()
     while(1)
     {
         self waittill( "trigger", player, droppedItem );
-        
         if ( isdefined( droppedItem ) )
             break;
     }
@@ -57,9 +58,8 @@ _weapons_watchPickup()
     droppedItem thread _weapons_deletePickupAfterAWhile();
 
     if ( isdefined( self.ownersattacker ) && self.ownersattacker == player )
-        player.tookWeaponFrom[ weapname ] = self.owner;
-    else
-        player.tookWeaponFrom[ weapname ] = undefined;
+         player.tookWeaponFrom[ weapname ] = self.owner;
+    else player.tookWeaponFrom[ weapname ] = undefined;
 }
 
 
@@ -68,13 +68,17 @@ _weapons_dropWeaponForDeath( attacker )
 {
     weapon = self.lastDroppableWeapon;
 
-    if ( isdefined( self.droppedDeathWeapon ) )
+    if ( !isdefined( weapon ) || weapon == "none" || !self hasWeapon( weapon ) || isdefined( self.droppedDeathWeapon )  )
         return;
 
-    if ( !isdefined( weapon ) || weapon == "none" || !self hasWeapon( weapon ) )
-        return;
-
-    if ( weapon != "riotshield_mp" )
+    if ( weapon == "riotshield_mp" )
+    {
+        item = self dropItem( weapon );	
+        if ( !isDefined( item ) )
+            return;
+        item ItemWeaponSetAmmo( 1, 1, 0 );
+    }
+    else
     {
         if ( level.BOT_WEAPHOLD )
             item = 0; // Not very clean; purposefully breaks the dropItem() part so nothing is dropped
@@ -97,13 +101,6 @@ _weapons_dropWeaponForDeath( attacker )
             item = self dropItem( weapon );
             item ItemWeaponSetAmmo( clipAmmoR, stockAmmo, clipAmmoL );
         }
-    }
-    else
-    {
-        item = self dropItem( weapon );	
-        if ( !isDefined( item ) )
-            return;
-        item ItemWeaponSetAmmo( 1, 1, 0 );
     }
 
     self.droppedDeathWeapon = true;
@@ -142,7 +139,7 @@ _rank_scorePopup( amount, bonus, hudColor, glowAlpha )
     self.xpUpdateTotal += amount;
     self.bonusUpdateTotal += bonus;
 
-    wait 0.05;
+    wait .05;
 
     if ( self.xpUpdateTotal < 0 )
         self.hud_scorePopup.label = &"";
@@ -165,18 +162,14 @@ _rank_scorePopup( amount, bonus, hudColor, glowAlpha )
         {
             self.xpUpdateTotal += min( self.bonusUpdateTotal, increment );
             self.bonusUpdateTotal -= min( self.bonusUpdateTotal, increment );
-            
-            self.hud_scorePopup setValue( self.xpUpdateTotal );
-            
-            wait 0.05;
+            self.hud_scorePopup setValue( self.xpUpdateTotal );   
+            wait .05;
         }
     }	
-    else 
-        wait 2.5;
+    else wait 2.5;
 
     self.hud_scorePopup fadeOverTime( 0.75 );
     self.hud_scorePopup.alpha = 0;
-
     self.xpUpdateTotal = 0;
 }
 
@@ -188,4 +181,65 @@ _music_and_dialog_init()
     level thread maps\mp\gametypes\_music_and_dialog::musicController();
     level thread maps\mp\gametypes\_music_and_dialog::onGameEnded();
     level thread maps\mp\gametypes\_music_and_dialog::onRoundSwitch();
+}
+
+// _damage.gsc - Makes ragdolls start later much than vanilla, delete after given time
+_damage_delayStartRagdoll( ent, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath )
+{
+    if ( !isDefined( ent ) || ent isRagDoll() )
+        return;
+
+    deathAnim = ent getCorpseAnim();
+
+    if( level.BOT_LATERAGDOLL )
+            timeMult = 0.9;
+    else timeMult = 0.65;
+
+    wait ( getanimlength( deathAnim ) * timeMult );
+    ent startragdoll( 1 );
+
+    if ( level.BOT_AUTOCLEAR > 0 ) {
+        wait level.BOT_AUTOCLEAR;
+        ent delete();
+    }
+}
+
+// _damage.gsc - Remove youkilled/killedby splashes, remove stats, persistence and assists stuff
+_damage_handleNormalDeath( lifeId, attacker, eInflictor, sWeapon, sMeansOfDeath )
+{
+    attacker thread maps\mp\_events::killedPlayer( lifeId, self, sWeapon, sMeansOfDeath );
+
+    if ( sMeansOfDeath == "MOD_HEAD_SHOT" )
+        attacker playLocalSound( "bullet_impact_headshot_2" );
+
+    value = undefined;
+    attacker thread maps\mp\gametypes\_rank::giveRankXP( "kill", value );
+
+    lastKillStreak = attacker.pers["cur_kill_streak"];
+
+    attacker.pers["cur_death_streak"] = 0;
+    if ( isAlive( attacker ) )
+        attacker.pers["cur_kill_streak"]++;
+
+    maps\mp\gametypes\_gamescore::givePlayerScore( "kill", attacker, self );
+    maps\mp\_skill::processKill( attacker, self );
+
+    if ( isDefined( level.ac130player ) && level.ac130player == attacker )
+        level notify( "ai_killed", self );
+
+    level notify ( "player_got_killstreak_" + attacker.pers["cur_kill_streak"], attacker );
+
+    if ( isAlive( attacker ) )
+        attacker thread maps\mp\killstreaks\_killstreaks::checkKillstreakReward( attacker.pers["cur_kill_streak"] );
+
+    attacker notify ( "killed_enemy" );
+
+    // Just in case
+    self.attackers = [];
+}
+
+// _hud_message.gsc - Bye bye splashes
+_hud_message_actionNotify()
+{
+    return;
 }

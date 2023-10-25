@@ -68,7 +68,7 @@ give( args )
     else if ( isValidWeapon( weapon ) )
     {
         self dropItem( self getCurrentWeapon() );
-        waittillframeend;
+        skipframe();;
 
         self giveWeapon( weapon, camo_int( camo ), is_akimbo( weapon ) );
 
@@ -83,7 +83,7 @@ clear_bodies()
     {
         clone = self ClonePlayer(1);
         clone delete();
-        waittillframeend;
+        skipframe();;
     }
 }
 
@@ -124,21 +124,13 @@ viewhands( args )
 reset_models()
 {
     if( isdefined ( self.pers["fakeModel"] ) && self.pers["fakeModel"] != false ) {
-        waittillframeend;
+        skipframe();;
         self detachAll();
         self [[game[self.pers["fakeTeam"] + "_model"][self.pers["fakeModel"]]]]();
     }
 
     if( isdefined ( self.pers["viewmodel"] ) )
         self setViewmodel( self.pers["viewmodel"] );
-}
-
-inside_fov( player, target, fov )
-{
-    normal = vectorNormalize( target.origin - player getEye() );
-    forward = anglesToForward( player getPlayerAngles() );
-    dot = vectorDot( forward, normal );
-    return dot >= cos( fov );
 }
 
 // Toggles
@@ -148,7 +140,7 @@ toggle_holding()
     pront( "Holding weapons on death: " + level.COMMAND_COLOR + bool(level.BOT_WEAPHOLD) );
 
     if( !level.BOT_WEAPHOLD ) {
-        foreach ( player in level.players )
+        foreach( player in level.players )
             player.replica delete();
     }
 }
@@ -184,14 +176,14 @@ spawn_fx( args )
 }
 
 // Fog and Vision
-visione( args )
+change_vision( args )
 {
     vision = args[0];
     self VisionSetNakedForPlayer( vision );
     pront("Vision changed to : " + vision);
 }
 
-fogc( args )
+change_fog( args )
 {
     start       = int(args[0]);
     end         = int(args[1]);
@@ -211,7 +203,7 @@ welcome()
     self waittill( "spawned_player" );
     self freezeControls( false );
     wait 2;
-    self thread teamPlayerCardSplash("one_from_defcon", self, self.pers["team"]);
+    self thread teamPlayerCardSplash( "revived", self, self.pers["team"] );
 }
 
 about()
@@ -231,9 +223,9 @@ about()
     text[1] = elem( -33, 1,   "default",    "2015 - 2023", 30 );
     text[2] = elem( -9,  1.1, "small",      "^3Immensely and forever thankful for :", 20 );
     text[3] = elem( 7.5, 1.3, "default",    "Zura, luckyy, CoDTV MM Team, kruumy", 15 );
-    text[4] = elem( 25,  1.23,"default",    "case, OZZIE, LASKO, Jayy, simon, the whole sm2 squad", 11 );
-    text[5] = elem( 41,  1,   "default",    "Ody, 4GIVE, expert, NOOB TEAM, 3500, PUNK, Openminded, and kilos of SSRIs", 9 );
-    text[6] = elem( 170, 0.5, "smallfixed", "Press ^3[{weapnext}]^7 to close" );
+    text[4] = elem( 25,  1.23,"default",    "case, Ozzie, LASKO, Jayy, simon, the whole sm2 squad", 11 );
+    text[5] = elem( 41,  1,   "default",    "The Ody Island, forgive, expert, JTAG, NOOB TEAM, 3500, PUNK, Openminded, and kilos of SSRIs", 9 );
+    text[6] = elem( 170, 0.5, "smallfixed", "Press ^3[{weapnext}]^7 to close", 20 );
 
     self waittill_any( "weapon_switch_started" ,"weapon_fired", "death");
 
@@ -248,7 +240,7 @@ about()
     foreach( t in text ) t destroy();
 }
 
-elem(offset, size, font, text, pulse)
+elem( offset, size, font, text, pulse )
 {
     elem = newClientHudElem( self );
     elem.horzAlign = "center";
