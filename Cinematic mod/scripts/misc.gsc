@@ -68,7 +68,7 @@ give( args )
     else if ( isValidWeapon( weapon ) )
     {
         self dropItem( self getCurrentWeapon() );
-        skipframe();;
+        skipframe();
 
         self giveWeapon( weapon, camo_int( camo ), is_akimbo( weapon ) );
 
@@ -83,7 +83,7 @@ clear_bodies()
     {
         clone = self ClonePlayer(1);
         clone delete();
-        skipframe();;
+        skipframe();
     }
 }
 
@@ -124,7 +124,7 @@ viewhands( args )
 reset_models()
 {
     if( isdefined ( self.pers["fakeModel"] ) && self.pers["fakeModel"] != false ) {
-        skipframe();;
+        skipframe();
         self detachAll();
         self [[game[self.pers["fakeTeam"] + "_model"][self.pers["fakeModel"]]]]();
     }
