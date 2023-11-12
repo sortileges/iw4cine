@@ -172,7 +172,7 @@ kill( args )
             hitloc      = parameters[2];
 
             playFXOnTag( getFX( fx ), self, tag );
-            level.players[0] thread [[level.callbackPlayerDamage]]( player, player, player.health, 8, "MOD_SUICIDE", self getCurrentWeapon(), tag, tag, hitloc, 0 );
+            player thread [[level.callbackPlayerDamage]]( player, player, player.health, 8, "MOD_SUICIDE", self getCurrentWeapon(), tag, tag, hitloc, 0 );
             
         }
     }
